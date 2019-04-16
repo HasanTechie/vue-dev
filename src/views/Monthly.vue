@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container class="my-4">
-            <h1 class="display-2 mb-2 font-weight-light">Monthly View</h1>
+            <h1 class="display-2 mb-3 font-weight-light">Monthly View</h1>
             <v-layout wrap>
                 <v-flex
                         xs12

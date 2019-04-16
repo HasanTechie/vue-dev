@@ -1,13 +1,102 @@
 <template>
     <div>
-        <h1 class="display-2 font-weight-light">Analytics</h1>
-        <v-container class="my-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium aliquid culpa, deleniti est eum eveniet exercitationem explicabo facilis inventore minus nobis officia sed unde vel. Asperiores iste velit voluptatibus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad, blanditiis, consequuntur cum deleniti distinctio eaque eligendi eveniet ipsam mollitia nobis provident quas quisquam reiciendis rem tempore totam vel voluptatibus.    </v-container>
+        <v-container class="my-4">
+            <h1 class="display-2 mb-3 font-weight-light">Analytics</h1>
+            <apexcharts width="1200" height="600" type="line" :options="chartOptions" :series="series"></apexcharts>
+        </v-container>
     </div>
 </template>
 
 <script>
+    import VueApexCharts from 'vue-apexcharts'
+
     export default {
-        name: "Analytics"
+        name: 'Chart',
+        components: {
+            apexcharts: VueApexCharts,
+        },
+        data: function () {
+            return {
+                chartOptions: {
+                    chart: {
+                        id: 'basic-bar'
+                    },
+                    xaxis: {
+                        categories: this.getValuesFromArray()
+                    }
+                },
+                series: [
+                    {
+                        name: 'Hotel Emona',
+                        data: [125.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6],
+                    },
+                    {
+                        name: 'Hotel Latinum',
+                        data: [127.5, 130.5, 127.42, 133.9, 128.4, 124.6, 128.5, 139.8, 137, 141.2, 136.133, 134.6],
+                    },
+                    {
+                        name: 'Hotel PortaMaggiore',
+                        data: [123.5, 136.5, 129.42, 138.9, 142.4, 134.6, 130.5, 142.8, 139, 144.2, 135.133, 137.6],
+                    }
+                ],
+            }
+        },
+        created() {
+            this.fetchPrices();
+        },
+        methods: {
+            updateChart() {
+                const max = 90;
+                const min = 20;
+                const newData = this.series[0].data.map(() => {
+                    return Math.floor(Math.random() * (max - min + 1)) + min
+                })
+
+                const colors = ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0']
+
+                // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+                this.chartOptions = {
+                    colors: [colors[Math.floor(Math.random() * colors.length)]]
+                };
+                // In the same way, update the series option
+                this.series = [{
+                    data: newData
+                }]
+            },
+
+            fetchPrices() {
+                fetch('api/rooms/hoteluid=5c80a2d79d162&datefrom=2019-03-14&dateto=2019-08-14')
+                    .then(res => res.json())
+                    .then(res => {
+
+                        const priceArray = [];
+                        // const checkInArray =[];
+                        res.data.forEach(function (item) {
+                            priceArray.push(item.price)
+                            // this.series = [{
+                            //     data: item.price
+                            // }]
+                        });
+
+                        // res.data.forEach(function (item) {
+                        //     checkInArray.push(item.check_in_date)
+                        //     // this.series = [{
+                        //     //     data: item.price
+                        //     // }]
+                        // });
+
+                        // console.log(this.chartOptions.xaxis.categories)
+
+
+                        // this.series = [{
+                        //     data: priceArray
+                        // }];
+                    })
+            },
+            getValuesFromArray(){
+                return ['March', 'April', 'Masy', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February']
+            }
+        }
     }
 </script>
 

@@ -1,14 +1,23 @@
 <template>
-  <div>
-    <h1 class="display-2 font-weight-light">Select Competitors</h1>
-    <v-container class="my-4">Content</v-container>
-  </div>
+    <div>
+        <multiselect
+                v-model="selected"
+                :options="options">
+        </multiselect>
+    </div>
 </template>
 
 <script>
-
-  export default {
-    components: {
+    import Multiselect from 'vue-multiselect'
+    export default {
+        components: { Multiselect },
+        data () {
+            return {
+                selected: null,
+                options: ['list', 'of', 'options']
+            }
+        }
     }
-  }
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
