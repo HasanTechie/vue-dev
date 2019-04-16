@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import SelectCompetitor from './views/SelectCompetitor.vue'
+import Analytics from './views/SelectCompetitor.vue'
+import Monthly from './views/SelectCompetitor.vue'
 
 Vue.use(Router)
 
@@ -12,6 +15,21 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/selectcompetitor',
+      name: 'selectcompetitor',
+      component: SelectCompetitor
+    },
+    {
+      path: '/analytics',
+      name: 'analytics',
+      component: Analytics
+    },
+    {
+      path: '/monthly',
+      name: 'monthly',
+      component: Monthly
     },
     {
       path: '/about',
