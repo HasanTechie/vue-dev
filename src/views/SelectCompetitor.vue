@@ -1,9 +1,7 @@
 <template>
-  <div class="home">
-    <h1 class="display-4">This is an Select Competitor page</h1>
-    <v-btn>
-      <v-icon>email</v-icon>
-    </v-btn>
+  <div>
+    <h1 class="display-2 font-weight-light">Select Competitors</h1>
+    <v-container class="my-4">Content</v-container>
   </div>
 </template>
 

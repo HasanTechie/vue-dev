@@ -1,5 +1,8 @@
 <template>
-    <h1>This is an Monthly page</h1>
+    <div>
+        <h1 class="display-2 font-weight-light">Monthly View</h1>
+        <v-container class="my-4">Content</v-container>
+    </div>
 </template>
 
 <script>
