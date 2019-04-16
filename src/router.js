@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import SelectCompetitor from './views/SelectCompetitor.vue'
-import Analytics from './views/SelectCompetitor.vue'
-import Monthly from './views/SelectCompetitor.vue'
+import Analytics from './views/Analytics.vue'
+import Monthly from './views/Monthly.vue'
 
 Vue.use(Router)
 
