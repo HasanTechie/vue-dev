@@ -1,14 +1,13 @@
 <template>
     <div>
-        <label class="typo__label">Simple select / dropdown</label>
-        <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false"
-                     :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name"
-                     track-by="name" :preselect-first="true">
-            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single"
-                                                                                     v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span>
-            </template>
+        <label class="typo__label" for="ajax">Async multiselect</label>
+        <multiselect v-model="selectedCountries" id="ajax" label="name" track-by="code" placeholder="Type to search" open-direction="bottom" :options="countries" :multiple="true" :searchable="true" :loading="isLoading" :internal-search="false" :clear-on-select="false" :close-on-select="false" :options-limit="300" :limit="3" :limit-text="limitText" :max-height="600" :show-no-results="false" :hide-selected="true" @search-change="asyncFind">
+            <template slot="tag" slot-scope="{ option, remove }"><span class="custom__tag"><span>{{ option.name }}</span><span class="custom__remove" @click="remove(option)">❌</span></span></template>
+            <template slot="clear" slot-scope="props">
+                <div class="multiselect__clear" v-if="selectedCountries.length" @mousedown.prevent.stop="clearAll(props.search)"></div>
+            </template><span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
         </multiselect>
-        <pre class="language-json"><code>{{ value  }}</code></pre>
+        <pre class="language-json"><code>{{ selectedCountries  }}</code></pre>
     </div>
 </template>
 
@@ -20,17 +19,26 @@
         components: {
             Multiselect
         },
-        data() {
+        data () {
             return {
-                value: [],
-                options: [
-                    {name: 'Vue.js', language: 'JavaScript'},
-                    {name: 'Adonis', language: 'JavaScript'},
-                    {name: 'Rails', language: 'Ruby'},
-                    {name: 'Sinatra', language: 'Ruby'},
-                    {name: 'Laravel', language: 'PHP'},
-                    {name: 'Phoenix', language: 'Elixir'}
-                ]
+                selectedCountries: [],
+                countries: [],
+                isLoading: false
+            }
+        },
+        methods: {
+            limitText (count) {
+                return `and ${count} other countries`
+            },
+            asyncFind () {
+                this.isLoading = true
+                apiRequests.getHotels().then(response => {
+                    this.countries = response.data
+                    this.isLoading = false
+                })
+            },
+            clearAll () {
+                this.selectedCountries = []
             }
         },
         created() {

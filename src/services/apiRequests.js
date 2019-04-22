@@ -15,6 +15,6 @@ export default {
         return apiClient.get('/hotels' + this.getApiKey())
     },
     getApiKey() {
-        return '&get=50&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
+        return '&get=10&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
     }
 }
