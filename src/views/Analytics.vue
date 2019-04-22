@@ -16,7 +16,7 @@
         components: {
             apexcharts: VueApexCharts,
         },
-        data: function () {
+        data() {
             return {
                 chartOptions: {
                     chart: {
@@ -43,6 +43,7 @@
             }
         },
         created() {
+            this.getAllHotels();
             this.fetchPrices();
         },
         methods: {
@@ -64,38 +65,54 @@
             //         data: newData
             //     }]
             // },
+            getAllHotels() {
+                apiRequests.getHotels()
+                    .then(response => {
+                        // this.events = response.data
 
-            fetchPrices() {
-                fetch('api/rooms/hoteluid=5c80a2d79d162&datefrom=2019-03-14&dateto=2019-08-14')
-                    .then(res => res.json())
-                    .then(res => {
+                        // var dataArray = Object.keys(response.data.data).map((key) => {
+                        //     return response.data.data[key]
+                        // })
+                        //
+                        // this.options = dataArray
 
-                        const priceArray = [];
-                        // const checkInArray =[];
-                        res.data.forEach(function (item) {
-                            priceArray.push(item.price)
-                            // this.series = [{
-                            //     data: item.price
-                            // }]
-                        });
-
-                        // res.data.forEach(function (item) {
-                        //     checkInArray.push(item.check_in_date)
-                        //     // this.series = [{
-                        //     //     data: item.price
-                        //     // }]
-                        // });
-
-                        // console.log(this.chartOptions.xaxis.categories)
-
-
-                        // this.series = [{
-                        //     data: priceArray
-                        // }];
+                        console.log(response.data)
+                    })
+                    .catch(error => {
+                        console.log('There was an error:' + error.response)
                     })
             },
-            getValuesFromArray(){
-                return ['March', 'April', 'Masy', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February']
+            fetchPrices() {
+                // fetch('a/*pi/rooms/hoteluid=5c80a2d79d162&datefrom=2019-03-14&dateto=2019-08-14')
+                //     .then(res => res.json())
+                //     .then(res => {
+                //
+                //         const priceArray = [];
+                //         // const checkInArray =[];
+                //         res.data.forEach(function (item) {
+                //             priceArray.push(item.price)
+                //             // this.series = [{
+                //             //     data: item.price
+                //             // }]
+                //         });
+                //
+                //         // res.data.forEach(function (item) {
+                //         //     checkInArray.push(item.check_in_date)
+                //         //     // this.series = [{
+                //         //     //     data: item.price
+                //         //     // }]
+                //         // });
+                //
+                //         // console.log(this.chartOptions.xaxis.categories)
+                //
+                //
+                //         // this.series = [{
+                //         //     data: priceArray
+                //         // }];
+                //     })*/
+            },
+            getValuesFromArray() {
+                return ['March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February']
             }
         }
     }
