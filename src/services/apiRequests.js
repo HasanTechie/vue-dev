@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from 'axios/index'
 
 const apiClient = axios.create({
-    baseURL: 'http://3.83.35.127/api/',
+    baseURL: 'http://solidps.test/api/',
     withCredentials: false,
     headers: {
         Accept: 'application/json',
