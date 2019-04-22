@@ -23,7 +23,7 @@
                         id: 'basic-bar'
                     },
                     xaxis: {
-                        categories: this.getValuesFromArray()
+                        categories: ['March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February']
                     }
                 },
                 series: [
@@ -31,21 +31,22 @@
                         name: 'Hotel Emona',
                         data: [125.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6],
                     },
-                    // {
-                    //     name: 'Hotel Latinum',
-                    //     data: [127.5, 130.5, 127.42, 133.9, 128.4, 124.6, 128.5, 139.8, 137, 141.2, 136.133, 134.6],
-                    // },
-                    // {
-                    //     name: 'Hotel PortaMaggiore',
-                    //     data: [123.5, 136.5, 129.42, 138.9, 142.4, 134.6, 130.5, 142.8, 139, 144.2, 135.133, 137.6],
-                    // }
+                    {
+                        name: 'Hotel Latinum',
+                        data: [127.5, 130.5, 127.42, 133.9, 128.4, 124.6, 128.5, 139.8, 137, 141.2, 136.133, 134.6],
+                    },
+                    {
+                        name: 'Hotel PortaMaggiore',
+                        data: [123.5, 136.5, 129.42, 138.9, 142.4, 134.6, 130.5, 142.8, 139, 144.2, 135.133, 137.6],
+                    }
                 ],
+                trigger: false,
             }
         },
         created() {
-            this.getAllHotels()
-            this.getPrices()
-            this.fetchPrices()
+            // this.getAllHotels()
+            // this.getPrices()
+            // this.fetchPrices()
         },
         methods: {
             // updateChart() {
@@ -66,49 +67,62 @@
             //         data: newData
             //     }]
             // },
-            getPrices() {
-                apiRequests.getPrices()
-                    .then(response => {
-                        console.log(response.data)
-                    })
-            },
-            getAllHotels() {
-                apiRequests.getHotels()
-                    .then(response => {
-                        // this.events = response.data
-
-                        // var dataArray = Object.keys(response.data.data).map((key) => {
-                        //     return response.data.data[key]
-                        // })
-
-                        const priceArray = [];
-                        // const checkInArray =[];
-                        response.data.forEach(function (item) {
-                            priceArray.push(item.price)
-                            this.series = [{
-                                data: item.price
-                            }]
-                        });
-
-                        // res.data.forEach(function (item) {
-                        //     checkInArray.push(item.check_in_date)
-                        //     // this.series = [{
-                        //     //     data: item.price
-                        //     // }]
-                        // });
-
-                        // console.log(this.chartOptions.xaxis.categories)
-
-                        // this.series = [{
-                        //     data: priceArray
-                        // }];
-
-                        console.log(response.data)
-                    })
-                    .catch(error => {
-                        console.log('There was an error:' + error.response)
-                    })
-            },
+            // getPrices() {
+            //     apiRequests.getPrices()
+            //         .then(response => {
+            //
+            //             var priceArray = [];
+            //             var checkInArray = [];
+            //             var dataArray = Object.keys(response.data.data).map((key) => {
+            //                 return response.data.data[key]
+            //             })
+            //
+            //             dataArray.forEach(function (item) {
+            //                 priceArray.push(item.price)
+            //                 // this.series = [{
+            //                 //     data: item.price
+            //                 // }]
+            //             });
+            //             this.chartOptions.xaxis.categories = []
+            //             dataArray.forEach(function (item) {
+            //                 checkInArray.push(item.check_in_date)
+            //             });
+            //
+            //             // this.getValuesFromArray(checkInArray)
+            //
+            //             // dataArray.forEach(function (item) {
+            //             //     priceArray.push(item.price)
+            //             //     this.series = [{
+            //             //         data: item.price
+            //             //     }]
+            //             // });
+            //
+            //             this.series = [{
+            //                 data: priceArray
+            //             }];
+            //             // var aweinArray = ['March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February'];
+            //             // this.getValuesFromArray()
+            //
+            //             // this.chartOptions.xaxis.categories = checkInArray;
+            //
+            //
+            //         })
+            // },
+            // getAllHotels() {
+            //     apiRequests.getHotels()
+            //         .then(response => {
+            //             // this.events = response.data
+            //
+            //             // var dataArray = Object.keys(response.data.data).map((key) => {
+            //             //     return response.data.data[key]
+            //             // })
+            //
+            //             console.log(response.data)
+            //         })
+            //         .catch(error => {
+            //             console.log('There was an error:' + error.response)
+            //         })
+            // },
             fetchPrices() {
                 // fetch('api/rooms/hoteluid=5c80a2d79d162&datefrom=2019-03-14&dateto=2019-08-14')
                 //     .then(res => res.json())
@@ -138,9 +152,6 @@
                 //         // }];
                 //     })
             },
-            getValuesFromArray() {
-                return ['March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February']
-            }
         }
     }
 </script>
