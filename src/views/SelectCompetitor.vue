@@ -27,7 +27,6 @@
             }
         },
         created() {
-
             this.getAllHotels()
         },
         methods: {
