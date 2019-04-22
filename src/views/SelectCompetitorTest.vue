@@ -1,6 +1,6 @@
 <template>
     <div>
-        test
+        Test Component
     </div>
 </template>
 

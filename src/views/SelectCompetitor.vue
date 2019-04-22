@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label class="typo__label">Simple select / dropdown</label>
+        <label class="typo__label">Select Competitor Hotels</label>
         <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false"
                      :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name"
                      track-by="name" :preselect-first="true">
@@ -27,21 +27,26 @@
             }
         },
         created() {
-            apiRequests.getHotels()
-                .then(response => {
-                    // this.events = response.data
+            this.getAllHotels
+        },
+        methods: {
+            getAllHotels() {
+                apiRequests.getHotels()
+                    .then(response => {
+                        // this.events = response.data
 
-                    var dataArray = Object.keys(response.data.data).map((key) => {
-                        return response.data.data[key]
+                        var dataArray = Object.keys(response.data.data).map((key) => {
+                            return response.data.data[key]
+                        })
+
+                        this.options = dataArray
+
+                        console.log(dataArray)
                     })
-
-                    this.options = dataArray
-
-                    console.log(dataArray)
-                })
-                .catch(error => {
-                    console.log('There was an error:' + error.response)
-                })
+                    .catch(error => {
+                        console.log('There was an error:' + error.response)
+                    })
+            }
         }
     }
 
