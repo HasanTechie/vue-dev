@@ -1,7 +1,7 @@
 import axios from 'axios/index'
 
 const apiClient = axios.create({
-    baseURL: 'http://solidps.test/api/',
+    baseURL: 'http://3.83.35.127/api/',
     withCredentials: false,
     headers: {
         Accept: 'application/json',
@@ -11,13 +11,12 @@ const apiClient = axios.create({
 
 export default {
     getHotels() {
-        console.log(apiClient.get('/hotels' + this.getApiKey()))
-        return apiClient.get('/hotels' + this.getApiKey())
+        return apiClient.get('/hotels&get=0' + this.getApiKey())
     },
     getPrices() {
-        return apiClient.get('roomsprices' + this.getApiKey() + '&hoteluid=5caa7537c7f03&datefrom=2019-03-03&dateto=2019-05-05')
+        return apiClient.get('roomsprices&get=0' + this.getApiKey() + '&hoteluid=5caa7537c7f03&datefrom=2019-03-03&dateto=2019-05-05')
     },
     getApiKey() {
-        return '&get=10&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
+        return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
     }
 }
