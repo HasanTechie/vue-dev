@@ -7,14 +7,16 @@ export const store = new Vuex.Store({
   state: {
     message: '',
     competitorsArray: [],
-    competitorsPricesArray: []
+    competitorsPricesArray: [],
+    competitorsUids: ''
   },
   getters : {
     message: (state) => {
       return state.message
     },
     competitorsArray: state => state.competitorsArray,
-    competitorsPricesArray : state => state.competitorsPricesArray
+    competitorsPricesArray : state => state.competitorsPricesArray,
+    competitorsUids : state => state.competitorsUids
   },
   mutations: {
     SET_MESSAGE: (state, newValue) => {
@@ -25,6 +27,9 @@ export const store = new Vuex.Store({
     },
     SET_COMPETITORS_PRICE_ARRAY: (state, competitorsPricesArray) => {
       state.competitorsPricesArray = competitorsPricesArray
+    },
+    SET_COMPETITORS_UIDS: (state, competitorsUids) => {
+      state.competitorsUids = competitorsUids
     }
   },
   actions: {
@@ -38,6 +43,10 @@ export const store = new Vuex.Store({
     },
     setCompetitorsPriceArray: ({commit}, competitorsPricesArray) => {
       commit('SET_COMPETITORS_PRICE_ARRAY', competitorsPricesArray)
+      return true
+    },
+    setCompetitorsUids: ({commit}, competitorsUids) => {
+      commit('SET_COMPETITORS_UIDS', competitorsUids)
       return true
     }
   }

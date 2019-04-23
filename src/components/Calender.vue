@@ -409,7 +409,7 @@
                 }
             },
         created() {
-            this.getSelectedCompetitorPrices()
+            //this.getSelectedCompetitorPrices()
         }
     }
 </script>

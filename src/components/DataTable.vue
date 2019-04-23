@@ -16,7 +16,8 @@
             <th
             v-for="header in props.headers"
             :key="header.text"
-            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+            :class="['column sortable', pagination.descending ? 'desc' : 
+            'asc', header.value === pagination.sortBy ? 'active' : '']"
             @click="changeSort(header.value)"
             >
             <v-icon small>arrow_upward</v-icon>
@@ -42,6 +43,9 @@
 </template>
 
 <script>
+
+  import apiRequests from '@/services/apiRequests.js'
+
   export default {
     name: "DataTable",
     data: () => ({
@@ -64,28 +68,26 @@
       rooms: [
         {
           name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: '1%'
+          currentprice: 159,
+          competitorpriceav: 6.0,
+          marketvalue: 24,
+          optimalprice: 4.0,
+          potential: '1%'
         },
         {
           name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: '1%'
+          currentprice: 159,
+          competitorpriceav: 6.0,
+          marketvalue: 24,
+          optimalprice: 4.0,
+          potential: '1%'
         }
       ]
     }),
-
+    created() {
+      this.getSelectedCompetitorPrices()
+    },
     methods: {
-      toggleAll () {
-        if (this.selected.length) this.selected = []
-        else this.selected = this.rooms.slice()
-      },
       changeSort (column) {
         if (this.pagination.sortBy === column) {
           this.pagination.descending = !this.pagination.descending
@@ -93,6 +95,60 @@
           this.pagination.sortBy = column
           this.pagination.descending = false
         }
+      },
+      getSelectedCompetitorPrices(){
+        console.log('=>updating selected comptetior prices')
+
+        // iterate through hotel uids of selected competitors
+        // and pick their prices
+        var competitorsArray = JSON.parse(JSON.stringify(
+                                this.$store.getters.competitorsArray))
+        var competitorsUids = this.getValuesByKey(competitorsArray,'uid')
+
+        var apiCompetitorsString = '['+competitorsUids.join()+']'
+
+        this.$store.dispatch('setCompetitorsUids', apiCompetitorsString.replace(" ", ""))
+
+        // make request for according uids
+        console.log(apiCompetitorsString.replace(" ", ""))
+
+        //TODO should be done with the vuex storage...
+        apiRequests.getCompetitorPrices(apiCompetitorsString.replace(" ", ""))
+            .then(response => {
+                //var dataArray = JSON.parse(JSON.stringify(response.data.data))
+                var dataArray = Object.keys(response.data.data).map((key) => {
+                            return response.data.data[key]
+                })
+                var datas = Object.entries(dataArray)
+                datas = datas[1]['hotel_name']
+                console.log(datas)
+                //var competitorPrices = getValuesByKey(dataArray, 'competitors_data')
+                console.log('in datatable...')
+                //console.log(competitorPrices)
+            })
+            .catch(error => {
+                console.log('There was an error:' + error.response)
+            })
+        
+        
+      },
+      getValuesByKey(array, key) {
+        let values = [];
+        for (let i=0; i<array.length; i+=1) {
+          values.push(array[i][key]);
+        }
+        return values;
+      },
+      getValuesOfKeyAtKeyWithValue(array, getKey, atKey, atKeyValue) {
+        let values = [];
+        for (let i=0; i<array.length; i+=1) {
+        console.log(array[i][atKey])
+
+          if (array[i][atKey] === atKeyValue){
+            values.push(array[i][getKey]);
+          }
+        }
+        return values;
       }
     }
   }

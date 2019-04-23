@@ -8,7 +8,7 @@
                                                                                      v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span>
             </template>
         </multiselect>
-        <pre class="language-json"><code>{{ value  }}</code></pre>
+        <pre class="language-json"><code>{{ value }}</code></pre>
     </div>
 </template>
 
@@ -49,10 +49,9 @@
                     })
             },
             updateSelectedHotels(){
-                this.$store.dispatch('setCompetitorsArray', this.value)
-                console.log(this.$store.getters.competitorsArray)
-                // also get the prices of according hotels
-
+                console.log('updating')
+                var competitorsArray = JSON.parse(JSON.stringify(this.value))
+                this.$store.dispatch('setCompetitorsArray', competitorsArray)
             }
 
         }
