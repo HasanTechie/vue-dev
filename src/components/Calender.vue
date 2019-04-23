@@ -269,7 +269,6 @@
 
 <script>
     import apiRequests from '@/services/apiRequests.js'
-    import DataTable from '@/components/DataTable.vue';
 
     const weekdaysDefault = [0, 1, 2, 3, 4, 5, 6]
 
@@ -306,9 +305,7 @@
     }
     export default {
         name: "Calender",
-        components: {
-            DataTable
-        },
+
         data: () => ({
             dark: false,
             startMenu: false,

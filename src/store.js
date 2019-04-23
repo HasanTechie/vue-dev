@@ -3,14 +3,16 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+export const store = new Vuex.Store({
   state: {
-
+    hotelsData: []
   },
   mutations: {
-
+    change(state, hotelsData){
+      state.hotelsData = hotelsData
+    }
   },
-  actions: {
-
+  getters : {
+    hotelsData: state => state.hotelsData
   }
 })

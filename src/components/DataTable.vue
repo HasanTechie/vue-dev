@@ -4,7 +4,7 @@
     <v-data-table
         v-model="selected"
         :headers="headers"
-        :items="desserts"
+        :items="rooms"
         :pagination.sync="pagination"
         select-all
         item-key="name"
@@ -12,15 +12,7 @@
     >
         <template v-slot:headers="props">
         <tr>
-            <th>
-            <v-checkbox
-                :input-value="props.all"
-                :indeterminate="props.indeterminate"
-                primary
-                hide-details
-                @click.stop="toggleAll"
-            ></v-checkbox>
-            </th>
+            
             <th
             v-for="header in props.headers"
             :key="header.text"
@@ -34,13 +26,7 @@
         </template>
         <template v-slot:items="props">
         <tr :active="props.selected" @click="props.selected = !props.selected">
-            <td>
-            <v-checkbox
-                :input-value="props.selected"
-                primary
-                hide-details
-            ></v-checkbox>
-            </td>
+            
             <td>{{ props.item.name }}</td>
             <td class="text-xs-right">{{ props.item.calories }}</td>
             <td class="text-xs-right">{{ props.item.fat }}</td>
@@ -65,17 +51,17 @@
       selected: [],
       headers: [
         {
-          text: 'Dessert (100g serving)',
+          text: 'Room',
           align: 'left',
           value: 'name'
         },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
-        { text: 'Iron (%)', value: 'iron' }
+        { text: 'Current Price', value: 'currentprice' },
+        { text: 'Competitors Price Average', value: 'competitorpriceav' },
+        { text: 'Market Value', value: 'marketvalue' },
+        { text: 'Optimal Price', value: 'optimalprice' },
+        { text: 'Potential (%)', value: 'potential' }
       ],
-      desserts: [
+      rooms: [
         {
           name: 'Frozen Yogurt',
           calories: 159,
@@ -91,70 +77,6 @@
           carbs: 37,
           protein: 4.3,
           iron: '1%'
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: '7%'
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: '8%'
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: '16%'
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: '0%'
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: '2%'
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: '45%'
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: '22%'
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: '6%'
         }
       ]
     }),
@@ -162,7 +84,7 @@
     methods: {
       toggleAll () {
         if (this.selected.length) this.selected = []
-        else this.selected = this.desserts.slice()
+        else this.selected = this.rooms.slice()
       },
       changeSort (column) {
         if (this.pagination.sortBy === column) {
