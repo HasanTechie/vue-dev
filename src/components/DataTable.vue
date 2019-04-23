@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-layout row>
     <v-data-table
         v-model="selected"
         :headers="headers"
@@ -49,6 +50,8 @@
         </tr>
         </template>
     </v-data-table>
+    </v-layout>
+
   </div>
 </template>
 
