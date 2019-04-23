@@ -49,8 +49,9 @@
                     })
             },
             updateSelectedHotels(){
-                this.$store.commit('change', this.value)
-                console.log(this.$store.getters.hotelsData)
+                this.$store.dispatch('setCompetitorsArray', this.value)
+                console.log(this.$store.getters.competitorsArray)
+                // also get the prices of according hotels
 
             }
 
