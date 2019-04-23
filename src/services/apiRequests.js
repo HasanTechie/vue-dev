@@ -11,12 +11,18 @@ const apiClient = axios.create({
 
 export default {
     getHotels() {
-        return apiClient.get('/hotels&get=0' + this.getApiKey())
+        return apiClient.get('/hotels&get=1000' + this.getApiKey())
     },
     getPrices() {
-        return apiClient.get('roomsprices&get=0' + this.getApiKey() + '&hoteluid=5caa7537c7f03&datefrom=2019-03-03&dateto=2019-05-05')
+        return apiClient.get('roomsprices&get=40' + this.getApiKey() + '&hoteluid=5caa7537c7f03&datefrom=2019-04-19&dateto=2019-05-05')
+    },
+    getCompetitorPrices() {
+        return apiClient.get('competitorsprices&get=5' + this.getApiKey() + '&hoteluid=5caa7537c7f03&datefrom=2019-04-19&dateto=2019-04-24' + this.getCompetitors())
     },
     getApiKey() {
         return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
+    },
+    getCompetitors() {
+        return '&competitorsuid=[5caa754c3c39a,5caa757d2d47e]'
     }
 }

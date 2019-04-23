@@ -33,17 +33,17 @@
                         Prev
                     </v-btn>
                 </v-flex>
-<!--                <v-flex-->
-<!--                        sm4-->
-<!--                        xs12-->
-<!--                        class="text-xs-center"-->
-<!--                >-->
-<!--                    &lt;!&ndash;                    <v-select&ndash;&gt;-->
-<!--                    &lt;!&ndash;                            v-model="type"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                            :items="typeOptions"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                            label="Type"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    ></v-select>&ndash;&gt;-->
-<!--                </v-flex>-->
+                <!--                <v-flex-->
+                <!--                        sm4-->
+                <!--                        xs12-->
+                <!--                        class="text-xs-center"-->
+                <!--                >-->
+                <!--                    &lt;!&ndash;                    <v-select&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                            v-model="type"&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                            :items="typeOptions"&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                            label="Type"&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                    ></v-select>&ndash;&gt;-->
+                <!--                </v-flex>-->
                 <v-flex
                         sm6
                         xs12
@@ -65,19 +65,38 @@
 </template>
 
 <script>
+    import apiRequests from '@/services/apiRequests.js'
+
     export default {
         name: 'monthly',
-        data: () => ({
-            type: 'month',
-            start: '2019-04-12',
-            end: '2019-12-31',
-            // typeOptions: [
-            //     {text: 'Day', value: 'day'},
-            //     {text: '4 Day', value: '4day'},
-            //     {text: 'Week', value: 'week'},
-            //     {text: 'Month', value: 'month'},
-            // ]
-        })
+        data() {
+            return {
+                type: 'month',
+                start: '2019-04-12',
+                end: '2019-12-31',
+                // typeOptions: [
+                //     {text: 'Day', value: 'day'},
+                //     {text: '4 Day', value: '4day'},
+                //     {text: 'Week', value: 'week'},
+                //     {text: 'Month', value: 'month'},
+                // ]
+            }
+        },
+        created() {
+            this.getSelectedCompetitorPrices()
+        },
+        methods: {
+            getSelectedCompetitorPrices() {
+                console.log('started api request')
+                apiRequests.getCompetitorPrices()
+                    .then(response => {
+                        console.log(response.data)
+                    })
+                    .catch(error => {
+                        console.log('There was an error:' + error.response)
+                    })
+            }
+        }
     }
 </script>
 
