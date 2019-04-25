@@ -37,7 +37,6 @@
             getAllHotels() {
                 apiRequests.getHotels()
                     .then(response => {
-
                         var dataArray = Object.keys(response.data.data).map((key) => {
                             return response.data.data[key]
                         })
