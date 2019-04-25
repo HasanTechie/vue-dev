@@ -21,6 +21,7 @@
         components: {
             Multiselect
         },
+
         data() {
             return {
                 value: [],
@@ -31,6 +32,7 @@
         created() {
             this.getAllHotels()
         },
+
         methods: {
             getAllHotels() {
                 apiRequests.getHotels()
@@ -41,20 +43,24 @@
                         })
                         // use Vuex store
                         this.options = dataArray
-                        
+                        //console.log(' this is in options')
                         //console.log(this.options)
                     })
                     .catch(error => {
                         console.log('There was an error:' + error.response)
                     })
             },
+
             updateSelectedHotels(){
-                console.log('updating')
+                console.log('updating selected hotels in vuex.store')
                 var competitorsArray = JSON.parse(JSON.stringify(this.value))
                 this.$store.dispatch('setCompetitorsArray', competitorsArray)
+                console.log(competitorsArray)
+
             }
 
         }
+        
     }
     
 </script>

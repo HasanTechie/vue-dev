@@ -35,7 +35,8 @@ export default new Router({
     {
       path: '/monthly',
       name: 'monthly',
-      component: Monthly
+      component: Monthly,
+      //props: [today]
     },
     {
       path: '/about',

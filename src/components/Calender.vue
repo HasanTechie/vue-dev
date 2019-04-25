@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 class="display-2 mb-3 font-weight-light">Monthly View</h1>
-            <v-layout row>
+            <v-layout row wrap>
             <v-flex
             sm12
             lg3
@@ -36,20 +36,7 @@
                 </v-icon>
             </v-btn>
             <br><br><br>
-            <v-select
-                v-model="type"
-                :items="typeOptions"
-                label="Type"
-            ></v-select>
-            <v-checkbox
-                v-model="dark"
-                label="Dark"
-            ></v-checkbox>
-            <v-select
-                v-model="color"
-                :items="colorOptions"
-                label="Color"
-            ></v-select>
+
             <v-menu
                 ref="startMenu"
                 v-model="startMenu"
@@ -62,15 +49,7 @@
                 offset-y
                 full-width
             >
-                <template v-slot:activator="{ on }">
-                <v-text-field
-                    v-model="start"
-                    label="Start Date"
-                    prepend-icon="event"
-                    readonly
-                    v-on="on"
-                ></v-text-field>
-                </template>
+                
                 <v-date-picker
                 v-model="start"
                 no-title
@@ -161,7 +140,7 @@
                 <v-date-picker
                 v-model="now"
                 no-title
-                scrollable
+                scrollables
                 >
                 <v-spacer></v-spacer>
                 <v-btn
@@ -180,11 +159,6 @@
                 </v-btn>
                 </v-date-picker>
             </v-menu>
-            <v-select
-                v-model="weekdays"
-                :items="weekdaysOptions"
-                label="Weekdays"
-            ></v-select>
             <v-text-field
                 v-if="type === 'custom-weekly'"
                 v-model="minWeeks"
@@ -224,7 +198,8 @@
                 :end="end"
                 :min-weeks="minWeeks"
                 :max-days="maxDays"
-                :now="now"
+                :now="today"
+                :value="today"
                 :dark="dark"
                 :weekdays="weekdays"
                 :first-interval="intervals.first"
@@ -308,6 +283,7 @@
 
         data: () => ({
             dark: false,
+            today: null,
             startMenu: false,
             start: '2019-01-12',
             endMenu: false,
@@ -379,6 +355,26 @@
 
 
             methods: {
+
+                todayDate() {
+                    var today = new Date()
+                    var dd = today.getDate()
+
+                    var mm = today.getMonth()+1
+                    var yyyy = today.getFullYear()
+                    if(dd<10) 
+                    {
+                        dd='0'+dd
+                    } 
+
+                    if(mm<10) 
+                    {
+                        mm='0'+mm
+                    } 
+                    today = yyyy+'-'+mm+'-'+dd
+                    return today
+                },
+                
                 getSelectedCompetitorPrices() {
                 console.log('started api request')
                 apiRequests.getCompetitorPrices()
@@ -409,7 +405,7 @@
                 }
             },
         created() {
-            //this.getSelectedCompetitorPrices()
+            this.today = this.todayDate()
         }
     }
 </script>
