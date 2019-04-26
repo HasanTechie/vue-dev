@@ -15,7 +15,6 @@
 <script>
     import apiRequests from '@/services/apiRequests.js'
     import Multiselect from 'vue-multiselect'
-    import { close } from 'fs';
 
     export default {
         components: {
