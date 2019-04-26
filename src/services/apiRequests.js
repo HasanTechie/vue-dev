@@ -1,7 +1,6 @@
 import axios from 'axios/index'
-
 const apiClient = axios.create({
-    baseURL: 'http://3.83.35.127/api/',
+    baseURL: 'http://3.121.228.14/api/',
     withCredentials: false,
     headers: {
         Accept: 'application/json',
@@ -14,15 +13,15 @@ export default {
         return apiClient.get('/hotels&get=1000' + this.getApiKey())
     },
     getPrices() {
-        return apiClient.get('roomsprices&get=40' + this.getApiKey() + '&hoteluid=5caa7537c7f03&datefrom=2019-04-19&dateto=2019-05-05')
+        return apiClient.get('roomsprices&get=40' + this.getApiKey() + '&hotelid=28&datefrom=2019-04-25&dateto=2019-05-25')
     },
-    getCompetitorPrices() {
-        return apiClient.get('competitorsprices&get=5' + this.getApiKey() + '&hoteluid=5caa7537c7f03&datefrom=2019-04-19&dateto=2019-04-24' + this.getCompetitors())
+    getCompetitorPrices(competitorsids) {
+        return apiClient.get('competitorsprices&get=1' + this.getApiKey() + '&hotelid=28&datefrom=2019-04-25&dateto=2019-05-25&competitorsid='+competitorsids)
     },
     getApiKey() {
         return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
     },
     getCompetitors() {
-        return '&competitorsuid=[5caa754c3c39a,5caa757d2d47e]'
+        return '&competitorsid='+this.$store.getters.competitorsids
     }
 }
