@@ -1,6 +1,5 @@
 <template>
     <div>
-<!--        <h1 class="display-2 font-weight-light">Home</h1>-->
         <v-container>
             <h2 class="display-3 my-4">Instructions or Home page contents goes here</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad enim, eum hic ipsa nemo, nesciunt officiis provident quas quidem repellat reprehenderit voluptatem voluptates! Deserunt eius libero necessitatibus quod sed?</p>
