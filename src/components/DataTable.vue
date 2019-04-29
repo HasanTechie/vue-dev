@@ -127,7 +127,7 @@
         console.log(apiCompetitorsString.replace(" ", ""))
 
         //TODO should be done with the vuex storage...
-        apiRequests.getCompetitorPrices(apiCompetitorsString.replace(" ", ""))
+        apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
             .then(response => {
               console.log(response.data)
               //var dataArray = JSON.parse(JSON.stringify(response.data.data))

@@ -377,7 +377,7 @@
                 
                 getSelectedCompetitorPrices() {
                 console.log('started api request')
-                apiRequests.getCompetitorPrices()
+                apiRequests.getCompetitorAvgPrices()
                     .then(response => {
                         console.log(response.data)
                     })
