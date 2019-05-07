@@ -1,29 +1,27 @@
 <template>
     <div>
-        <v-container class="my-4">
-            <h1 class="display-2 mb-3 font-weight-light">Analytics</h1>
-            <apexcharts width="1200" height="600" type="line" :options="chartOptions" :series="series"></apexcharts>
-        </v-container>
+        <Chart/>
     </div>
 </template>
 
 <script>
+    import Chart from '@/components/Chart.vue'
     import apiRequests from '@/services/apiRequests.js'
     import VueApexCharts from 'vue-apexcharts'
 
     export default {
         name: 'Analytics',
         components: {
-            apexcharts: VueApexCharts,
+            Chart
         },
         data() {
             return {
                 chartOptions: {
                     chart: {
-                        id: 'basic-bar'
+                        id: 'line-chart'
                     },
                     xaxis: {
-                        categories: []
+                        categories: [0,1]
                     }
                 },
                 series: [
@@ -41,7 +39,10 @@
                     // }
                 ],
                 trigger: false,
-                fetchedXAxis: []
+                xAxis: [0,1],
+                yAxis: [0,1],
+                fetchedXAxis: [],
+                fetchedXAxis2: []
             }
         },
         created() {
@@ -49,19 +50,21 @@
             // this.getPrices()
             this.getHotelsPrices()
             this.getXaxis()
-            this.updateXaxis()
+            // this.updateXaxis()
             // this.test2()
         },
         methods: {
-            updateXaxis() {
+
+            testX() {
+                console.log(this.fetchedXAxis)
+                this.updateX()
+            },
+            updateX() {
                 this.chartOptions.xaxis = {
                     categories: this.fetchedXAxis
                 }
             },
             getXaxis() {
-
-                this.fetchedXAxis = [888.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 888.6]
-
 
                 // var competitors = "[28,83,107,150]"
                 //
@@ -115,6 +118,10 @@
             //     }]
             // },
             getHotelsPrices() {
+
+                this.fetchedXAxis = [999.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 999.6]
+                this.updateX()
+
                 var competitors = "[28,83,107,150]"
                 apiRequests.getCompetitorAvgPrices(competitors)
                     .then(response => {
@@ -125,6 +132,7 @@
                         var dataArray = Object.keys(response.data.data).map((key) => {
                             return response.data.data[key]
                         })
+
 
                         dataArray.forEach(function (item) {
                             priceArray.push(item.price)
@@ -137,7 +145,10 @@
                             checkInArray.push(item.check_in_date)
                         });
 
-                        console.log(priceArray)
+                        this.fetchedXAxis = [888.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 888.6]
+
+                        this.testX()
+                        // console.log(priceArray)
                         // console.log(checkInArray)
                         //
                         // // this.getValuesFromArray(checkInArray)
@@ -167,8 +178,6 @@
                         // this.chartOptions.xaxis.categories = checkInArray;
 
                     })
-
-
             },
             // getAllHotels() {
             //     apiRequests.getHotels()
