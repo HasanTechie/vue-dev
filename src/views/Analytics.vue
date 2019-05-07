@@ -1,13 +1,13 @@
 <template>
     <div>
-        <Chart/>
+        <Chart v-bind:myData="myData"/>
     </div>
 </template>
 
 <script>
     import Chart from '@/components/Chart.vue'
     import apiRequests from '@/services/apiRequests.js'
-    import VueApexCharts from 'vue-apexcharts'
+    // import VueApexCharts from 'vue-apexcharts'
 
     export default {
         name: 'Analytics',
@@ -21,13 +21,13 @@
                         id: 'line-chart'
                     },
                     xaxis: {
-                        categories: [0,1]
+                        categories: [0, 1]
                     }
                 },
                 series: [
                     {
                         name: 'Hotel Emona',
-                        data: [0,1],
+                        data: [0, 1],
                     },
                     // {
                     //     name: 'Hotel Latinum',
@@ -39,8 +39,10 @@
                     // }
                 ],
                 trigger: false,
-                xAxis: [0,1],
-                yAxis: [0,1],
+                myData: {
+                    'xAxis': [],
+                    'yAxis': [],
+                },
                 fetchedXAxis: [],
                 fetchedXAxis2: []
             }
@@ -56,7 +58,7 @@
         methods: {
 
             testX() {
-                console.log(this.fetchedXAxis)
+                // console.log(this.fetchedXAxis)
                 this.updateX()
             },
             updateX() {
@@ -145,7 +147,10 @@
                             checkInArray.push(item.check_in_date)
                         });
 
-                        this.fetchedXAxis = [888.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 888.6]
+                        // this.fetchedXAxis = [888.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 888.6]
+
+                        this.myData.xAxis = checkInArray
+                        this.myData.yAxis = priceArray
 
                         this.testX()
                         // console.log(priceArray)
