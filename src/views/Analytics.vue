@@ -23,7 +23,7 @@
                         id: 'basic-bar'
                     },
                     xaxis: {
-                        categories: ['March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February']
+                        categories : [1215.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6]
                     }
                 },
                 series: [
@@ -31,14 +31,14 @@
                         name: 'Hotel Emona',
                         data: [125.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6],
                     },
-                    {
-                        name: 'Hotel Latinum',
-                        data: [127.5, 130.5, 127.42, 133.9, 128.4, 124.6, 128.5, 139.8, 137, 141.2, 136.133, 134.6],
-                    },
-                    {
-                        name: 'Hotel PortaMaggiore',
-                        data: [123.5, 136.5, 129.42, 138.9, 142.4, 134.6, 130.5, 142.8, 139, 144.2, 135.133, 137.6],
-                    }
+                    // {
+                    //     name: 'Hotel Latinum',
+                    //     data: [127.5, 130.5, 127.42, 133.9, 128.4, 124.6, 128.5, 139.8, 137, 141.2, 136.133, 134.6],
+                    // },
+                    // {
+                    //     name: 'Hotel PortaMaggiore',
+                    //     data: [123.5, 136.5, 129.42, 138.9, 142.4, 134.6, 130.5, 142.8, 139, 144.2, 135.133, 137.6],
+                    // }
                 ],
                 trigger: false,
             }
@@ -46,9 +46,28 @@
         created() {
             // this.getAllHotels()
             // this.getPrices()
-            // this.fetchPrices()
+            this.getHotelsPrices()
+            this.test2()
         },
         methods: {
+            getXaxis() {
+                var competitors = "[28,83,107,150]"
+                apiRequests.getCompetitorAvgPrices(competitors)
+                    .then(response => {
+                        var checkInArray = [];
+                        var dataArray = Object.keys(response.data.data).map((key) => {
+                            return response.data.data[key]
+                        })
+                        dataArray.forEach(function (item) {
+                            checkInArray.push(item.check_in_date)
+                        });
+
+                    })
+            },
+
+            test2(){
+                this.chartOptions.xaxis.categories.fill([12511.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6])
+            },
             // updateChart() {
             //     const max = 90;
             //     const min = 20;
@@ -67,47 +86,52 @@
             //         data: newData
             //     }]
             // },
-            // getPrices() {
-            //     apiRequests.getPrices()
-            //         .then(response => {
-            //
-            //             var priceArray = [];
-            //             var checkInArray = [];
-            //             var dataArray = Object.keys(response.data.data).map((key) => {
-            //                 return response.data.data[key]
-            //             })
-            //
-            //             dataArray.forEach(function (item) {
-            //                 priceArray.push(item.price)
-            //                 // this.series = [{
-            //                 //     data: item.price
-            //                 // }]
-            //             });
-            //             this.chartOptions.xaxis.categories = []
-            //             dataArray.forEach(function (item) {
-            //                 checkInArray.push(item.check_in_date)
-            //             });
-            //
-            //             // this.getValuesFromArray(checkInArray)
-            //
-            //             // dataArray.forEach(function (item) {
-            //             //     priceArray.push(item.price)
-            //             //     this.series = [{
-            //             //         data: item.price
-            //             //     }]
-            //             // });
-            //
-            //             this.series = [{
-            //                 data: priceArray
-            //             }];
-            //             // var aweinArray = ['March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February'];
-            //             // this.getValuesFromArray()
-            //
-            //             // this.chartOptions.xaxis.categories = checkInArray;
-            //
-            //
-            //         })
-            // },
+            getHotelsPrices() {
+                var competitors = "[28,83,107,150]"
+                apiRequests.getCompetitorAvgPrices(competitors)
+                    .then(response => {
+
+                        var priceArray = [];
+                        var checkInArray = [];
+                        var dataArray = Object.keys(response.data.data).map((key) => {
+                            return response.data.data[key]
+                        })
+
+                        dataArray.forEach(function (item) {
+                            priceArray.push(item.price)
+                            // this.series = [{
+                            //     data: item.price
+                            // }]
+                        });
+                        // this.chartOptions.xaxis.categories = []
+                        dataArray.forEach(function (item) {
+                            checkInArray.push(item.check_in_date)
+                        });
+
+                        console.log(priceArray)
+                        // console.log(checkInArray)
+                        //
+                        // // this.getValuesFromArray(checkInArray)
+                        //
+                        // // dataArray.forEach(function (item) {
+                        // //     priceArray.push(item.price)
+                        // //     this.series = [{
+                        // //         data: item.price
+                        // //     }]
+                        // // });
+                        //
+                        this.series = [{
+                            data: priceArray
+                        }];
+                        // this.chartOptions.xaxis.categories = priceArray;
+                        // var aweinArray = ['March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February'];
+                        // this.getValuesFromArray()
+
+                        // this.chartOptions.xaxis.categories = checkInArray;
+
+
+                    })
+            },
             // getAllHotels() {
             //     apiRequests.getHotels()
             //         .then(response => {
