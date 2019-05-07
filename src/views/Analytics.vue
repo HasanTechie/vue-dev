@@ -12,7 +12,7 @@
     import VueApexCharts from 'vue-apexcharts'
 
     export default {
-        name: 'Chart',
+        name: 'Analytics',
         components: {
             apexcharts: VueApexCharts,
         },
@@ -23,13 +23,13 @@
                         id: 'basic-bar'
                     },
                     xaxis: {
-                        categories : [1215.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6]
+                        categories: []
                     }
                 },
                 series: [
                     {
                         name: 'Hotel Emona',
-                        data: [125.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6],
+                        data: [0,1],
                     },
                     // {
                     //     name: 'Hotel Latinum',
@@ -41,33 +41,61 @@
                     // }
                 ],
                 trigger: false,
+                fetchedXAxis: []
             }
         },
         created() {
             // this.getAllHotels()
             // this.getPrices()
             this.getHotelsPrices()
-            this.test2()
+            this.getXaxis()
+            this.updateXaxis()
+            // this.test2()
         },
         methods: {
+            updateXaxis() {
+                this.chartOptions.xaxis = {
+                    categories: this.fetchedXAxis
+                }
+            },
             getXaxis() {
-                var competitors = "[28,83,107,150]"
-                apiRequests.getCompetitorAvgPrices(competitors)
-                    .then(response => {
-                        var checkInArray = [];
-                        var dataArray = Object.keys(response.data.data).map((key) => {
-                            return response.data.data[key]
-                        })
-                        dataArray.forEach(function (item) {
-                            checkInArray.push(item.check_in_date)
-                        });
 
-                    })
+                this.fetchedXAxis = [888.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 888.6]
+
+
+                // var competitors = "[28,83,107,150]"
+                //
+                // this.chartOptions.xaxis = {
+                //     this.fetechedXAxis = [888.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 888.6]
+                // }
+
+                // this.updateXaxis()
+                //
+                // apiRequests.getCompetitorAvgPrices(competitors)
+                //     .then(response => {
+                //         var checkInArray = [];
+                //         var dataArray = Object.keys(response.data.data).map((key) => {
+                //             return response.data.data[key]
+                //         })
+                //         dataArray.forEach(function (item) {
+                //             checkInArray.push(item.check_in_date)
+                //         });
+                //
+                //         this.chartOptions.xaxis = {
+                //             categories : [999.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 999.6]
+                //         }
+                //         console.log('reach')
+                //
+                //     })
+                //
+
             },
 
-            test2(){
-                this.chartOptions.xaxis.categories.fill([12511.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6])
-            },
+            // test2(){
+            //     this.chartOptions.xaxis = {
+            //         categories : [999.5, 127.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 132.6]
+            //     }
+            // },
             // updateChart() {
             //     const max = 90;
             //     const min = 20;
@@ -90,6 +118,7 @@
                 var competitors = "[28,83,107,150]"
                 apiRequests.getCompetitorAvgPrices(competitors)
                     .then(response => {
+
 
                         var priceArray = [];
                         var checkInArray = [];
@@ -123,14 +152,23 @@
                         this.series = [{
                             data: priceArray
                         }];
+
+
+                        // this.fetechedXAxis = checkInArray
+
+
+                        // this.chartOptions.xaxis = {
+                        //     categories: [999.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 999.6]
+                        // }
                         // this.chartOptions.xaxis.categories = priceArray;
                         // var aweinArray = ['March', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'December', 'January', 'February'];
                         // this.getValuesFromArray()
 
                         // this.chartOptions.xaxis.categories = checkInArray;
 
-
                     })
+
+
             },
             // getAllHotels() {
             //     apiRequests.getHotels()
