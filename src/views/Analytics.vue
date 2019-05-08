@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Chart v-bind:myData="myData"/>
+        <Chart v-if="trigger" v-bind:myData="myData"/>
     </div>
 </template>
 
@@ -41,7 +41,8 @@
                 trigger: false,
                 myData: {
                     'xAxis': [],
-                    'yAxis': [],
+                    'yAxis': {},
+                    'hotel_name': '',
                 },
                 fetchedXAxis: [],
                 fetchedXAxis2: []
@@ -129,14 +130,20 @@
                     .then(response => {
 
 
-                        var priceArray = [];
+                        // var priceArray = {
+                        //     name:'' ,
+                        // data: []
+                        // };
+                        var priceArray = []
                         var checkInArray = [];
                         var dataArray = Object.keys(response.data.data).map((key) => {
                             return response.data.data[key]
                         })
 
+                        var hotel_name = '';
 
                         dataArray.forEach(function (item) {
+                            hotel_name = item.hotel_name
                             priceArray.push(item.price)
                             // this.series = [{
                             //     data: item.price
@@ -150,9 +157,15 @@
                         // this.fetchedXAxis = [888.5, 888.5, 130.42, 128.9, 132.4, 127.6, 126.5, 130.8, 135, 133.2, 131.1, 888.6]
 
                         this.myData.xAxis = checkInArray
-                        this.myData.yAxis = priceArray
+                        this.myData.yAxis = {
+                            name: hotel_name,
+                            data: priceArray
+                        }
+                        this.trigger = true
+                        // this.myData.hotel_name = hotel_name
 
-                        this.testX()
+
+                        // this.testX()
                         // console.log(priceArray)
                         // console.log(checkInArray)
                         //
@@ -165,9 +178,9 @@
                         // //     }]
                         // // });
                         //
-                        this.series = [{
-                            data: priceArray
-                        }];
+                        // this.series = [{
+                        //     data: priceArray
+                        // }];
 
 
                         // this.fetechedXAxis = checkInArray
