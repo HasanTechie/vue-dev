@@ -11,6 +11,7 @@
 <script>
     import Calender from '@/components/Calender.vue'
     import DataTable from '@/components/DataTable.vue';
+
     export default {
         name: 'monthly',
         components: {

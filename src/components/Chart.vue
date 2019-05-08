@@ -39,18 +39,7 @@
                         name: this.myData.yAxis.name,
                         data: this.myData.yAxis.data,
                     },
-                    // {
-                    //     name: 'Hotel Latinum',
-                    //     data: [127.5, 130.5, 127.42, 133.9, 128.4, 124.6, 128.5, 139.8, 137, 141.2, 136.133, 134.6],
-                    // },
-                    // {
-                    //     name: 'Hotel PortaMaggiore',
-                    //     data: [123.5, 136.5, 129.42, 138.9, 142.4, 134.6, 130.5, 142.8, 139, 144.2, 135.133, 137.6],
-                    // }
                 ],
-                // trigger: false,
-                fetchedXAxis: [127.5, 130.5, 127.42, 133.9, 128.4, 124.6, 128.5, 139.8, 137, 141.2, 136.133, 134.6],
-                // fetchedXAxis2: []
             }
         },
         created() {
