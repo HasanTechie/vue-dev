@@ -4,7 +4,6 @@ import Home from './views/Home.vue'
 import SelectCompetitor from './views/SelectCompetitor.vue'
 import SelectCompetitorTest from './views/SelectCompetitorTest.vue'
 import Analytics from './views/Analytics.vue'
-import Analytics2 from './views/Analytics2.vue'
 import Monthly from './views/Monthly.vue'
 
 Vue.use(Router)
@@ -32,11 +31,6 @@ export default new Router({
       path: '/analytics',
       name: 'analytics',
       component: Analytics
-    },
-    {
-      path: '/analytics2',
-      name: 'analytics2',
-      component: Analytics2
     },
     {
       path: '/monthly',
