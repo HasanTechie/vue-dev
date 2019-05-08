@@ -1,6 +1,9 @@
 <template>
     <div>
         <Chart v-if="trigger" v-bind:myData="myData"/>
+        <div class="text-xs-center">
+            <v-btn color="success" @click="updateChart">Update Chart</v-btn>
+        </div>
     </div>
 </template>
 
@@ -61,6 +64,14 @@
 
                     })
             },
+            updateChart() {
+                this.trigger = false;
+
+                this.$nextTick(() => {
+                    // Add the component back in
+                    this.trigger = true;
+                });
+            }
         }
     }
 </script>
