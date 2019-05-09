@@ -19,6 +19,9 @@ export default {
     getCompetitorAvgPrices(competitorsids) {
         return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2019-12-28&competitorsid=' + competitorsids)
     },
+    getCompetitorAvgPricesForDates(competitorsids, dateOne, dateTwo) {
+        return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
+    },
     getCompetitorRoomsPrices(competitorsids) {
         return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=28&datefrom=2019-04-25&dateto=2019-12-28&competitorsid=' + competitorsids)
     },
