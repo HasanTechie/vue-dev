@@ -69,24 +69,69 @@
 
                         var priceArray = []
                         var checkInArray = [];
-                        var dataArray = Object.keys(response.data.data).map((key) => {
-                            return response.data.data[key]
-                        })
-
                         var hotel_name = '';
+                        var competitorsPriceArray = [];
 
-                        dataArray.forEach(function (item) {
+                        // console.log(Object.values(competitiorsArray))
+
+
+                        var data = response.data.data
+
+                        data.forEach(function (item) {
                             hotel_name = item.hotel_name
                             priceArray.push(item.price)
-                            // this.series = [{
-                            //     data: item.price
-                            // }]
-                        });
-                        dataArray.forEach(function (item) {
                             checkInArray.push(item.check_in_date)
-                        });
+
+                            item.competitors_data.forEach(function (itemB) {
+                                if (!(itemB.hotel_name in competitorsPriceArray)) {
+                                    competitorsPriceArray[itemB.hotel_name] = []
+                                }
+                                competitorsPriceArray[itemB.hotel_name].push(itemB.price)
+                            })
+
+                            item.competitors_data.forEach(function (itemC) {
+                                // competitiorsArray.push(itemC.price)
+                                // competitiorsArray.forEach(function (itemD) {
+                                //
+                                //     if (itemD == itemC.hotel_id) {
+                                //         competitorsPriceArray[itemC.hotel_id].push(itemC.price)
+                                //     }
+                                //
+                                // })
+
+                            })
+                        })
+
+                        console.log(competitorsPriceArray);
+
+
+                        // var dataArray = Object.keys(response.data.data).map((key) => {
+                        //     return response.data.data[key]
+                        // })
+
+                        // var hotel_name = '';
+
+                        // console.log(response.data)
+
+                        // dataArray.forEach(function (item) {
+                        //
+                        //     console.log(item.competitors_data[0].hotel_name)
+                        //     item.competitors_data.forEach(function (item) {
+                        //         // console.log(item)
+                        //     })
+                        //     hotel_name = item.hotel_name
+                        //     priceArray.push(item.price)
+                        //     // this.series = [{
+                        //     //     data: item.price
+                        //     // }]
+                        // });
+                        // dataArray.forEach(function (item) {
+                        //     checkInArray.push(item.check_in_date)
+                        // });
 
                         this.myData.xAxis = checkInArray
+
+
                         this.myData.yAxis = {
                             name: hotel_name,
                             data: priceArray
@@ -102,7 +147,8 @@
                     // Add the component back in
                     this.trigger = true
                 });
-            },
+            }
+            ,
             formatDates(dateOne, dateTwo) {
                 let formattedDates = ''
                 if (dateOne) {
@@ -113,14 +159,11 @@
                 }
                 if (dateOne && dateTwo) {
                     this.getHotelDataWithDates(dateOne, dateTwo)
-                    dateOne = null
-                    dateTwo = null
                 }
                 return formattedDates
-            },
+            }
+            ,
             getHotelDataWithDates(dateOne, dateTwo) {
-
-                console.log(dateOne)
 
                 var competitors = "[28,83,107,150]"
                 apiRequests.getCompetitorAvgPricesForDates(competitors, dateOne, dateTwo)
@@ -147,6 +190,13 @@
                             name: hotel_name,
                             data: priceArray
                         }
+                        //
+                        // this.trigger = false
+                        //
+                        // this.$nextTick(() => {
+                        //     // Add the component back in
+                        //     this.trigger = true
+                        // });
 
                     })
             }
