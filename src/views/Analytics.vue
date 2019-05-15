@@ -55,6 +55,7 @@
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
+                executed: false,
                 competitors: [21, 2072, 1354]
             }
         },
@@ -187,7 +188,10 @@
                     formattedDates += ' - ' + format(dateTwo, this.dateFormat)
                 }
                 if (dateOne && dateTwo) {
-                    this.getHotelDataWithDates(dateOne, dateTwo)
+                    if (!this.executed) {
+                        this.getHotelDataWithDates(dateOne, dateTwo)
+                        this.executed = true;
+                    }
                 }
                 return formattedDates
             }
@@ -198,6 +202,7 @@
                     .then(response => {
 
                         this.myData = response.data.data
+
                         /*
                         var priceArray = []
                         var checkInArray = [];
