@@ -56,7 +56,7 @@
                 dateOne: '',
                 dateTwo: '',
                 executed: false,
-                competitors: [21, 2072, 1354]
+                competitors: [21, 37, 1024, 95, 160, 1354]
             }
         },
         created() {
