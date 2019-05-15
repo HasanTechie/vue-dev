@@ -56,7 +56,7 @@
                 dateOne: '',
                 dateTwo: '',
                 executed: false,
-                competitors: [21, 37, 1024, 95, 160, 1354]
+                competitors: [21, 37, 95, 160, 1354]
             }
         },
         created() {
@@ -202,38 +202,6 @@
                     .then(response => {
 
                         this.myData = response.data.data
-
-                        /*
-                        var priceArray = []
-                        var checkInArray = [];
-                        var dataArray = Object.keys(response.data.data).map((key) => {
-                            return response.data.data[key]
-                        })
-
-                        var hotel_name = '';
-
-                        dataArray.forEach(function (item) {
-                            hotel_name = item.hotel_name
-                            priceArray.push(item.price)
-                        });
-                        dataArray.forEach(function (item) {
-                            checkInArray.push(item.check_in_date)
-                        });
-
-                        this.myData.xAxis = checkInArray
-                        this.myData.yAxis = {
-                            name: hotel_name,
-                            data: priceArray
-                        }
-
-                         */
-                        //
-                        // this.trigger = false
-                        //
-                        // this.$nextTick(() => {
-                        //     // Add the component back in
-                        //     this.trigger = true
-                        // });
 
                     })
             }
