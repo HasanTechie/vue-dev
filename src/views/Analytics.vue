@@ -63,7 +63,7 @@
         methods: {
             getHotelsPrices() {
 
-                var competitors = "[28,83,107,150]"
+                var competitors = "[21,1354,686]"
                 apiRequests.getCompetitorAvgPrices(competitors)
                     .then(response => {
 
