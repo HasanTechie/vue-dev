@@ -54,7 +54,8 @@
                 },
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
-                dateTwo: ''
+                dateTwo: '',
+                competitors: [21, 2072, 1354]
             }
         },
         created() {
@@ -63,19 +64,16 @@
         methods: {
             getHotelsPrices() {
 
-                var competitors = "[21,1354,686]"
-                apiRequests.getCompetitorAvgPrices(competitors)
+                apiRequests.getCompetitorAvgPricesApex(this.competitors)
                     .then(response => {
 
-                        var priceArray = []
-                        var checkInArray = [];
-                        var hotel_name = '';
-                        var competitorsPriceArray = [];
+                        this.myData = response.data.data;
 
-                        // console.log(Object.values(competitiorsArray))
-
-
+                        /*
                         var data = response.data.data
+
+
+                        var anotherONe = new Object();
 
                         data.forEach(function (item) {
                             hotel_name = item.hotel_name
@@ -89,22 +87,46 @@
                                 competitorsPriceArray[itemB.hotel_name].push(itemB.price)
                             })
 
-                            item.competitors_data.forEach(function (itemC) {
-                                // competitiorsArray.push(itemC.price)
-                                // competitiorsArray.forEach(function (itemD) {
-                                //
-                                //     if (itemD == itemC.hotel_id) {
-                                //         competitorsPriceArray[itemC.hotel_id].push(itemC.price)
-                                //     }
-                                //
-                                // })
+                            // item.competitors_data.forEach(function (itemC) {
+                            //     // competitiorsArray.push(itemC.price)
+                            //     // competitiorsArray.forEach(function (itemD) {
+                            //     //
+                            //     //     if (itemD == itemC.hotel_id) {
+                            //     //         competitorsPriceArray[itemC.hotel_id].push(itemC.price)
+                            //     //     }
+                            //     //
+                            //     // })
+                            //
+                            // })
 
-                            })
                         })
 
-                        console.log(competitorsPriceArray);
+                        // console.log(competitorsPriceArray.forEach())
+
+                        // var competitorsPriceArray = [45, 4, 9, 16, 25];
+                        competitorsPriceArray.forEach(myFunction);
+
+                        function myFunction(value, index, array) {
+
+                            console.log(value + index + array)
+                        }
 
 
+                        // var awein = competitorsPriceArray.pop()
+                        // console.log(awein);
+
+                        // var dA = competitorsPriceArray;
+                        //
+                        // // console.log(dA)
+                        //
+                        //
+                        // for(let i = 0; i < dA.length; i++){
+                        //
+                        //     console.log(dA[i]);
+                        //
+                        // }
+
+                        // console.log(dA)
                         // var dataArray = Object.keys(response.data.data).map((key) => {
                         //     return response.data.data[key]
                         // })
@@ -132,10 +154,17 @@
                         this.myData.xAxis = checkInArray
 
 
-                        this.myData.yAxis = {
-                            name: hotel_name,
-                            data: priceArray
-                        }
+                        this.myData.yAxis = [
+                            {
+                                name: hotel_name,
+                                data: priceArray
+                            },
+                            {
+                                name: 'laosa',
+                                data: [1, 2, 3, 4, null, null, null, 5, 667, 7, 8]
+                            },
+                        ]
+*/
                         this.trigger = true
 
                     })
@@ -165,10 +194,11 @@
             ,
             getHotelDataWithDates(dateOne, dateTwo) {
 
-                var competitors = "[28,83,107,150]"
-                apiRequests.getCompetitorAvgPricesForDates(competitors, dateOne, dateTwo)
+                apiRequests.getCompetitorAvgPricesApex(this.competitors, dateOne, dateTwo)
                     .then(response => {
 
+                        this.myData = response.data.data
+                        /*
                         var priceArray = []
                         var checkInArray = [];
                         var dataArray = Object.keys(response.data.data).map((key) => {
@@ -190,6 +220,8 @@
                             name: hotel_name,
                             data: priceArray
                         }
+
+                         */
                         //
                         // this.trigger = false
                         //

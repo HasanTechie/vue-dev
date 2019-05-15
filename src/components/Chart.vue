@@ -31,12 +31,7 @@
                         categories: this.myData.xAxis
                     }
                 },
-                series: [
-                    {
-                        name: this.myData.yAxis.name,
-                        data: this.myData.yAxis.data,
-                    },
-                ],
+                series: this.myData.yAxis
             }
         },
         created() {
