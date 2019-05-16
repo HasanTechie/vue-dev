@@ -2,7 +2,7 @@
     <div>
         <v-container class="my-4">
             <h1 class="display-2 mb-3 font-weight-light">Analytics</h1>
-            <apexcharts width="2000px" height="700px" type="line" :options="chartOptions" :series="series"></apexcharts>
+            <apexcharts width="1800px" height="700px" type="line" :options="chartOptions" :series="series"></apexcharts>
         </v-container>
     </div>
 </template>

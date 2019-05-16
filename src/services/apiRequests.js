@@ -22,8 +22,8 @@ export default {
     getCompetitorAvgPricesForDates(competitorsids, dateOne, dateTwo) {
         return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
     },
-    getCompetitorAvgPricesApex(competitorsids, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
-        return apiClient.get('competitorsavgpricesapex&get=0' + this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=[' + competitorsids + ']')
+    getCompetitorPricesApex(hotelid, competitorsids, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
+        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids + '&room=awein')
     },
     getCompetitorRoomsPrices(competitorsids) {
         return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=28&datefrom=2019-04-25&dateto=2019-12-28&competitorsid=' + competitorsids)
