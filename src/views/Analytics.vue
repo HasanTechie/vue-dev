@@ -4,8 +4,9 @@
             <v-layout wrap align-center>
                 <v-flex xs6 sm3 d-flex>
                     <v-select
-                            :rooms="rooms"
-                            label="Standard"
+                            :items="items"
+                            v-model="selectedValue"
+                            label="Room Type"
                     ></v-select>
                 </v-flex>
                 <v-flex xs6 sm3 d-flex>
@@ -16,15 +17,6 @@
                                 placeholder="Select dates"
                                 :value="formatDates(dateOne, dateTwo)"
                         ></v-text-field>
-
-
-
-                        <!--                <input-->
-                        <!--                        type="text"-->
-                        <!--                        id="datepicker-trigger"-->
-                        <!--                        placeholder="Select dates"-->
-                        <!--                        :value="formatDates(dateOne, dateTwo)"-->
-                        <!--                >-->
 
                         <AirbnbStyleDatepicker
                                 :trigger-element-id="'datepicker-trigger'"
@@ -39,39 +31,10 @@
                 </v-flex>
                 <v-btn color="success" @click="updateChart">Update Chart</v-btn>
             </v-layout>
+            <v-card>
+                <Chart v-if="trigger" v-bind:myData="myData"/>
+            </v-card>
         </v-container>
-<!--            <div class="datepicker-trigger">-->
-
-<!--                    <v-text-field-->
-<!--                            id="datepicker-trigger"-->
-<!--                            placeholder="Select dates"-->
-<!--                            :value="formatDates(dateOne, dateTwo)"-->
-<!--                    ></v-text-field>-->
-
-
-
-<!--                &lt;!&ndash;                <input&ndash;&gt;-->
-<!--                &lt;!&ndash;                        type="text"&ndash;&gt;-->
-<!--                &lt;!&ndash;                        id="datepicker-trigger"&ndash;&gt;-->
-<!--                &lt;!&ndash;                        placeholder="Select dates"&ndash;&gt;-->
-<!--                &lt;!&ndash;                        :value="formatDates(dateOne, dateTwo)"&ndash;&gt;-->
-<!--                &lt;!&ndash;                >&ndash;&gt;-->
-
-<!--                <AirbnbStyleDatepicker-->
-<!--                        :trigger-element-id="'datepicker-trigger'"-->
-<!--                        :mode="'range'"-->
-<!--                        :fullscreen-mobile="true"-->
-<!--                        :date-one="dateOne"-->
-<!--                        :date-two="dateTwo"-->
-<!--                        @date-one-selected="val => { dateOne = val }"-->
-<!--                        @date-two-selected="val => { dateTwo = val }"-->
-<!--                />-->
-<!--            </div>-->
-<!--            <v-btn color="success" @click="updateChart">Update Chart</v-btn>-->
-<!--        </v-flex>-->
-        <v-card>
-            <Chart v-if="trigger" v-bind:myData="myData"/>
-        </v-card>
     </div>
 </template>
 
@@ -88,35 +51,26 @@
         data() {
             return {
                 trigger: false,
-                myData: {
-                    'xAxis': [],
-                    'yAxis': {},
-                    'hotel_name': '',
-                },
+                executed: false,
+                myData: {},
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
-                executed: false,
                 competitors: [21, 37, 95, 160, 1354],
                 hotelid: [21],
-                rooms: ['All', 'Standard Room', 'Superior Room', 'Junior Suite']
+                items: ['All', 'Standard Room', 'Superior Room', 'Junior Suite'],
+                selectedValue: 'All'
+
             }
         },
         created() {
             this.getHotelsPrices()
-            // this.getEventsData()
         },
         methods: {
 
-            // getEventsData() {
-            //     apiRequests.getEvents()
-            //         .then(response => {
-            //             console.log(response.data)
-            //         })
-            // },
             getHotelsPrices() {
 
-                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors)
+                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue)
                     .then(response => {
 
                         this.myData = response.data.data;
@@ -222,6 +176,7 @@
                     })
             },
             updateChart() {
+
                 this.trigger = false
 
                 this.$nextTick(() => {
@@ -248,7 +203,7 @@
             }
             ,
             getHotelDataWithDates(dateOne, dateTwo) {
-                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, dateOne, dateTwo)
+                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue, dateOne, dateTwo)
                     .then(response => {
 
                         this.myData = response.data.data

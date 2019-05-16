@@ -2,7 +2,7 @@
     <div>
         <v-container class="my-4">
             <h1 class="display-2 mb-3 font-weight-light">Analytics</h1>
-            <apexcharts width="1800px" height="700px" type="line" :options="chartOptions" :series="series"></apexcharts>
+            <apexcharts style="width: auto;" height="700px"  type="line" :options="chartOptions" :series="series"></apexcharts>
         </v-container>
     </div>
 </template>
@@ -31,7 +31,7 @@
                         categories: this.myData.xAxis,
                         labels: {
                             show: true,
-                            rotate: -35,
+                            rotate: -45,
                             rotateAlways: false,
                             hideOverlappingLabels: true,
                             trim: true,
@@ -40,7 +40,7 @@
                             showDuplicates: false,
                             style: {
                                 colors: [],
-                                fontSize: '10px',
+                                fontSize: '8px',
                                 fontFamily: undefined,
                                 cssClass: 'apexcharts-xaxis-label'
                             },
