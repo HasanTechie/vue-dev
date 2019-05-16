@@ -34,8 +34,7 @@ export default {
     getCompetitors() {
         return '&competitorsid=' + this.$store.getters.competitorsids
     },
-    getEvents() {
-        var city = 'Rome'; // or Berlin
-        return 'events&get=0&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW&city=' + city
+    getEvents(city = 'Rome') { //we only have Rome and Berlin events at the moment
+        return 'events&get=0&apiKey=' + this.getApiKey() + '&city=' + city
     }
 }

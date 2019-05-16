@@ -61,8 +61,16 @@
         },
         created() {
             this.getHotelsPrices()
+            this.getEventsData()
         },
         methods: {
+
+            getEventsData() {
+                apiRequests.getEvents('Berlin')
+                    .then(response => {
+                        console.log(response.data)
+                    })
+            },
             getHotelsPrices() {
 
                 apiRequests.getCompetitorAvgPricesApex(this.competitors)
