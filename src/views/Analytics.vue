@@ -66,7 +66,7 @@
         methods: {
 
             getEventsData() {
-                apiRequests.getEvents('Berlin')
+                apiRequests.getEvents()
                     .then(response => {
                         console.log(response.data)
                     })

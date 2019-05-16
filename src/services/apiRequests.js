@@ -28,13 +28,14 @@ export default {
     getCompetitorRoomsPrices(competitorsids) {
         return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=28&datefrom=2019-04-25&dateto=2019-12-28&competitorsid=' + competitorsids)
     },
-    getApiKey() {
-        return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
-    },
     getCompetitors() {
         return '&competitorsid=' + this.$store.getters.competitorsids
     },
-    getEvents(city = 'Rome') { //we only have Rome and Berlin events at the moment
-        return 'events&get=0&apiKey=' + this.getApiKey() + '&city=' + city
-    }
+
+    getEvents(city = 'Berlin') {
+        return apiClient.get('events&get=0' + this.getApiKey() + '&city=' + city)
+    },
+    getApiKey() {
+        return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
+    },
 }
