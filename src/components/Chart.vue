@@ -40,7 +40,7 @@
                             showDuplicates: false,
                             style: {
                                 colors: [],
-                                fontSize: '8px',
+                                fontSize: '7px',
                                 fontFamily: undefined,
                                 cssClass: 'apexcharts-xaxis-label'
                             },
@@ -62,7 +62,7 @@
                             width: '100%',
                             height: 1,
                             offsetX: 0,
-                            offsetY: -5
+                            offsetY: -8
                         },
                         axisTicks: {
                             show: true,
