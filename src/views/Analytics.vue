@@ -78,9 +78,6 @@
                         /*
                         var data = response.data.data
 
-
-                        var anotherONe = new Object();
-
                         data.forEach(function (item) {
                             hotel_name = item.hotel_name
                             priceArray.push(item.price)
@@ -107,7 +104,6 @@
 
                         })
 
-                        // console.log(competitorsPriceArray.forEach())
 
                         // var competitorsPriceArray = [45, 4, 9, 16, 25];
                         competitorsPriceArray.forEach(myFunction);
@@ -118,28 +114,20 @@
                         }
 
 
-                        // var awein = competitorsPriceArray.pop()
-                        // console.log(awein);
 
                         // var dA = competitorsPriceArray;
                         //
-                        // // console.log(dA)
                         //
                         //
                         // for(let i = 0; i < dA.length; i++){
                         //
-                        //     console.log(dA[i]);
                         //
                         // }
 
-                        // console.log(dA)
                         // var dataArray = Object.keys(response.data.data).map((key) => {
                         //     return response.data.data[key]
                         // })
 
-                        // var hotel_name = '';
-
-                        // console.log(response.data)
 
                         // dataArray.forEach(function (item) {
                         //
@@ -157,19 +145,7 @@
                         //     checkInArray.push(item.check_in_date)
                         // });
 
-                        this.myData.xAxis = checkInArray
 
-
-                        this.myData.yAxis = [
-                            {
-                                name: hotel_name,
-                                data: priceArray
-                            },
-                            {
-                                name: 'laosa',
-                                data: [1, 2, 3, 4, null, null, null, 5, 667, 7, 8]
-                            },
-                        ]
 */
                         this.trigger = true
 
