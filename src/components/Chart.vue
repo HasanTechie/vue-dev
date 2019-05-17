@@ -40,7 +40,7 @@
                             showDuplicates: false,
                             style: {
                                 colors: [],
-                                fontSize: '7px',
+                                fontSize: '6px',
                                 fontFamily: undefined,
                                 cssClass: 'apexcharts-xaxis-label'
                             },
