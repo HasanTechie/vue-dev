@@ -57,7 +57,7 @@
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
-                competitors: [21, 37, 1354],
+                competitors: [21, 1024, 37, 1354],
                 hotelid: [21],
                 items: [],
                 selectedValue: 'All'
