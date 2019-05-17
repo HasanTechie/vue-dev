@@ -119,7 +119,7 @@
                                 this.$store.getters.competitorsArray))
         var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
 
-        var apiCompetitorsString = '['+competitorsUids.join()+']'
+        var apiCompetitorsString = ''+competitorsUids.join()+''
 
         this.$store.dispatch('setCompetitorsUids', apiCompetitorsString.replace(" ", ""))
 
