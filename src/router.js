@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import SelectCompetitor from './views/SelectCompetitor.vue'
-import SelectCompetitorTest from './views/SelectCompetitorTest.vue'
 import Analytics from './views/Analytics.vue'
 import Monthly from './views/Monthly.vue'
 
@@ -12,11 +11,6 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    {
-      path: '/selectcompetitortest',
-      name: 'selectcompetitortest',
-      component: SelectCompetitorTest
-    },
     {
       path: '/',
       name: 'home',
