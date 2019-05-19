@@ -17,6 +17,7 @@
     import Multiselect from 'vue-multiselect'
 
     export default {
+        name: 'SelectCompetitor',
         components: {
             Multiselect
         },
@@ -27,7 +28,7 @@
                 options: [],
             }
         },
-        
+
         created() {
             this.getAllHotels()
         },
@@ -49,7 +50,7 @@
                     })
             },
 
-            updateSelectedHotels(){
+            updateSelectedHotels() {
                 console.log('updating selected hotels in vuex.store')
                 var competitorsArray = JSON.parse(JSON.stringify(this.value))
                 this.$store.dispatch('setCompetitorsArray', competitorsArray)
@@ -58,9 +59,9 @@
             }
 
         }
-        
+
     }
-    
+
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

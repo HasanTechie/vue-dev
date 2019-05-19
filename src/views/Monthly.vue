@@ -13,7 +13,7 @@
     import DataTable from '@/components/DataTable.vue';
 
     export default {
-        name: 'monthly',
+        name: 'Monthly',
         components: {
             Calender, DataTable
         }
