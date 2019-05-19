@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Register from './views/Register.vue'
+import Login from './views/Login.vue'
 import SelectCompetitor from './views/SelectCompetitor.vue'
 import Analytics from './views/Analytics.vue'
 import Monthly from './views/Monthly.vue'
@@ -15,6 +17,16 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/',
+      name: 'register',
+      component: Register
+    },
+    {
+      path: '/',
+      name: 'login',
+      component: Login
     },
     {
       path: '/selectcompetitor',
