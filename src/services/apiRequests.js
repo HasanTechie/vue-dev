@@ -10,8 +10,8 @@ const apiClient = axios.create({
 })
 
 export default {
-    getHotels() {
-        return apiClient.get('/hotels&get=1000' + this.getApiKey() + '&city=Rome')
+    getHotels(city = 'All') {
+        return apiClient.get('/hotels&get=0' + this.getApiKey() + '&city=' + city)
     },
     getPrices() {
         return apiClient.get('roomsprices&get=40' + this.getApiKey() + '&hotelid=28&datefrom=2019-04-25&dateto=2019-12-25')

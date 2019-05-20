@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <label class="typo__label">Select Competitor Hotels</label>
-        <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false"
+        <multiselect v-model="value" :options="options" :custom-label="nameWithCity" :multiple="true" :close-on-select="false"
                      :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name"
                      track-by="name" :preselect-first="true" v-on:close="updateSelectedHotels">
             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single"
@@ -34,6 +34,9 @@
         },
 
         methods: {
+            nameWithCity({name, city}) {
+                return `${name} — ${city}`
+            },
             getAllHotels() {
                 apiRequests.getHotels()
                     .then(response => {
@@ -42,8 +45,6 @@
                         })
                         // use Vuex store
                         this.options = dataArray
-                        //console.log(' this is in options')
-                        //console.log(this.options)
                     })
                     .catch(error => {
                         console.log('There was an error:' + error.response)
