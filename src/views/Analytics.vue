@@ -57,7 +57,7 @@
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
-                competitors: [21, 1024, 37, 1354],
+                competitors: [],
                 hotelid: [21],
                 items: [],
                 selectedValue: 'All'
@@ -65,11 +65,12 @@
             }
         },
         created() {
+            this.getCompetitorsIDs()
             this.getHotelsPrices()
         },
         methods: {
-
             getHotelsPrices() {
+
                 if (!this.executedB) {
 
                     apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue)
@@ -78,6 +79,7 @@
                             this.myData = response.data.data;
 
                             this.items = this.myData.rooms
+
 
                             /*
                             var data = response.data.data
@@ -151,8 +153,8 @@
 
 
     */
-                            this.trigger = true
 
+                            this.trigger = true
                         })
                     this.executedB = true
                 }
@@ -167,8 +169,8 @@
                     // Add the component back in
                     this.trigger = true
                 });
-            }
-            ,
+            },
+
             formatDates(dateOne, dateTwo) {
                 let formattedDates = ''
                 if (dateOne) {
@@ -184,8 +186,18 @@
                     }
                 }
                 return formattedDates
-            }
-            ,
+            },
+            getCompetitorsIDs() {
+                var competitorsArray = JSON.parse(JSON.stringify(
+                    this.$store.getters.competitorsArray))
+
+                this.competitors.push(this.hotelid[0])
+
+                for (let i = 0; i < competitorsArray.length; i += 1) {
+                    this.competitors.push(competitorsArray['' + i + '']['hotel_id']);
+                }
+
+            },
             getHotelDataWithDates(dateOne, dateTwo) {
                 apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue, dateOne, dateTwo)
                     .then(response => {
