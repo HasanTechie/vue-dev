@@ -70,14 +70,14 @@ export const store = new Vuex.Store({
 
         register({commit}, credentials) {
             return axios
-                .post('http://solidps.test/api/register', credentials)
+                .post('http://35.158.76.194/api/register', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })
         },
         login({commit}, credentials) {
             return axios
-                .post('http://solidps.test/api/login', credentials)
+                .post('http://35.158.76.194/api/login', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })

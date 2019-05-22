@@ -9,16 +9,6 @@ const apiClient = axios.create({
     }
 })
 
-const apiAuthClient = axios.create({
-    baseURL: 'http://solidps.test/api/',
-    withCredentials: true,
-    headers: {
-        'Authorization': 'Bearer' + localStorage.getItem('token'),
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
-})
-
 export default {
     getHotels(city = 'All') {
         return apiClient.get('/hotels&get=0' + this.getApiKey() + '&city=' + city)
@@ -47,8 +37,4 @@ export default {
     getApiKey() {
         return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
     },
-    registerUser(data) {
-        console.log(data)
-        return apiAuthClient.post('/register', data)
-    }
 }
