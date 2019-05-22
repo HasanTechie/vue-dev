@@ -9,24 +9,30 @@
                     </v-toolbar>
                     <v-card-text>
                         <v-form>
-                            <v-text-field prepend-icon="person" name="name" label="Your Name"
+                            <v-text-field prepend-icon="person" v-model="name" label="Your Name"
                                           type="text"></v-text-field>
-                            <v-text-field prepend-icon="email" name="email" label="Your Email"
+                            <v-text-field prepend-icon="email" v-model="email" label="Your Email"
                                           type="text"></v-text-field>
-                            <v-text-field id="password" prepend-icon="lock" name="password" label="Your Password"
+                            <v-text-field id="password" prepend-icon="lock" v-model="password" label="Your Password"
                                           type="password"></v-text-field>
                             <v-layout>
-                                <v-icon>hotel</v-icon>&nbsp;&nbsp;<multiselect v-model="value" :options="options" :custom-label="nameWithCity"
-                                             placeholder="Select your Hotel"
-                                             label="selecthotel" track-by="name"></multiselect>
+                                <v-icon>hotel</v-icon>&nbsp;&nbsp;<multiselect v-model="value" :options="options"
+                                                                               :custom-label="nameWithCity"
+                                                                               placeholder="Select your Hotel"
+                                                                               label="selecthotel"
+                                                                               track-by="name"></multiselect>
                             </v-layout>
                         </v-form>
                     </v-card-text>
 
                     <v-card-actions class="pa-3">
                         <v-spacer></v-spacer>
-                        <v-btn color="primary">Register</v-btn>
+                        <v-btn color="primary" @click="register">Register</v-btn>
                     </v-card-actions>
+
+                    <router-link to="/login">
+                        Already have an account? Login
+                    </router-link>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -47,6 +53,10 @@
         },
         data() {
             return {
+                name: null,
+                email: null,
+                password: null,
+                hotel_id: 110,
                 value: [],
                 options: [],
             }
@@ -71,6 +81,28 @@
                         console.log('There was an error:' + error.response)
                     })
             },
+            register() {
+
+                this.$store.dispatch('register', {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                    hotel_id: this.hotel_id
+
+                }).then(() => {
+                    this.$router.push({name: 'login'})
+                })
+
+                // axios.post('/register', {
+                //     name: this.name,
+                //     email: this.email,
+                //     password: this.password
+                // }).then((response) => {
+                //     console.log('req response' + response)
+                // }).catch((error) => {
+                //     console.log('req error' + error)
+                // })
+            }
         }
     }
 </script>

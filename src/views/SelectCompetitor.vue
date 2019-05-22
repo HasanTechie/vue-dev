@@ -52,7 +52,7 @@
             },
 
             updateSelectedHotels() {
-                console.log('updating selected hotels in vuex.store')
+                console.log('store')
                 var competitorsArray = JSON.parse(JSON.stringify(this.value))
                 this.$store.dispatch('setCompetitorsArray', competitorsArray)
                 console.log(competitorsArray)

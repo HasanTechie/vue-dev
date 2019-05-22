@@ -9,10 +9,18 @@
                 </v-toolbar-title>
             </router-link>
             <v-spacer></v-spacer>
-            <v-btn flat v-for="mainLink in mainLinks" :key="mainLink.text" router :to="{name: mainLink.routename}">
-                <span class="indigo--text">{{mainLink.text}}</span>
-                <v-icon right class="indigo--text">{{mainLink.icon}}</v-icon>
-            </v-btn>
+            <div v-if="!this.$store.state.user">
+                <v-btn flat v-for="loggedOut in loggedOuts" :key="loggedOut.text" router :to="{name: loggedOut.routename}">
+                    <span class="indigo--text">{{loggedOut.text}}</span>
+                    <v-icon right class="indigo--text">{{loggedOut.icon}}</v-icon>
+                </v-btn>
+            </div>
+            <div v-if="this.$store.state.user">
+                <v-btn flat v-for="loggedIn in loggedIns" :key="loggedIn.text" router :to="{name: loggedIn.routename}">
+                    <span class="indigo--text">{{loggedIn.text}}</span>
+                    <v-icon right class="indigo--text">{{loggedIn.icon}}</v-icon>
+                </v-btn>
+            </div>
         </v-toolbar>
         <v-navigation-drawer v-model="drawer" app class="indigo">
             <v-list>
@@ -41,9 +49,11 @@
                     {icon: 'bar_chart', text: 'Analytics', routename: 'analytics'},
                     {icon: 'calendar_today', text: 'Monthly View', routename: 'monthly'},
                 ],
-                mainLinks: [
+                loggedOuts: [
                     {icon: 'person_add', text: 'Register', routename: 'register'},
                     {icon: 'person', text: 'Login', routename: 'login'},
+                ],
+                loggedIns: [
                     {icon: 'exit_to_app', text: 'Logout', routename: 'login'},
                 ]
             }

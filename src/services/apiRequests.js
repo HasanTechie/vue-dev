@@ -1,10 +1,20 @@
 import axios from 'axios/index'
 
 const apiClient = axios.create({
-    baseURL: 'http://35.158.76.194/api/',
+    baseURL: 'http://solidps.test/api/',
     withCredentials: false,
     headers: {
-        Accept: 'application/json',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+})
+
+const apiAuthClient = axios.create({
+    baseURL: 'http://solidps.test/api/',
+    withCredentials: true,
+    headers: {
+        'Authorization': 'Bearer' + localStorage.getItem('token'),
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
 })
@@ -31,11 +41,14 @@ export default {
     getCompetitors() {
         return '&competitorsid=' + this.$store.getters.competitorsids
     },
-
     getEvents(city = 'Berlin') {
         return apiClient.get('events&get=0' + this.getApiKey() + '&city=' + city)
     },
     getApiKey() {
         return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
     },
+    registerUser(data) {
+        console.log(data)
+        return apiAuthClient.post('/register', data)
+    }
 }

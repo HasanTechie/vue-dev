@@ -9,14 +9,20 @@
                     </v-toolbar>
                     <v-card-text>
                         <v-form>
-                            <v-text-field prepend-icon="email" name="email" label="Your Email" type="text"></v-text-field>
-                            <v-text-field id="password" prepend-icon="lock" name="Your Password" label="Password" type="password"></v-text-field>
+                            <v-text-field prepend-icon="email" v-model="email" name="email" label="Your Email"
+                                          type="text"></v-text-field>
+                            <v-text-field id="password" prepend-icon="lock" v-model="password" name="Your Password"
+                                          label="Password"
+                                          type="password"></v-text-field>
                         </v-form>
                     </v-card-text>
-                    <v-card-actions  class="pa-3">
+                    <v-card-actions class="pa-3">
                         <v-spacer></v-spacer>
-                        <v-btn color="primary">Login</v-btn>
+                        <v-btn color="primary" @click="login">Login</v-btn>
                     </v-card-actions>
+                    <router-link to="/register">
+                        Dont have an account? Register
+                    </router-link>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -25,7 +31,23 @@
 
 <script>
     export default {
-        name: "Login"
+        name: "Login",
+        data() {
+            return {
+                email: null,
+                password: null,
+            }
+        },
+        methods: {
+            login() {
+                this.$store.dispatch('login', {
+                    email: this.email,
+                    password: this.password
+                }).then(() => {
+                    this.$router.push({name: 'selectcompetitor'})
+                })
+            }
+        }
     }
 </script>
 

@@ -2,10 +2,16 @@ import Vue from 'vue'
 import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
-import {store} from './store'
+import {store} from './vuex/store'
 
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+
+//to be removed
+import axios from 'axios'
+window.axios=axios
+axios.defaults.baseURL = 'http://solidps.test/api';
+//
 
 // import component and stylesheet
 import AirbnbStyleDatepicker from 'vue-airbnb-style-datepicker'
