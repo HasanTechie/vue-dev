@@ -49,7 +49,7 @@
                     password: this.password
                 }).then(() => {
                     location.reload()
-                    this.$router.push({name: '/'})
+                    this.$router.push({name: 'home'})
                 })
             },
         }

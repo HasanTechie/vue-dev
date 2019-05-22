@@ -58,7 +58,7 @@
                 name: null,
                 email: null,
                 password: null,
-                hotel_id: 110,
+                hotel_id: null,
                 value: [],
                 options: [],
             }
@@ -88,9 +88,10 @@
                     name: this.name,
                     email: this.email,
                     password: this.password,
-                    hotel_id: this.hotel_id
+                    hotel_id: this.value.hotel_id
                 }).then(() => {
-                    this.$router.push({name: '/'})
+                    location.reload()
+                    this.$router.push({name: 'home'})
                 })
 
                 // axios.post('/register', {

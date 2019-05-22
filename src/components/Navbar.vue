@@ -65,15 +65,20 @@
             ...authComputed
         },
         created() {
-          // this.test()
+            this.checkStatus()
         },
         methods: {
             logout() {
                 this.$store.dispatch('logout')
             },
-            // test(){
-            //     console.log(this.$store.state.user)
-            // }
+            checkStatus() {
+                if (localStorage.getItem('user')) {
+                    if (!JSON.parse(localStorage.getItem('user')).user.status) {
+                        this.$store.dispatch('logout')
+                        alert('Please contact for activation')
+                    }
+                }
+            }
         }
     }
 </script>

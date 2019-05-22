@@ -57,8 +57,8 @@
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
-                competitors: [],
-                hotelid: [21],
+                competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
+                hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
                 items: [],
                 selectedValue: 'All'
 
@@ -150,8 +150,6 @@
                             // dataArray.forEach(function (item) {
                             //     checkInArray.push(item.check_in_date)
                             // });
-
-
     */
 
                             this.trigger = true
@@ -191,7 +189,7 @@
                 var competitorsArray = JSON.parse(JSON.stringify(
                     this.$store.getters.competitorsArray))
 
-                this.competitors.push(this.hotelid[0])
+                // this.competitors.push(this.hotelid[0])
 
                 for (let i = 0; i < competitorsArray.length; i += 1) {
                     this.competitors.push(competitorsArray['' + i + '']['hotel_id']);

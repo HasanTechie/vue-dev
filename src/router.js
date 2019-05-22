@@ -21,7 +21,8 @@ const router = new Router({
         {
             path: '/register',
             name: 'register',
-            component: Register
+            component: Register,
+            meta: {notRequiresAuth: true}
         },
         {
             path: '/login',
@@ -39,12 +40,13 @@ const router = new Router({
             path: '/analytics',
             name: 'analytics',
             component: Analytics,
-            meta: { requiresAuth: true }
+            meta: {requiresAuth: true}
         },
         {
             path: '/monthly',
             name: 'monthly',
             component: Monthly,
+            meta: {requiresAuth: true}
             //props: [today]
         },
         {
