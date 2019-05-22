@@ -9,16 +9,23 @@
                 </v-toolbar-title>
             </router-link>
             <v-spacer></v-spacer>
-            <div v-if="!this.$store.state.user">
-                <v-btn flat v-for="loggedOut in loggedOuts" :key="loggedOut.text" router :to="{name: loggedOut.routename}">
-                    <span class="indigo--text">{{loggedOut.text}}</span>
-                    <v-icon right class="indigo--text">{{loggedOut.icon}}</v-icon>
+            <div v-if="!loggedIn">
+                <v-btn flat router
+                       :to="{name: 'register'}">
+                    <span class="indigo--text">Register</span>
+                    <v-icon right class="indigo--text">person_add</v-icon>
+                </v-btn>
+                <v-btn flat router
+                       :to="{name: 'login'}">
+                    <span class="indigo--text">Login</span>
+                    <v-icon right class="indigo--text">person</v-icon>
                 </v-btn>
             </div>
-            <div v-if="this.$store.state.user">
-                <v-btn flat v-for="loggedIn in loggedIns" :key="loggedIn.text" router :to="{name: loggedIn.routename}">
-                    <span class="indigo--text">{{loggedIn.text}}</span>
-                    <v-icon right class="indigo--text">{{loggedIn.icon}}</v-icon>
+            <div v-if="loggedIn">
+                <v-btn flat router
+                       :to="{name: 'logout'}">
+                    <span class="indigo--text">Logout</span>
+                    <v-icon right class="indigo--text">exit_to_app</v-icon>
                 </v-btn>
             </div>
         </v-toolbar>
@@ -38,6 +45,8 @@
 </template>
 
 <script>
+    import {authComputed} from "../vuex/helpers";
+
     export default {
         name: "Navbar",
         data() {
@@ -49,15 +58,22 @@
                     {icon: 'bar_chart', text: 'Analytics', routename: 'analytics'},
                     {icon: 'calendar_today', text: 'Monthly View', routename: 'monthly'},
                 ],
-                loggedOuts: [
-                    {icon: 'person_add', text: 'Register', routename: 'register'},
-                    {icon: 'person', text: 'Login', routename: 'login'},
-                ],
-                loggedIns: [
-                    {icon: 'exit_to_app', text: 'Logout', routename: 'login'},
-                ]
             }
         },
+        computed: {
+            ...authComputed
+        },
+        created() {
+            this.test()
+        },
+        methods: {
+            test() {
+
+            },
+            logout() {
+                this.$store.dispatch('logout')
+            }
+        }
     }
 </script>
 

@@ -1,5 +1,5 @@
-import Vue from 'vue/types'
-import Vuex from 'vuex/types'
+import Vue from 'vue'
+import Vuex from 'vuex'
 import axios from 'axios/index'
 
 Vue.use(Vuex)
@@ -10,7 +10,7 @@ export const store = new Vuex.Store({
         competitorsArray: [],
         competitorsPricesArray: [],
         competitorsUids: '',
-        User: null
+        user: null
     },
     getters: {
         message: (state) => {
@@ -40,6 +40,13 @@ export const store = new Vuex.Store({
             state.user = userData
             localStorage.setItem('user', JSON.stringify(userData))
             axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`
+        },
+        CLEAR_USER_DATA(state) {
+            state.user = null
+            localStorage.removeItem(('user'))
+            axios.defaults.headers.common['Authorization'] = null
+            console.log(state)
+            location.reload()
         }
     },
     actions: {
@@ -59,6 +66,7 @@ export const store = new Vuex.Store({
             commit('SET_COMPETITORS_UIDS', competitorsUids)
             return true
         },
+
         register({commit}, credentials) {
             return axios.post('http://solidps.test/api/register', credentials).then(
                 ({data}) => {
@@ -69,9 +77,13 @@ export const store = new Vuex.Store({
         login({commit}, credentials) {
             return axios.post('http://solidps.test/api/login', credentials).then(
                 ({data}) => {
+                    console.log(data)
                     commit('SET_USER_DATA', data)
                 }
             )
+        },
+        logout({commit}) {
+            commit('CLEAR_USER_DATA')
         }
     }
 })

@@ -8,9 +8,9 @@ import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 
 //to be removed
-import axios from 'axios'
-window.axios=axios
-axios.defaults.baseURL = 'http://solidps.test/api';
+// import axios from 'axios'
+// window.axios=axios
+// axios.defaults.baseURL = 'http://solidps.test/api';
 //
 
 // import component and stylesheet
