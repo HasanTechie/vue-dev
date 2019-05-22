@@ -73,10 +73,17 @@
             },
             checkStatus() {
                 if (localStorage.getItem('user')) {
-                    if (!JSON.parse(localStorage.getItem('user')).user.status) {
+
+                    if (JSON.parse(localStorage.getItem('user')).user) {
+                        if (!JSON.parse(localStorage.getItem('user')).user.status) {
+                            this.$store.dispatch('logout')
+                            alert('Please contact for activation')
+                        }
+                    } else {
                         this.$store.dispatch('logout')
-                        alert('Please contact for activation')
+                        alert('Incorrect password')
                     }
+
                 }
             }
         }
