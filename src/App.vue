@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <Navbar />
+        <Navbar/>
         <v-content class="ma-4">
             <router-view></router-view>
         </v-content>
@@ -18,6 +18,13 @@
         data() {
             return {
                 //
+            }
+        },
+        created() {
+            this.checkStatus()
+        },
+        methods: {
+            checkStatus() {
             }
         }
     }

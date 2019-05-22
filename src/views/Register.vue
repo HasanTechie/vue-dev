@@ -30,9 +30,11 @@
                         <v-btn color="primary" @click="register">Register</v-btn>
                     </v-card-actions>
 
-                    <router-link to="/login">
-                        Already have an account? Login
-                    </router-link>
+                    <v-card-text>
+                        <router-link to="/login">
+                            Already have an account? Login
+                        </router-link>
+                    </v-card-text>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -82,15 +84,13 @@
                     })
             },
             register() {
-
                 this.$store.dispatch('register', {
                     name: this.name,
                     email: this.email,
                     password: this.password,
                     hotel_id: this.hotel_id
-
                 }).then(() => {
-                    this.$router.push({name: 'login'})
+                    this.$router.push({name: '/'})
                 })
 
                 // axios.post('/register', {

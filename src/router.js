@@ -26,11 +26,8 @@ const router = new Router({
         {
             path: '/login',
             name: 'login',
-            component: Login
-        },
-        {
-            path: '/logout',
-            name: 'logout',
+            component: Login,
+            meta: {notRequiresAuth: true}
         },
         {
             path: '/selectcompetitor',
@@ -41,7 +38,8 @@ const router = new Router({
         {
             path: '/analytics',
             name: 'analytics',
-            component: Analytics
+            component: Analytics,
+            meta: { requiresAuth: true }
         },
         {
             path: '/monthly',
@@ -64,6 +62,9 @@ router.beforeEach((to, from, next) => {
     const loggedIn = localStorage.getItem('user')
 
     if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+        next('/')
+    }
+    if (to.matched.some(record => record.meta.notRequiresAuth) && loggedIn) {
         next('/')
     }
     next()

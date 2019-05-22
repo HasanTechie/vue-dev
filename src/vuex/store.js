@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios/index'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -19,8 +19,8 @@ export const store = new Vuex.Store({
         competitorsArray: state => state.competitorsArray,
         competitorsPricesArray: state => state.competitorsPricesArray,
         competitorsUids: state => state.competitorsUids,
-        loggedIn(state) {
-            return !!state.user
+        loggedIn() {
+            return !!localStorage.getItem('user')
         }
     },
     mutations: {
@@ -39,13 +39,14 @@ export const store = new Vuex.Store({
         SET_USER_DATA(state, userData) {
             state.user = userData
             localStorage.setItem('user', JSON.stringify(userData))
-            axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`
+            axios.defaults.headers.common['Authorization'] = `Bearer ${
+                userData.token
+                }`
         },
         CLEAR_USER_DATA(state) {
-            state.user = null
             localStorage.removeItem(('user'))
+            state.user = null
             axios.defaults.headers.common['Authorization'] = null
-            console.log(state)
             location.reload()
         }
     },
@@ -68,19 +69,18 @@ export const store = new Vuex.Store({
         },
 
         register({commit}, credentials) {
-            return axios.post('http://solidps.test/api/register', credentials).then(
-                ({data}) => {
+            return axios
+                .post('http://solidps.test/api/register', credentials)
+                .then(({data}) => {
                     commit('SET_USER_DATA', data)
-                }
-            )
+                })
         },
         login({commit}, credentials) {
-            return axios.post('http://solidps.test/api/login', credentials).then(
-                ({data}) => {
-                    console.log(data)
+            return axios
+                .post('http://solidps.test/api/login', credentials)
+                .then(({data}) => {
                     commit('SET_USER_DATA', data)
-                }
-            )
+                })
         },
         logout({commit}) {
             commit('CLEAR_USER_DATA')

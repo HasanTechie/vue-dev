@@ -20,9 +20,11 @@
                         <v-spacer></v-spacer>
                         <v-btn color="primary" @click="login">Login</v-btn>
                     </v-card-actions>
-                    <router-link to="/register">
-                        Dont have an account? Register
-                    </router-link>
+                    <v-card-text>
+                        <router-link to="/register">
+                            Dont have an account? Register
+                        </router-link>
+                    </v-card-text>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -38,15 +40,18 @@
                 password: null,
             }
         },
+        created() {
+        },
         methods: {
             login() {
                 this.$store.dispatch('login', {
                     email: this.email,
                     password: this.password
                 }).then(() => {
-                    this.$router.push({name: 'selectcompetitor'})
+                    location.reload()
+                    this.$router.push({name: '/'})
                 })
-            }
+            },
         }
     }
 </script>
