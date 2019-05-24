@@ -31,8 +31,11 @@
                 </v-flex>
                 <v-btn color="success" @click="updateChart">Update Chart</v-btn>
             </v-layout>
-            <v-card>
-                <Chart v-if="trigger" v-bind:myData="myData"/>
+            <div class="text-xs-center" v-if="!trigger">
+                    <v-progress-circular class="mt-5" indeterminate width="14" color="blue" size="256"></v-progress-circular>
+            </div>
+            <v-card class="text-xs-center">
+                    <Chart v-if="trigger" v-bind:myData="myData"/>
             </v-card>
         </v-container>
     </div>
@@ -42,6 +45,7 @@
     import Chart from '@/components/Chart.vue'
     import apiRequests from '@/services/apiRequests.js'
     import format from 'date-fns/format'
+    // import MoonLoader from 'vue-spinner/src/MoonLoader.vue'
 
     export default {
         name: 'Analytics',
@@ -203,8 +207,8 @@
                         this.myData = response.data.data
 
                         // this.$nextTick(() => {
-                            // Add the component back in
-                            this.trigger = true
+                        // Add the component back in
+                        this.trigger = true
                         // });
                     })
             }
