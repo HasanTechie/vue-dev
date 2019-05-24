@@ -21,10 +21,7 @@
             <!--                        @input="updateSelections(chip.hotel_id)"-->
             <!--                >{{chip.name}}-->
             <!--                </v-chip>-->
-            <v-chip v-model="chip.status" close color="blue title" dark text-color="white"
-                    @input="updateSelections(chip.hotel_id)" label
-
-            >
+            <v-chip v-model="chip.status" close color="blue title" dark text-color="white" @input="updateSelections(chip.hotel_id)" label>
                 <v-avatar>
                     <v-icon>arrow_right_alt</v-icon>
                 </v-avatar>
