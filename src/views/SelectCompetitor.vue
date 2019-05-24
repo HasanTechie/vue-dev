@@ -2,22 +2,34 @@
     <div id="app">
         <label class="typo__label">Select Competitor Hotels</label>
         <multiselect v-model="value" :options="options" :custom-label="nameWithCity" :multiple="true"
-                     :close-on-select="false"
-                     :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name"
+                     :close-on-select="true"
+                     :clear-on-select="true" :preserve-search="false" placeholder="Pick some" label="name"
                      track-by="name" :preselect-first="true" v-on:close="updateSelectedHotels">
             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single"
-                                                                                     v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span>
+                                                                                     v-if="values.length &amp;&amp; !isOpen">{{ values.length }} hotels selected</span>
             </template>
         </multiselect>
-        <pre class="language-json"><code>{{ value }}</code></pre>
-<!--        <div v-for="chip in chips" :key="chip.hotel_id">-->
-<!--            <v-chip-->
-<!--                    v-model="chip.h_status"-->
-<!--                    @click="updateSelections()"-->
-<!--                    close-->
-<!--            >{{chip.hotel_name}}-->
-<!--            </v-chip>-->
-<!--        </div>-->
+<!--        <pre class="language-json"><code>{{ value }}</code></pre>-->
+
+        <div>
+            <div v-for="chip in value" :key="chip.hotel_id">
+<!--                <v-chip-->
+<!--                        v-model="chip.status"-->
+<!--                        close-->
+<!--                        @input="updateSelections(chip.hotel_id)"-->
+<!--                >{{chip.name}}-->
+<!--                </v-chip>-->
+                <v-chip v-model="chip.status" close color="blue title" dark text-color="white" @input="updateSelections(chip.hotel_id)" label
+
+                >
+                    <v-avatar>
+                        <v-icon>arrow_right_alt</v-icon>
+                    </v-avatar>
+                    <strong>{{chip.name}}</strong>&nbsp;
+                    <span><small>( {{chip.address}} )</small></span>
+                </v-chip>
+            </div>
+        </div>
 
     </div>
 </template>
@@ -36,9 +48,10 @@
             return {
                 value: [],
                 options: [],
+                trigger: true,
                 chips: [
-                    {h_status:true, hotel_name: 'Hotel On1', hotel_id:12},
-                    {h_status:true, hotel_name: 'Hotel Two', hotel_id:23},
+                    {h_status: true, hotel_name: 'Hotel On1', hotel_id: 12},
+                    {h_status: true, hotel_name: 'Hotel Two', hotel_id: 23},
                 ]
             }
         },
@@ -48,8 +61,13 @@
         },
 
         methods: {
-            updateSelections(){
-              console.log(this.chips)
+            updateSelections(hotel_id) {
+
+                this.value = this.value.filter(function (returnableObjects) {
+                    return returnableObjects.hotel_id !== hotel_id;
+                });
+
+                // this.value = this.value.filter(hotel => hotel.hotel_id !== hotel_id); //can be done
             },
             nameWithCity({name, city}) {
                 return `${name} — ${city}`
