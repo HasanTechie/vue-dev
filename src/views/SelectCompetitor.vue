@@ -1,7 +1,8 @@
 <template>
     <div id="app">
         <label class="typo__label">Select Competitor Hotels</label>
-        <multiselect v-model="value" :options="options" :custom-label="nameWithCity" :multiple="true" :close-on-select="false"
+        <multiselect v-model="value" :options="options" :custom-label="nameWithCity" :multiple="true"
+                     :close-on-select="false"
                      :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name"
                      track-by="name" :preselect-first="true" v-on:close="updateSelectedHotels">
             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single"
@@ -9,6 +10,15 @@
             </template>
         </multiselect>
         <pre class="language-json"><code>{{ value }}</code></pre>
+<!--        <div v-for="chip in chips" :key="chip.hotel_id">-->
+<!--            <v-chip-->
+<!--                    v-model="chip.h_status"-->
+<!--                    @click="updateSelections()"-->
+<!--                    close-->
+<!--            >{{chip.hotel_name}}-->
+<!--            </v-chip>-->
+<!--        </div>-->
+
     </div>
 </template>
 
@@ -26,6 +36,10 @@
             return {
                 value: [],
                 options: [],
+                chips: [
+                    {h_status:true, hotel_name: 'Hotel On1', hotel_id:12},
+                    {h_status:true, hotel_name: 'Hotel Two', hotel_id:23},
+                ]
             }
         },
 
@@ -34,6 +48,9 @@
         },
 
         methods: {
+            updateSelections(){
+              console.log(this.chips)
+            },
             nameWithCity({name, city}) {
                 return `${name} — ${city}`
             },

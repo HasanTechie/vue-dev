@@ -52,7 +52,7 @@
         name: "Navbar",
         data() {
             return {
-                drawer: false,
+                drawer: true,
                 links: [
                     {icon: 'home', text: 'Home', routename: 'home'},
                     {icon: 'list', text: 'Select Competitor Hotels', routename: 'selectcompetitor'},
