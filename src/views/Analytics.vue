@@ -163,10 +163,10 @@
 
                 this.getHotelDataWithDates(this.dateOne, this.dateTwo)
 
-                this.$nextTick(() => {
-                    // Add the component back in
-                    this.trigger = true
-                });
+                // this.$nextTick(() => {
+                //     // Add the component back in
+                //     this.trigger = true
+                // });
             },
 
             formatDates(dateOne, dateTwo) {
@@ -202,6 +202,10 @@
 
                         this.myData = response.data.data
 
+                        // this.$nextTick(() => {
+                            // Add the component back in
+                            this.trigger = true
+                        // });
                     })
             }
         }
