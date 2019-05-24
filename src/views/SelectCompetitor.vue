@@ -9,26 +9,28 @@
                                                                                      v-if="values.length &amp;&amp; !isOpen">{{ values.length }} hotels selected</span>
             </template>
         </multiselect>
-<!--        <pre class="language-json"><code>{{ value }}</code></pre>-->
+        <!--        <pre class="language-json"><code>{{ value }}</code></pre>-->
 
-        <div>
-            <div v-for="chip in value" :key="chip.hotel_id">
-<!--                <v-chip-->
-<!--                        v-model="chip.status"-->
-<!--                        close-->
-<!--                        @input="updateSelections(chip.hotel_id)"-->
-<!--                >{{chip.name}}-->
-<!--                </v-chip>-->
-                <v-chip v-model="chip.status" close color="blue title" dark text-color="white" @input="updateSelections(chip.hotel_id)" label
+        <br>
+        <h2 v-if="value.length" class="blue--text headline">Competitors Selected : {{ value.length }}</h2>
+        <br>
+        <div v-for="chip in value" :key="chip.hotel_id">
+            <!--                <v-chip-->
+            <!--                        v-model="chip.status"-->
+            <!--                        close-->
+            <!--                        @input="updateSelections(chip.hotel_id)"-->
+            <!--                >{{chip.name}}-->
+            <!--                </v-chip>-->
+            <v-chip v-model="chip.status" close color="blue title" dark text-color="white"
+                    @input="updateSelections(chip.hotel_id)" label
 
-                >
-                    <v-avatar>
-                        <v-icon>arrow_right_alt</v-icon>
-                    </v-avatar>
-                    <strong>{{chip.name}}</strong>&nbsp;
-                    <span><small>( {{chip.address}} )</small></span>
-                </v-chip>
-            </div>
+            >
+                <v-avatar>
+                    <v-icon>arrow_right_alt</v-icon>
+                </v-avatar>
+                <strong>{{chip.name}}</strong>&nbsp;
+                <span><small>( {{chip.address}} )</small></span>
+            </v-chip>
         </div>
 
     </div>
