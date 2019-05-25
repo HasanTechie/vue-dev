@@ -8,13 +8,13 @@
                         <v-spacer></v-spacer>
                     </v-toolbar>
                     <v-card-text>
-                        <v-form>
+                        <v-form ref="form">
                             <v-text-field prepend-icon="person" v-model="name" label="Your Name"
-                                          type="text"></v-text-field>
+                                          type="text" :rules="inputRules"></v-text-field>
                             <v-text-field prepend-icon="email" v-model="email" label="Your Email"
                                           type="text"></v-text-field>
                             <v-text-field id="password" prepend-icon="lock" v-model="password" label="Your Password"
-                                          type="password"></v-text-field>
+                                          type="password" required></v-text-field>
                             <v-layout>
                                 <v-icon>hotel</v-icon>&nbsp;&nbsp;<multiselect v-model="value" :options="options"
                                                                                :custom-label="nameWithCity"
@@ -22,6 +22,14 @@
                                                                                label="selecthotel"
                                                                                track-by="name"></multiselect>
                             </v-layout>
+                            <v-switch
+                                    v-model="terms"
+                                    label="indigo"
+                                    color="indigo"
+                                    value="indigo"
+                                    hide-details
+                                    required
+                            ></v-switch>
                         </v-form>
                     </v-card-text>
 
@@ -59,6 +67,12 @@
                 email: null,
                 password: null,
                 hotel_id: null,
+                inputRules: [
+                    v => !!v || 'This field is required',
+                    v =>  v && v.length >= 3 || 'Minimum length is 3 characters'
+                ],
+                
+                terms: false,
                 value: [],
                 options: [],
             }
@@ -84,15 +98,17 @@
                     })
             },
             register() {
-                this.$store.dispatch('register', {
-                    name: this.name,
-                    email: this.email,
-                    password: this.password,
-                    hotel_id: this.value.hotel_id
-                }).then(() => {
-                    location.reload()
-                    this.$router.push({name: 'home'})
-                })
+                if (this.$refs.form.validate()) {
+                    this.$store.dispatch('register', {
+                        name: this.name,
+                        email: this.email,
+                        password: this.password,
+                        hotel_id: this.value.hotel_id
+                    }).then(() => {
+                        location.reload()
+                        this.$router.push({name: 'home'})
+                    })
+                }
 
                 // axios.post('/register', {
                 //     name: this.name,
