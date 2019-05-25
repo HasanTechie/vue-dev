@@ -3,6 +3,7 @@
         <v-container fulid>
             <Calender/>
             <DataTable/>
+            <RoomDataTable/>
         </v-container>
 
     </div>
@@ -11,11 +12,12 @@
 <script>
     import Calender from '@/components/Calender.vue'
     import DataTable from '@/components/DataTable.vue';
+    import RoomDataTable from '@/components/RoomDataTable.vue';
 
     export default {
         name: 'Monthly',
         components: {
-            Calender, DataTable
+            Calender, DataTable, RoomDataTable
         }
     }
 </script>
