@@ -54,19 +54,22 @@
       rooms: [],
       HotelHeaders: [
         { text: 'Competitor Hotel', align: 'left', value: 'name' },
-        { text: 'Current Price', value: 'currentprice' },
-        { text: 'Competitors Price Average', value: 'competitorpriceav' },
-        { text: 'Market Value', value: 'marketvalue' },
+        { text: 'Average Current Price', value: 'currentprice' },
+        { text: 'Average Market Value', value: 'marketvalue' },
 
       ],
       RoomHeaders: [
         { text: 'Room Type', align: 'left', value: 'name' },
         { text: 'Competitors Price', value: 'competitorpriceav' },
         { text: 'Market Value', value: 'marketvalue' },
-      ]
+      ],
+      competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
+      hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
     }),
     created() {
-        this.getSelectedCompetitorPrices()
+      this.getCompetitorsIDs()
+      this.getCompetitorAvPrices()
+      this.getCompetitorRoomPrices()
     },
     methods: {
       changeSort (column) {
@@ -78,16 +81,20 @@
         }
       },
       constructHotelAvs( competitorNames, currentHotelPrice,
-                      competitorPrices,marketValues){
+                      competitorPrices){
         let hoteldata = []
         for (let i=0; i<competitorNames.length; i+=1) {
           var obj = {}
           obj.name = (competitorNames[i]),
           obj.currentprice = (currentHotelPrice).toFixed(2),
-          obj.competitorpriceav = (competitorPrices[i]).toFixed(2),
-          obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2),
-          obj.optimalprice = (marketValues[i]).toFixed(2),
-          obj.potential = (marketValues[i]-currentHotelPrice).toFixed(2)
+          obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2)
+
+          if (obj.currentprice < obj.marketvalue) {
+            //obj.color = 'red'
+          }else{
+            //obj.color = 'blue'
+          }
+          
           hoteldata.push(obj)
         }
         this.hotels = hoteldata
@@ -99,8 +106,13 @@
           var obj = {}
           obj.name = (competitorNames[i]),
           obj.currentprice = (currentHotelPrice).toFixed(2),
-          obj.competitorpriceav = (competitorPrices[i]).toFixed(2),
-          obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2),
+          obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2)
+          if (obj.currentprice < obj.marketvalue) {
+            //obj.color = 'red'
+          }else{
+            //obj.color = 'blue'
+          }
+          
           roomdata.push(obj)
         }
         this.rooms = roomdata
@@ -122,7 +134,43 @@
         }
         return values;
       },
-      getSelectedCompetitorPrices(){
+      getCompetitorRoomPrices()
+      {
+        console.log('=>updating selected comptetior prices')
+
+        var competitorsArray = JSON.parse(JSON.stringify(
+                                this.$store.getters.competitorsArray))
+        var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
+        var apiCompetitorsString = ''+competitorsUids.join()+''
+
+        // make request for according uids
+        console.log(apiCompetitorsString.replace(" ", ""))
+        //TODO should be done with the vuex storage...
+        apiRequests.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""), this.hotelid)
+          .then(response => {
+          console.log(response.data)
+          //var dataArray = JSON.parse(JSON.stringify(response.data.data))
+          var dataArray = Object.keys(response.data.data).map((key) => {
+                        return response.data.data[key]
+          })
+          console.log('This is the competitors data')
+          let competitorsData = dataArray['0'].competitors_data
+          console.log(Object.values(competitorsData))
+          let competitorPrices = []
+          let competitorNames = []
+          let currentHotelPrice = dataArray['0'].price
+          for (let i=0; i<competitorsData.length; i+=1) {
+            competitorPrices.push(competitorsData[i].price)
+            competitorNames.push(competitorsData[i].hotel_name)
+          }
+          this.constructRooms(competitorNames, currentHotelPrice,
+                        competitorPrices, competitorPrices)
+        })
+        .catch(error => {
+            console.log('There was an error:' + error.response)
+        })
+      },
+      getCompetitorAvPrices(){
         console.log('=>updating selected comptetior prices')
         // iterate through hotel uids of selected competitors
         // and pick their prices
@@ -155,12 +203,30 @@
           }
           this.constructHotelAvs(competitorNames, currentHotelPrice,
                         competitorPrices, competitorPrices)
-          this.constructRooms(competitorNames, currentHotelPrice,
-                        competitorPrices, competitorPrices)
         })
         .catch(error => {
             console.log('There was an error:' + error.response)
         })
+      },
+      getCompetitorsIDs() {
+        var competitorsArray = JSON.parse(JSON.stringify(
+            this.$store.getters.competitorsArray))
+
+        for (let i = 0; i < competitorsArray.length; i += 1) {
+            this.competitors.push(competitorsArray['' + i + '']['hotel_id']);
+        }
+      },
+      getHotelDataWithDates(dateOne, dateTwo) {
+        apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue, dateOne, dateTwo)
+            .then(response => {
+
+                this.myData = response.data.data
+
+                // this.$nextTick(() => {
+                // Add the component back in
+                this.trigger = true
+                // });
+            })
       }
     }
   }
