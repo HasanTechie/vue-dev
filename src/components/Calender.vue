@@ -130,11 +130,11 @@
                 >
                     <template v-slot:activator="{ on }">
                         <v-text-field
-                                v-model="now"
-                                label="Today"
-                                prepend-icon="event"
-                                readonly
-                                v-on="on"
+                            v-model="now"
+                            label="Today"
+                            prepend-icon="event"
+                            readonly
+                            v-on="on"
                         ></v-text-field>
                     </template>
                     <v-date-picker
@@ -166,16 +166,21 @@
                         type="number"
                 ></v-text-field>
                 <v-select
-                        v-if="hasIntervals"
-                        v-model="intervals"
-                        :items="intervalsOptions"
-                        label="Intervals"
+                    v-if="hasIntervals"
+                    v-model="intervals"
+                    :items="intervalsOptions"
+                    label="Intervals"
                 ></v-select>
                 <v-select
-                        v-if="type === 'custom-daily'"
-                        v-model="maxDays"
-                        :items="maxDaysOptions"
-                        label="# of Days"
+                    :items="roomtypes"
+                    v-model="selectedValue"
+                    label="Room Type"
+                ></v-select>
+                <v-select
+                    v-if="type === 'custom-daily'"
+                    v-model="maxDays"
+                    :items="maxDaysOptions"
+                    label="# of Days"
                 ></v-select>
                 <v-select
                         v-if="hasIntervals"
@@ -350,7 +355,10 @@
                 {text: 'Blue Gray', value: 'blue-gray'},
                 {text: 'Gray', value: 'gray'},
                 {text: 'Black', value: 'black'}
-            ]
+            ],
+            roomtypes : [],
+            selectedValue : 'All',
+            hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
         }),
 
 
@@ -385,6 +393,14 @@
             },
             showIntervalLabel(interval) {
                 return interval.minute === 0
+            },
+            getRoomTypes() {
+                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue)
+                    .then(response => {
+                        this.myData = response.data.data
+
+                        this.roomtypes = this.myData.rooms
+                    })
             }
         },
         computed: {
@@ -404,6 +420,7 @@
         },
         created() {
             this.today = this.todayDate()
+            this.getRoomTypes()
         }
     }
 </script>

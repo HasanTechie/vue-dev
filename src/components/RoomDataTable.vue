@@ -1,59 +1,72 @@
 <template>
   <div>
+    <v-toolbar flat color="white">
+    </v-toolbar>
     <v-data-table
-      :headers="headers"
-      :items="rooms"
+      :headers="HotelHeaders"
+      :items="hotels"
       :expand="expand"
       item-key="name"
     >
       <template v-slot:items="props">
-          <div>
         <tr @click="props.expanded = !props.expanded">
-            <td>{{ props.item.name }}</td>
-            <td class="text-xs-right">{{ props.item.currentprice }}</td>
-            <td class="text-xs-right">{{ props.item.competitorpriceav }}</td>
-            <td class="text-xs-right">{{ props.item.marketvalue }}</td>
-            <td class="text-xs-right">{{ props.item.optimalprice }}</td>
-            <td class="text-xs-right">{{ props.item.potential }}</td>
+          <td>{{ props.item.name }}</td>
+          <td class="text-xs-right">{{ props.item.currentprice }}</td>
+          <td class="text-xs-right">{{ props.item.marketvalue }}</td>
         </tr>
       </template>
       <template v-slot:expand="props">
-        <SubDataTable/>
+        <v-card class="elevation-10">
+          <v-card-text>
+            <v-data-table :headers="RoomHeaders"
+                          :items="rooms"
+                          item-key="color"
+                          hide-actions
+                          class="elevation-10">
+              <template v-slot:items="props">
+                <td>{{ props.item.name }}</td>
+                <td class="text-xs-right">{{ props.item.currentprice }}</td>
+                <td class="text-xs-right">{{ props.item.marketvalue }}</td>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
       </template>
     </v-data-table>
   </div>
 </template>
-
 <script>
 
   import apiRequests from '@/services/apiRequests.js'
-  import SubDataTable from '@/components/SubDataTable.vue'
 
   export default {
     name: "RoomDataTable",
-    components: {
-        SubDataTable
-    },
     data: () => ({
-        props:{
-            today: '2019-04-24'
-        },
-        pagination: {
-            sortBy: 'name'
-        },
-        expand: true,
-        headers: [
-            { text: 'Competitor Hotel', align: 'left', value: 'name' },
-            { text: 'Current Price', value: 'currentprice' },
-            { text: 'Competitors Price Average', value: 'competitorpriceav' },
-            { text: 'Market Value', value: 'marketvalue' },
-            { text: 'Optimal Price', value: 'optimalprice' },
-            { text: 'Potential (%)', value: 'optimalprice' }
-        ],
-        rooms: []
-      }),
-      created() {
-      this.getSelectedCompetitorPrices()
+      expand: true,
+      props:{
+        today: '2019-04-24'
+      },
+      pagination: {
+        sortBy: 'name'
+      },
+      selected: [],
+      hotels: [],
+      rooms: [],
+      HotelHeaders: [
+        { text: 'Competitor Hotel', align: 'left', value: 'name' },
+        { text: 'Current Price', value: 'currentprice' },
+        { text: 'Competitors Price Average', value: 'competitorpriceav' },
+        { text: 'Market Value', value: 'marketvalue' },
+
+      ],
+      RoomHeaders: [
+        { text: 'Room Type', align: 'left', value: 'name' },
+        { text: 'Competitors Price', value: 'competitorpriceav' },
+        { text: 'Market Value', value: 'marketvalue' },
+      ]
+    }),
+    created() {
+        this.getSelectedCompetitorPrices()
     },
     methods: {
       changeSort (column) {
@@ -64,9 +77,9 @@
           this.pagination.descending = false
         }
       },
-      constructRooms( competitorNames, currentHotelPrice,
+      constructHotelAvs( competitorNames, currentHotelPrice,
                       competitorPrices,marketValues){
-        let roomdata = []
+        let hoteldata = []
         for (let i=0; i<competitorNames.length; i+=1) {
           var obj = {}
           obj.name = (competitorNames[i]),
@@ -75,6 +88,19 @@
           obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2),
           obj.optimalprice = (marketValues[i]).toFixed(2),
           obj.potential = (marketValues[i]-currentHotelPrice).toFixed(2)
+          hoteldata.push(obj)
+        }
+        this.hotels = hoteldata
+      },
+      constructRooms( competitorNames, currentHotelPrice,
+                      competitorPrices){
+        let roomdata = []
+        for (let i=0; i<competitorNames.length; i+=1) {
+          var obj = {}
+          obj.name = (competitorNames[i]),
+          obj.currentprice = (currentHotelPrice).toFixed(2),
+          obj.competitorpriceav = (competitorPrices[i]).toFixed(2),
+          obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2),
           roomdata.push(obj)
         }
         this.rooms = roomdata
@@ -90,54 +116,51 @@
         let values = [];
         for (let i=0; i<array.length; i+=1) {
         console.log(array[i][atKey])
-
-          if (array[i][atKey] === atKeyValue){
-            values.push(array[i][getKey]);
+        if (array[i][atKey] === atKeyValue){
+          values.push(array[i][getKey]);
           }
         }
         return values;
       },
       getSelectedCompetitorPrices(){
         console.log('=>updating selected comptetior prices')
-
         // iterate through hotel uids of selected competitors
         // and pick their prices
         var competitorsArray = JSON.parse(JSON.stringify(
                                 this.$store.getters.competitorsArray))
         var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
-
         var apiCompetitorsString = ''+competitorsUids.join()+''
-
+    
         this.$store.dispatch('setCompetitorsUids', apiCompetitorsString.replace(" ", ""))
 
         // make request for according uids
         console.log(apiCompetitorsString.replace(" ", ""))
-
         //TODO should be done with the vuex storage...
         apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
-            .then(response => {
-              console.log(response.data)
-              //var dataArray = JSON.parse(JSON.stringify(response.data.data))
-              var dataArray = Object.keys(response.data.data).map((key) => {
-                          return response.data.data[key]
-              })
-              console.log('This is the competitors data')
-              let competitorsData = dataArray['0'].competitors_data
-              console.log(Object.values(competitorsData))
-              
-              let competitorPrices = []
-              let competitorNames = []
-              let currentHotelPrice = dataArray['0'].price
-              for (let i=0; i<competitorsData.length; i+=1) {
-                competitorPrices.push(competitorsData[i].price)
-                competitorNames.push(competitorsData[i].hotel_name)
-              }
-              this.constructRooms(competitorNames, currentHotelPrice,
-                            competitorPrices, competitorPrices)
-            })
-            .catch(error => {
-                console.log('There was an error:' + error.response)
-            })
+          .then(response => {
+          console.log(response.data)
+          //var dataArray = JSON.parse(JSON.stringify(response.data.data))
+          var dataArray = Object.keys(response.data.data).map((key) => {
+                        return response.data.data[key]
+          })
+          console.log('This is the competitors data')
+          let competitorsData = dataArray['0'].competitors_data
+          console.log(Object.values(competitorsData))
+          let competitorPrices = []
+          let competitorNames = []
+          let currentHotelPrice = dataArray['0'].price
+          for (let i=0; i<competitorsData.length; i+=1) {
+            competitorPrices.push(competitorsData[i].price)
+            competitorNames.push(competitorsData[i].hotel_name)
+          }
+          this.constructHotelAvs(competitorNames, currentHotelPrice,
+                        competitorPrices, competitorPrices)
+          this.constructRooms(competitorNames, currentHotelPrice,
+                        competitorPrices, competitorPrices)
+        })
+        .catch(error => {
+            console.log('There was an error:' + error.response)
+        })
       }
     }
   }

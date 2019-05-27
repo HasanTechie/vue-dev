@@ -8,6 +8,7 @@
         :pagination.sync="pagination"
         select-all
         item-key="name"
+        expand
         class="elevation-1"
     >
         <template v-slot:headers="props">
@@ -36,6 +37,26 @@
             <td class="text-xs-right">{{ props.item.potential }}</td>
         </tr>
         </template>
+        <template slot="expand">
+        <v-card class="elevation-10">
+          <v-card-text>
+            <v-data-table :headers="subHeaders"
+                          :items="rooms"
+                          item-key="color"
+                          hide-actions
+                          class="elevation-10">
+              <template v-slot:items="props">
+                <td>{{ props.item.name }}</td>
+                <td class="text-xs-right">{{ props.item.currentprice }}</td>
+                <td class="text-xs-right">{{ props.item.competitorpriceav }}</td>
+                <td class="text-xs-right">{{ props.item.marketvalue }}</td>
+                <td class="text-xs-right">{{ props.item.optimalprice }}</td>
+                <td class="text-xs-right">{{ props.item.potential }}</td>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </template>
     </v-data-table>
     </v-layout>
   </div>
@@ -56,6 +77,14 @@
       },
       selected: [],
       headers: [
+        { text: 'Competitor Hotel', align: 'left', value: 'name' },
+        { text: 'Current Price', value: 'currentprice' },
+        { text: 'Competitors Price Average', value: 'competitorpriceav' },
+        { text: 'Market Value', value: 'marketvalue' },
+        { text: 'Optimal Price', value: 'optimalprice' },
+        { text: 'Potential (%)', value: 'optimalprice' }
+      ],
+      subHeaders: [
         { text: 'Competitor Hotel', align: 'left', value: 'name' },
         { text: 'Current Price', value: 'currentprice' },
         { text: 'Competitors Price Average', value: 'competitorpriceav' },
