@@ -8,12 +8,12 @@
                         <v-spacer></v-spacer>
                     </v-toolbar>
                     <v-card-text>
-                        <v-form>
+                        <v-form ref="form">
                             <v-text-field prepend-icon="email" v-model="email" name="email" label="Your Email"
-                                          type="text"></v-text-field>
+                                          type="text" :rules="inputEmailRules"></v-text-field>
                             <v-text-field id="password" prepend-icon="lock" v-model="password" name="Your Password"
                                           label="Password"
-                                          type="password"></v-text-field>
+                                          type="password" :rules="inputPasswordRules"></v-text-field>
                         </v-form>
                     </v-card-text>
                     <v-card-actions class="pa-3">
@@ -22,7 +22,7 @@
                     </v-card-actions>
                     <v-card-text>
                         <router-link to="/register">
-                            Dont have an account? Register
+                            <v-btn outline color="blue">Dont have an account? Register</v-btn>
                         </router-link>
                     </v-card-text>
                 </v-card>
@@ -38,19 +38,28 @@
             return {
                 email: null,
                 password: null,
+                inputEmailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+/.test(v) || 'E-mail must be valid'
+                ],
+                inputPasswordRules: [
+                    v => !!v || 'Password is required',
+                ],
             }
         },
         created() {
         },
         methods: {
             login() {
-                this.$store.dispatch('login', {
-                    email: this.email,
-                    password: this.password
-                }).then(() => {
-                    location.reload()
-                    this.$router.push({name: 'home'})
-                })
+                if (this.$refs.form.validate()) {
+                    this.$store.dispatch('login', {
+                        email: this.email,
+                        password: this.password
+                    }).then(() => {
+                        location.reload()
+                        this.$router.push({name: 'home'})
+                    })
+                }
             },
         }
     }
