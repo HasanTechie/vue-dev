@@ -25,6 +25,23 @@
         },
         methods: {
             checkStatus() {
+                if (localStorage.getItem('user')) {
+
+                    if (JSON.parse(localStorage.getItem('user')).user) {
+                        if (!JSON.parse(localStorage.getItem('user')).user.status) {
+                            this.$swal('Account not active!',
+                                'Please contact for account activation',
+                                'info');
+                            this.$store.dispatch('logout')
+
+                            // alert('Please contact for activation')
+                        }
+                    } else {
+                        this.$store.dispatch('logout')
+                        alert('Incorrect password')
+                    }
+
+                }
             }
         }
     }
