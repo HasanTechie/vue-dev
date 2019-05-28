@@ -26,7 +26,7 @@ export default {
         return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids + '&room=' + selectedValue)
     },
     getCompetitorRoomsPrices(competitorsids) {
-        return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=28&datefrom=2019-04-25&dateto=2019-12-28&competitorsid=' + competitorsids)
+        return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
     },
     getCompetitors() {
         return '&competitorsid=' + this.$store.getters.competitorsids
