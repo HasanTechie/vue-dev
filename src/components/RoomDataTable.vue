@@ -16,10 +16,18 @@
         </tr>
       </template>
       <template v-slot:expand="props">
+
+      <SubDataTable v-bind:myheaders="RoomHeaders"
+                    v-bind:myitems="rooms"
+                    v-bind:mysearch="props.item.name"
+      ></SubDataTable> 
+      </template>
+      <!--<template v-slot:expand="props" >
         <v-card class="elevation-10">
           <v-card-text>
             <v-data-table :headers="RoomHeaders"
                           :items="rooms"
+                          :search="hotelsearch"
                           item-key="color"
                           hide-actions
                           class="elevation-10">
@@ -31,16 +39,31 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-      </template>
+      </template> -->
+      <!--<template v-slot:expand="props">
+        <v-card class="elevation-10">
+          <v-card-text>
+            <ul>
+            <li v-for="item in hotelsearches">
+              {{ item.hotelsearch }}
+            </li>
+            </ul>
+            </v-card-text>
+        </v-card>
+      </template> -->
     </v-data-table>
   </div>
 </template>
 <script>
 
   import apiRequests from '@/services/apiRequests.js'
+  import SubDataTable from '@/components/SubDataTable.vue'
 
   export default {
     name: "RoomDataTable",
+    components: {
+      SubDataTable
+    },
     data: () => ({
       expand: true,
       props:{
@@ -64,7 +87,11 @@
         { text: 'Market Value', value: 'marketvalue' },
       ],
       competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
-      hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
+      hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
+      hotelsearches: [
+                      { hotelsearch: "Mercure Hotel Berlin City "},
+                      { hotelsearch: "Vienna House Easy Berlin "}
+      ],
     }),
     created() {
       this.getCompetitorsIDs()
@@ -107,11 +134,6 @@
           obj.name = (competitorNames[i]),
           obj.currentprice = (currentHotelPrice).toFixed(2),
           obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2)
-          if (obj.currentprice < obj.marketvalue) {
-            //obj.color = 'red'
-          }else{
-            //obj.color = 'blue'
-          }
           
           roomdata.push(obj)
         }
@@ -136,7 +158,7 @@
       },
       getCompetitorRoomPrices()
       {
-        console.log('=>updating selected comptetior prices')
+        console.log('=>updating selected comptetior room prices')
 
         var competitorsArray = JSON.parse(JSON.stringify(
                                 this.$store.getters.competitorsArray))
@@ -146,8 +168,9 @@
         // make request for according uids
         console.log(apiCompetitorsString.replace(" ", ""))
         //TODO should be done with the vuex storage...
-        apiRequests.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""), this.hotelid)
-          .then(response => {
+        apiRequests.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
+        //apiRequests.getCompetitorRoomsPricesFix()
+        .then(response => {
           console.log(response.data)
           //var dataArray = JSON.parse(JSON.stringify(response.data.data))
           var dataArray = Object.keys(response.data.data).map((key) => {
@@ -171,7 +194,7 @@
         })
       },
       getCompetitorAvPrices(){
-        console.log('=>updating selected comptetior prices')
+        console.log('=>updating selected comptetior average prices')
         // iterate through hotel uids of selected competitors
         // and pick their prices
         var competitorsArray = JSON.parse(JSON.stringify(
@@ -185,6 +208,7 @@
         console.log(apiCompetitorsString.replace(" ", ""))
         //TODO should be done with the vuex storage...
         apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
+        //apiRequests.getCompetitorAvgPricesFix()
           .then(response => {
           console.log(response.data)
           //var dataArray = JSON.parse(JSON.stringify(response.data.data))

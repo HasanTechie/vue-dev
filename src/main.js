@@ -3,6 +3,7 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import {store} from './vuex/store'
+import MultiFiltersPlugin from './plugins/MultiFiltersPlugin'
 
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
@@ -22,6 +23,8 @@ const datepickerOptions = {}
 
 // make sure we can use it in our components
 Vue.use(AirbnbStyleDatepicker, datepickerOptions)
+
+
 
 const requireComponent = require.context(
     // The relative path of the components folder
@@ -59,6 +62,8 @@ requireComponent.keys().forEach(fileName => {
 })
 
 Vue.config.productionTip = false
+
+Vue.use(MultiFiltersPlugin)
 
 new Vue({
   router,
