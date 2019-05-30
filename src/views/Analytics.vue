@@ -7,6 +7,7 @@
                             :items="items"
                             v-model="selectedValue"
                             label="Room Type"
+                            v-on:close="updateRoomType"
                     ></v-select>
                 </v-flex>
                 <v-flex xs6 sm3 d-flex>
@@ -95,7 +96,9 @@
                 this.getHotelDataWithDates(this.dateOne, this.dateTwo)
 
             },
-
+            updateRoomType(){
+                this.$store.dispatch('roomtype', this.selectedValue)
+            },
             formatDates(dateOne, dateTwo) {
                 let formattedDates = ''
                 if (dateOne) {

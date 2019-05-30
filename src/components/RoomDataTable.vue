@@ -22,35 +22,6 @@
                     v-bind:mysearch="props.item.name"
       ></SubDataTable> 
       </template>
-      <!--<template v-slot:expand="props" >
-        <v-card class="elevation-10">
-          <v-card-text>
-            <v-data-table :headers="RoomHeaders"
-                          :items="rooms"
-                          :search="hotelsearch"
-                          item-key="color"
-                          hide-actions
-                          class="elevation-10">
-              <template v-slot:items="props">
-                <td>{{ props.item.name }}</td>
-                <td class="text-xs-right">{{ props.item.currentprice }}</td>
-                <td class="text-xs-right">{{ props.item.marketvalue }}</td>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
-      </template> -->
-      <!--<template v-slot:expand="props">
-        <v-card class="elevation-10">
-          <v-card-text>
-            <ul>
-            <li v-for="item in hotelsearches">
-              {{ item.hotelsearch }}
-            </li>
-            </ul>
-            </v-card-text>
-        </v-card>
-      </template> -->
     </v-data-table>
   </div>
 </template>
@@ -66,6 +37,8 @@
     },
     data: () => ({
       expand: true,
+      roomsdatadownloaded: false,
+      avpricedatadownloaded: false,
       props:{
         today: '2019-04-24'
       },
@@ -159,78 +132,122 @@
       getCompetitorRoomPrices()
       {
         console.log('=>updating selected comptetior room prices')
-
-        var competitorsArray = JSON.parse(JSON.stringify(
-                                this.$store.getters.competitorsArray))
-        var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
-        var apiCompetitorsString = ''+competitorsUids.join()+''
-
-        // make request for according uids
-        console.log(apiCompetitorsString.replace(" ", ""))
-        //TODO should be done with the vuex storage...
-        apiRequests.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
-        //apiRequests.getCompetitorRoomsPricesFix()
-        .then(response => {
-          console.log(response.data)
-          //var dataArray = JSON.parse(JSON.stringify(response.data.data))
-          var dataArray = Object.keys(response.data.data).map((key) => {
-                        return response.data.data[key]
-          })
-          console.log('This is the competitors data')
-          let competitorsData = dataArray['0'].competitors_data
+        // check if the data has been loaded all ready. if not got through
+        // the long process of downloading. Else dont download but get from loca
+        // storage
+        if (this.roomsdatadownloaded){
+          var roomDataArray = JSON.parse(JSON.stringify(this.$store.getters.roomDataArray))
+          console.log('This is the competitors data from store')
+          let competitorsData = roomDataArray['0'].competitors_data
           console.log(Object.values(competitorsData))
           let competitorPrices = []
           let competitorNames = []
-          let currentHotelPrice = dataArray['0'].price
+          let currentHotelPrice = roomDataArray['0'].price
           for (let i=0; i<competitorsData.length; i+=1) {
             competitorPrices.push(competitorsData[i].price)
             competitorNames.push(competitorsData[i].hotel_name)
           }
           this.constructRooms(competitorNames, currentHotelPrice,
                         competitorPrices, competitorPrices)
-        })
-        .catch(error => {
-            console.log('There was an error:' + error.response)
-        })
+        }else{
+          var competitorsArray = JSON.parse(JSON.stringify(
+                                  this.$store.getters.competitorsArray))
+          var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
+          var apiCompetitorsString = ''+competitorsUids.join()+''
+
+          // make request for according uids
+          console.log(apiCompetitorsString.replace(" ", ""))
+          //TODO should be done with the vuex storage...
+          apiRequests.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
+          //apiRequests.getCompetitorRoomsPricesFix()
+          .then(response => {
+            console.log(response.data)
+            //var dataArray = JSON.parse(JSON.stringify(response.data.data))
+            var roomDataArray = Object.keys(response.data.data).map((key) => {
+                          return response.data.data[key]
+            })
+
+            // save the downloaded data
+            this.$store.dispatch('roomDataArray', roomDataArray)
+
+            console.log('This is the competitors data from server')
+            let competitorsData = roomDataArray['0'].competitors_data
+            console.log(Object.values(competitorsData))
+            let competitorPrices = []
+            let competitorNames = []
+            let currentHotelPrice = roomDataArray['0'].price
+            for (let i=0; i<competitorsData.length; i+=1) {
+              competitorPrices.push(competitorsData[i].price)
+              competitorNames.push(competitorsData[i].hotel_name)
+            }
+            this.constructRooms(competitorNames, currentHotelPrice,
+                          competitorPrices, competitorPrices)
+            this.roomsdownloaded = true
+          })
+          .catch(error => {
+              console.log('There was an error:' + error.response)
+          })
+        }
       },
       getCompetitorAvPrices(){
         console.log('=>updating selected comptetior average prices')
         // iterate through hotel uids of selected competitors
         // and pick their prices
-        var competitorsArray = JSON.parse(JSON.stringify(
-                                this.$store.getters.competitorsArray))
-        var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
-        var apiCompetitorsString = ''+competitorsUids.join()+''
-    
-        this.$store.dispatch('setCompetitorsUids', apiCompetitorsString.replace(" ", ""))
+        if(this.avpricedatadownloaded){
 
-        // make request for according uids
-        console.log(apiCompetitorsString.replace(" ", ""))
-        //TODO should be done with the vuex storage...
-        apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
-        //apiRequests.getCompetitorAvgPricesFix()
-          .then(response => {
-          console.log(response.data)
-          //var dataArray = JSON.parse(JSON.stringify(response.data.data))
-          var dataArray = Object.keys(response.data.data).map((key) => {
-                        return response.data.data[key]
-          })
-          console.log('This is the competitors data')
-          let competitorsData = dataArray['0'].competitors_data
+          var avpriceDataArray = JSON.parse(JSON.stringify(this.$store.getters.avpriceDataArray))
+          console.log('This is the competitors av price data from store')
+          let competitorsData = avpriceDataArray['0'].competitors_data
           console.log(Object.values(competitorsData))
           let competitorPrices = []
           let competitorNames = []
-          let currentHotelPrice = dataArray['0'].price
+          let currentHotelPrice = avpriceDataArray['0'].price
           for (let i=0; i<competitorsData.length; i+=1) {
             competitorPrices.push(competitorsData[i].price)
             competitorNames.push(competitorsData[i].hotel_name)
           }
           this.constructHotelAvs(competitorNames, currentHotelPrice,
                         competitorPrices, competitorPrices)
-        })
-        .catch(error => {
-            console.log('There was an error:' + error.response)
-        })
+        }else{
+          var competitorsArray = JSON.parse(JSON.stringify(
+                                  this.$store.getters.competitorsArray))
+          var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
+          var apiCompetitorsString = ''+competitorsUids.join()+''
+      
+          this.$store.dispatch('setCompetitorsUids', apiCompetitorsString.replace(" ", ""))
+
+          // make request for according uids
+          console.log(apiCompetitorsString.replace(" ", ""))
+          //TODO should be done with the vuex storage...
+          apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
+          //apiRequests.getCompetitorAvgPricesFix()
+            .then(response => {
+            console.log(response.data)
+            //var dataArray = JSON.parse(JSON.stringify(response.data.data))
+            var avpriceDataArray = Object.keys(response.data.data).map((key) => {
+                          return response.data.data[key]
+            })
+
+            // save the downloaded data
+            this.$store.dispatch('dataArray', avpriceDataArray)
+            console.log('This is the competitors av price data from server')
+            let competitorsData = avpriceDataArray['0'].competitors_data
+            console.log(Object.values(competitorsData))
+            let competitorPrices = []
+            let competitorNames = []
+            let currentHotelPrice = avpriceDataArray['0'].price
+            for (let i=0; i<competitorsData.length; i+=1) {
+              competitorPrices.push(competitorsData[i].price)
+              competitorNames.push(competitorsData[i].hotel_name)
+            }
+            this.constructHotelAvs(competitorNames, currentHotelPrice,
+                          competitorPrices, competitorPrices)
+            this.avpricedatadownloaded = true
+          })
+          .catch(error => {
+              console.log('There was an error:' + error.response)
+          })
+        }
       },
       getCompetitorsIDs() {
         var competitorsArray = JSON.parse(JSON.stringify(
@@ -242,15 +259,13 @@
       },
       getHotelDataWithDates(dateOne, dateTwo) {
         apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue, dateOne, dateTwo)
-            .then(response => {
+        .then(response => {
 
-                this.myData = response.data.data
+            this.myData = response.data.data
 
-                // this.$nextTick(() => {
-                // Add the component back in
-                this.trigger = true
-                // });
-            })
+            this.trigger = true
+
+        })
       }
     }
   }

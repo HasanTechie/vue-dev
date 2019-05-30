@@ -173,8 +173,9 @@
                 ></v-select>
                 <v-select
                     :items="roomtypes"
-                    v-model="selectedValue"
+                    v-model="roomtype"
                     label="Room Type"
+                    v-on:close="updateRoomType"
                 ></v-select>
                 <v-select
                     v-if="type === 'custom-daily'"
@@ -357,13 +358,16 @@
                 {text: 'Black', value: 'black'}
             ],
             roomtypes : [],
-            selectedValue : 'All',
+            roomtype : 'All',
             hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
         }),
 
 
         methods: {
+            updateRoomType(){
+                this.$store.dispatch('roomtype', this.roomtype)
 
+            },
             todayDate() {
                 var today = new Date()
                 var dd = today.getDate()
@@ -395,12 +399,11 @@
                 return interval.minute === 0
             },
             getRoomTypes() {
-                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue)
-                    .then(response => {
-                        this.myData = response.data.data
-
-                        this.roomtypes = this.myData.rooms
-                    })
+                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.roomtype)
+                .then(response => {
+                    this.myData = response.data.data
+                    this.roomtypes = this.myData.rooms
+                })
             }
         },
         computed: {
