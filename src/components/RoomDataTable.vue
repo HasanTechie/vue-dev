@@ -229,7 +229,7 @@
             })
 
             // save the downloaded data
-            this.$store.dispatch('dataArray', avpriceDataArray)
+            this.$store.dispatch('avpriceDataArray', avpriceDataArray)
             console.log('This is the competitors av price data from server')
             let competitorsData = avpriceDataArray['0'].competitors_data
             console.log(Object.values(competitorsData))

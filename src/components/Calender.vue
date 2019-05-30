@@ -359,6 +359,7 @@
             ],
             roomtypes : [],
             roomtype : 'All',
+            events : [],
             hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
         }),
 
@@ -367,6 +368,18 @@
             updateRoomType(){
                 this.$store.dispatch('roomtype', this.roomtype)
 
+            },
+            getEvents(){
+
+                console("=> download events...")
+                apiRequests.getEvents()
+                    .then(response => {
+                        this.events = response.data.data
+                        console.log(response.data)
+                    })
+                    .catch(error => {
+                        console.log('There was an error:' + error.response)
+                    })
             },
             todayDate() {
                 var today = new Date()
@@ -424,6 +437,7 @@
         created() {
             this.today = this.todayDate()
             this.getRoomTypes()
+            this.getEvents()
         }
     }
 </script>
