@@ -195,7 +195,7 @@
                     lg9
                     class="pl-3"
             >
-                <v-sheet height="500">
+                <v-sheet height="900">
                     <v-calendar
                             ref="calendar"
                             v-model="start"
@@ -216,10 +216,10 @@
                             :show-interval-label="showIntervalLabel"
                             :color="color"
                     >
-                        <template v-slot:day="{ event_date }">
-                            <template v-for="event in eventsMap[event_date]">
+                        <template v-slot:day="{ date }">
+                            <template v-for="event in eventsMap[date]">
                             <v-menu
-                                :key="event.title"
+                                :key="event.name"
                                 v-model="event.open"
                                 full-width
                                 offset-x
@@ -230,7 +230,7 @@
                                     v-ripple
                                     class="my-event"
                                     v-on="on"
-                                    v-html="event.title"
+                                    v-html="event.name"
                                 ></div>
                                 </template>
                                 <v-card
@@ -245,7 +245,7 @@
                                     <v-btn icon>
                                     <v-icon>edit</v-icon>
                                     </v-btn>
-                                    <v-toolbar-title v-html="event.title"></v-toolbar-title>
+                                    <v-toolbar-title v-html="event.name"></v-toolbar-title>
                                     <v-spacer></v-spacer>
                                     <v-btn icon>
                                     <v-icon>favorite</v-icon>
@@ -255,7 +255,7 @@
                                     </v-btn>
                                 </v-toolbar>
                                 <v-card-title primary-title>
-                                    <span v-html="event.details"></span>
+                                    <span v-html="event.url"></span>
                                 </v-card-title>
                                 <v-card-actions>
                                     <v-btn
@@ -403,58 +403,11 @@
             ],
             roomtypes : [],
             roomtype : 'All',
-            events : [
-                /*{
-                title: 'Vacation',
-                details: 'Going to the beach!',
-                date: '2018-12-30',
-                open: false
-                },
-                {
-                title: 'Vacation',
-                details: 'Going to the beach!',
-                date: '2018-12-31',
-                open: false
-                },
-                {
-                title: 'Vacation',
-                details: 'Going to the beach!',
-                date: '2019-01-01',
-                open: false
-                },
-                {
-                title: 'Meeting',
-                details: 'Spending time on how we do not have enough time',
-                date: '2019-01-07',
-                open: false
-                },
-                {
-                title: '30th Birthday',
-                details: 'Celebrate responsibly',
-                date: '2019-01-03',
-                open: false
-                },
-                {
-                title: 'New Year',
-                details: 'Eat chocolate until you pass out',
-                date: '2019-01-01',
-                open: false
-                },
-                {
-                title: 'Conference',
-                details: 'Mute myself the whole time and wonder why I am on this call',
-                date: '2019-01-1',
-                open: false
-                },
-                {
-                title: 'Hackathon',
-                details: 'Code like there is no tommorrow',
-                date: '2019-01-01',
-                open: false
-                }*/
-            ],
+            events : [],
             hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
         }),
+
+
         methods: {
             updateRoomType(){
                 this.$store.dispatch('roomtype', this.roomtype)
@@ -471,6 +424,9 @@
                 .catch(error => {
                     console.log('There was an error:' + error.response)
                 })
+            },
+            contructEvents(){
+                
             },
             todayDate() {
                 var today = new Date()
@@ -549,7 +505,7 @@
         color: #ffffff;
         border: 1px solid #1867c0;
         width: 100%;
-        font-size: 1px;
+        font-size: 8px;
         padding: 3px;
         cursor: pointer;
         margin-bottom: 1px;
