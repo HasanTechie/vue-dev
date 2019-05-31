@@ -99,12 +99,13 @@
         }
         this.hotels = hoteldata
       },
-      constructRooms( competitorNames, currentHotelPrice,
+      constructRooms(competitorNames, competitorRoomNames, currentHotelPrice,
                       competitorPrices){
         let roomdata = []
         for (let i=0; i<competitorNames.length; i+=1) {
           var obj = {}
           obj.name = (competitorNames[i]),
+          obj.room = (competitorRoomNames[i]),
           obj.currentprice = (currentHotelPrice).toFixed(2),
           obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2)
           
@@ -142,12 +143,14 @@
           console.log(Object.values(competitorsData))
           let competitorPrices = []
           let competitorNames = []
+          let competitorRoomNames = []
           let currentHotelPrice = roomDataArray['0'].price
           for (let i=0; i<competitorsData.length; i+=1) {
             competitorPrices.push(competitorsData[i].price)
             competitorNames.push(competitorsData[i].hotel_name)
+            competitorRoomNames.push(competitorsData[i].room)
           }
-          this.constructRooms(competitorNames, currentHotelPrice,
+          this.constructRooms(competitorNames, competitorRoomNames, currentHotelPrice,
                         competitorPrices, competitorPrices)
         }else{
           var competitorsArray = JSON.parse(JSON.stringify(
@@ -175,14 +178,16 @@
             console.log(Object.values(competitorsData))
             let competitorPrices = []
             let competitorNames = []
+            let competitorRoomNames = []
             let currentHotelPrice = roomDataArray['0'].price
             for (let i=0; i<competitorsData.length; i+=1) {
               competitorPrices.push(competitorsData[i].price)
               competitorNames.push(competitorsData[i].hotel_name)
+              competitorRoomNames.push(competitorsData[i].room)
             }
-            this.constructRooms(competitorNames, currentHotelPrice,
+            this.constructRooms(competitorNames, competitorRoomNames, currentHotelPrice,
                           competitorPrices, competitorPrices)
-            this.roomsdownloaded = true
+              this.roomsdownloaded = true
           })
           .catch(error => {
               console.log('There was an error:' + error.response)

@@ -216,8 +216,8 @@
                             :show-interval-label="showIntervalLabel"
                             :color="color"
                     >
-                        <template v-slot:day="{ date }">
-                            <template v-for="event in eventsMap[date]">
+                        <template v-slot:day="{ event_date }">
+                            <template v-for="event in eventsMap[event_date]">
                             <v-menu
                                 :key="event.title"
                                 v-model="event.open"
@@ -404,7 +404,7 @@
             roomtypes : [],
             roomtype : 'All',
             events : [
-                {
+                /*{
                 title: 'Vacation',
                 details: 'Going to the beach!',
                 date: '2018-12-30',
@@ -451,12 +451,10 @@
                 details: 'Code like there is no tommorrow',
                 date: '2019-01-01',
                 open: false
-                }
+                }*/
             ],
             hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
         }),
-
-
         methods: {
             updateRoomType(){
                 this.$store.dispatch('roomtype', this.roomtype)
@@ -464,7 +462,7 @@
             },
             getEvents(){
 
-                console("=> download events...")
+                console.log("=> download events...")
                 apiRequests.getEvents()
                 .then(response => {
                     this.events = response.data.data
@@ -529,7 +527,7 @@
             // convert the list of events into a map of lists keyed by date
             eventsMap () {
                 const map = {}
-                this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
+                this.events.forEach(e => (map[e.event_date] = map[e.event_date] || []).push(e))
                 return map
             }
         },
@@ -551,7 +549,7 @@
         color: #ffffff;
         border: 1px solid #1867c0;
         width: 100%;
-        font-size: 12px;
+        font-size: 1px;
         padding: 3px;
         cursor: pointer;
         margin-bottom: 1px;

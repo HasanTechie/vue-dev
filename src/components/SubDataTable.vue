@@ -9,7 +9,7 @@
                       hide-actions
                       class="elevation-10">
           <template v-slot:items="props">
-            <td>{{ props.item.name }}</td>
+            <td>{{ props.item.room }}</td>
             <td class="text-xs-right">{{ props.item.currentprice }}</td>
             <td class="text-xs-right">{{ props.item.marketvalue }}</td>
           </template>
