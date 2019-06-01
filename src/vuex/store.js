@@ -70,14 +70,14 @@ export const store = new Vuex.Store({
 
         register({commit}, credentials) {
             return axios
-                .post('http://solidps.test/api/register', credentials)
+                .post('http://35.158.76.194/api/register', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })
         },
         login({commit}, credentials) {
             return axios
-                .post('http://solidps.test/api/login', credentials)
+                .post('http://35.158.76.194/api/login', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })
@@ -87,7 +87,7 @@ export const store = new Vuex.Store({
                 headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
             };
             return axios
-                .post('http://solidps.test/api/competitors', dataToBeStored, config)
+                .post('http://35.158.76.194/api/competitors', dataToBeStored, config)
                 .then(({data}) => {
                 })
         },
@@ -97,7 +97,7 @@ export const store = new Vuex.Store({
             };
 
             return axios
-                .get('http://solidps.test/api/competitors&user_id=' + dataToBeDeleted.user_id +
+                .get('http://35.158.76.194/api/competitors&user_id=' + dataToBeDeleted.user_id +
                     '&hotel_id=' + dataToBeDeleted.hotel_id, config)
                 .then(({data}) => {
                 })
@@ -108,7 +108,7 @@ export const store = new Vuex.Store({
             };
 
             return axios
-                .get('http://solidps.test/api/competitors', config)
+                .get('http://35.158.76.194/api/competitors', config)
                 .then(({data}) => {
                     return data
                 })
