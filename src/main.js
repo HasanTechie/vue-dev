@@ -11,7 +11,7 @@ import camelCase from 'lodash/camelCase'
 //to be removed
 // import axios from 'axios'
 // window.axios=axios
-// axios.defaults.baseURL = 'http://solidps.test/api';
+// axios.defaults.baseURL = 'http://35.158.76.194/api';
 //
 
 // import component and stylesheet

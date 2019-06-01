@@ -61,15 +61,15 @@
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
-                competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
-                hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
+                // competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
+                // hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
                 items: [],
                 selectedValue: 'All'
 
             }
         },
         created() {
-            this.getCompetitorsIDs()
+            // this.getCompetitorsIDs()
             this.getHotelsPrices()
         },
         methods: {
@@ -77,10 +77,10 @@
 
                 if (!this.executedB) {
 
-                    apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue)
+                    apiRequests.getCompetitorPricesApex(this.selectedValue)
                         .then(response => {
 
-                            console.log(response.data)
+                            // console.log(response.data)
 
                             this.myData = response.data.data;
 
@@ -203,7 +203,7 @@
 
             },
             getHotelDataWithDates(dateOne, dateTwo) {
-                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue, dateOne, dateTwo)
+                apiRequests.getCompetitorPricesApex(this.selectedValue, dateOne, dateTwo)
                     .then(response => {
 
                         this.myData = response.data.data

@@ -22,11 +22,9 @@ export default {
     getCompetitorAvgPricesForDates(competitorsids, dateOne, dateTwo) {
         return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
     },
-    getCompetitorPricesApex(hotelid, competitorsids, selectedValue, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
-        var config = {
-            headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
-        };
-        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids + '&room=' + selectedValue)
+    getCompetitorPricesApex(selectedValue, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
+        var userid = JSON.parse(localStorage.getItem('user')).user.id;
+        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&userid=' + userid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&room=' + selectedValue)
     },
     getCompetitorRoomsPrices(competitorsids) {
         return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
