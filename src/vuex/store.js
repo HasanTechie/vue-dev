@@ -70,16 +70,47 @@ export const store = new Vuex.Store({
 
         register({commit}, credentials) {
             return axios
-                .post('http://35.158.76.194/api/register', credentials)
+                .post('http://solidps.test/api/register', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })
         },
         login({commit}, credentials) {
             return axios
-                .post('http://35.158.76.194/api/login', credentials)
+                .post('http://solidps.test/api/login', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
+                })
+        },
+        storeCompetitor({commit}, dataToBeStored) {
+            var config = {
+                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+            };
+            return axios
+                .post('http://solidps.test/api/competitors', dataToBeStored, config)
+                .then(({data}) => {
+                })
+        },
+        deleteCompetitor({commit}, dataToBeDeleted) {
+            var config = {
+                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+            };
+
+            return axios
+                .get('http://solidps.test/api/competitors&user_id=' + dataToBeDeleted.user_id +
+                    '&hotel_id=' + dataToBeDeleted.hotel_id, config)
+                .then(({data}) => {
+                })
+        },
+        getAllCompetitor({commit}) {
+            var config = {
+                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+            };
+
+            return axios
+                .get('http://solidps.test/api/competitors', config)
+                .then(({data}) => {
+                    return data
                 })
         },
         logout({commit}) {

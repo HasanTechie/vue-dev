@@ -12,14 +12,15 @@
         <!--        <pre class="language-json"><code>{{ value }}</code></pre>-->
 
         <br>
-        <h2 v-if="value.length" class="blue--text headline">Competitors Selected : {{ value.length }}</h2>
+        <h2 v-if="this.value.length" class="blue--text headline">Competitors Selected : {{ this.value.length }}</h2>
         <br>
-        <div v-for="item in value" :key="item.hotel_id">
-            <v-chip v-model="item.status" close color="blue title" dark text-color="white" @input="updateSelections(item.hotel_id)" label>
+        <div v-for="item in value" :key="item.hotel_id * Math.random()">
+            <v-chip v-model="item.status" close color="blue title" dark text-color="white"
+                    @input="updateSelections(item.hotel_id)" label>
                 <v-avatar>
                     <v-icon>arrow_right_alt</v-icon>
                 </v-avatar>
-                <strong>{{item.name}}</strong>&nbsp;
+                <strong>{{item.name}}</strong>
                 <span><small>( {{item.address}} )</small></span>
             </v-chip>
         </div>
@@ -41,16 +42,32 @@
             return {
                 value: [],
                 options: [],
-                trigger: true,
             }
         },
 
         created() {
             this.getAllHotels()
+            this.getSelectedCompetitors()
         },
 
         methods: {
+            getSelectedCompetitors() {
+                this.$store.dispatch('getAllCompetitor'
+                ).then(response => {
+                    this.value = response.data
+
+                    // console.log(this.value)
+                })
+            },
             updateSelections(hotel_id) {
+
+                this.$store.dispatch('deleteCompetitor', {
+                        user_id: JSON.parse(localStorage.getItem('user')).user.id,
+                        hotel_id: hotel_id
+                    }
+                ).then(() => {
+                    // console.log('deleted');
+                })
 
                 this.value = this.value.filter(function (returnableObjects) {
                     return returnableObjects.hotel_id !== hotel_id;
@@ -74,16 +91,50 @@
                         console.log('There was an error:' + error.response)
                     })
             },
-
             updateSelectedHotels() {
-                console.log('store')
+                this.updateSelectedHotelsHasan()
+                this.updateSelectedHotelsWilhelm()
+            },
+            updateSelectedHotelsHasan() {
+                if (this.value.length) {
+
+                    var competitorsArray = JSON.parse(JSON.stringify(this.value))
+                    var last = competitorsArray.pop();
+
+                    this.$store.dispatch('storeCompetitor', {
+                            user_id: JSON.parse(localStorage.getItem('user')).user.id,
+                            hotel_id: last.hotel_id,
+                            name: last.name,
+                            address: last.address
+                        }
+                    ).then(() => {
+                        this.getSelectedCompetitors()
+                        // console.log('added');
+                    })
+                }
+
+            },
+            updateSelectedHotelsWilhelm() {
+                // console.log('store')
                 var competitorsArray = JSON.parse(JSON.stringify(this.value))
                 this.$store.dispatch('setCompetitorsArray', competitorsArray)
-                console.log(competitorsArray)
-
+                // console.log(competitorsArray)
             }
 
-        }
+
+        },
+        // computed: {
+        //     // a computed getter
+        //     showCounter: function () {
+        //         if (this.competitors.length) {
+        //             return true
+        //         }
+        //         return false
+        //     },
+        //     getCounters: function () {
+        //             return this.competitors.length
+        //     },
+        // }
 
     }
 
