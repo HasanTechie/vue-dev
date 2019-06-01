@@ -26,7 +26,7 @@ export default {
         var config = {
             headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
         };
-        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&userid=' + hotelid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids + '&room=' + selectedValue, config)
+        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids + '&room=' + selectedValue, config)
     },
     getCompetitorRoomsPrices(competitorsids) {
         return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
