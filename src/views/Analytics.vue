@@ -80,6 +80,8 @@
                     apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue)
                         .then(response => {
 
+                            console.log(response.data)
+
                             this.myData = response.data.data;
 
                             this.items = this.myData.rooms

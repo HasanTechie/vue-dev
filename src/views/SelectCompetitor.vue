@@ -105,7 +105,8 @@
                             user_id: JSON.parse(localStorage.getItem('user')).user.id,
                             hotel_id: last.hotel_id,
                             name: last.name,
-                            address: last.address
+                            address: last.address,
+                            city: last.city
                         }
                     ).then(() => {
                         this.getSelectedCompetitors()

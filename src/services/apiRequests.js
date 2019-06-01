@@ -23,7 +23,10 @@ export default {
         return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
     },
     getCompetitorPricesApex(hotelid, competitorsids, selectedValue, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
-        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids + '&room=' + selectedValue)
+        var config = {
+            headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+        };
+        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&userid=' + hotelid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids + '&room=' + selectedValue, config)
     },
     getCompetitorRoomsPrices(competitorsids) {
         return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
