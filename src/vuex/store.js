@@ -88,7 +88,7 @@ export const store = new Vuex.Store({
             };
             return axios
                 .post('http://35.158.76.194/api/competitors', dataToBeStored, config)
-                .then(({data}) => {
+                .then(() => {
                 })
         },
         deleteCompetitor({commit}, dataToBeDeleted) {
@@ -99,7 +99,7 @@ export const store = new Vuex.Store({
             return axios
                 .get('http://35.158.76.194/api/competitors&user_id=' + dataToBeDeleted.user_id +
                     '&hotel_id=' + dataToBeDeleted.hotel_id, config)
-                .then(({data}) => {
+                .then(() => {
                 })
         },
         getAllCompetitor({commit}) {
