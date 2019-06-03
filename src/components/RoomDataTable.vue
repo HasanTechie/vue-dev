@@ -40,7 +40,7 @@
       roomsdatadownloaded: false,
       avpricedatadownloaded: false,
       props:{
-        today: '2019-04-24'
+        today: '2019-05-24'
       },
       pagination: {
         sortBy: 'name'
@@ -70,6 +70,8 @@
       this.getCompetitorsIDs()
       this.getCompetitorAvPrices()
       this.getCompetitorRoomPrices()
+      this.today = this.getTodayDate()
+      console.log('Todays Date:'+this.today)
     },
     methods: {
       changeSort (column) {
@@ -79,6 +81,14 @@
           this.pagination.sortBy = column
           this.pagination.descending = false
         }
+      },
+      getTodayDate(){
+        const toTwoDigits = num => num < 10 ? '0' + num : num
+        let today = new Date()
+        let year = today.getFullYear()
+        let month = toTwoDigits(today.getMonth() + 1)
+        let day = toTwoDigits(today.getDate())
+        return `${year}-${month}-${day}`
       },
       constructHotelAvs( competitorNames, currentHotelPrice,
                       competitorPrices){
@@ -171,7 +181,7 @@
             })
 
             // save the downloaded data
-            this.$store.dispatch('roomDataArray', roomDataArray)
+            this.$store.dispatch('setRoomDataArray', roomDataArray)
 
             console.log('This is the competitors data from server')
             let competitorsData = roomDataArray['0'].competitors_data
@@ -225,6 +235,7 @@
           console.log(apiCompetitorsString.replace(" ", ""))
           //TODO should be done with the vuex storage...
           apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
+          apiRequests.getCompetitorAvgPricesForDates(this.today)
           //apiRequests.getCompetitorAvgPricesFix()
             .then(response => {
             console.log(response.data)
@@ -234,7 +245,7 @@
             })
 
             // save the downloaded data
-            this.$store.dispatch('avpriceDataArray', avpriceDataArray)
+            this.$store.dispatch('setavpriceDataArray', avpriceDataArray)
             console.log('This is the competitors av price data from server')
             let competitorsData = avpriceDataArray['0'].competitors_data
             console.log(Object.values(competitorsData))

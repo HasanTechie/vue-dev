@@ -10,6 +10,8 @@ export const store = new Vuex.Store({
         competitorsArray: [],
         competitorsPricesArray: [],
         competitorsUids: '',
+        avpriceDataArray: [],
+        roomDataArray: [],
         user: null
     },
     getters: {
@@ -17,6 +19,8 @@ export const store = new Vuex.Store({
             return state.message
         },
         competitorsArray: state => state.competitorsArray,
+        roomDataArray: state => state.roomDataArray,
+        avpriceDataArray: state => state.avpriceDataArray,
         competitorsPricesArray: state => state.competitorsPricesArray,
         competitorsUids: state => state.competitorsUids,
         loggedIn() {
@@ -29,6 +33,12 @@ export const store = new Vuex.Store({
         },
         SET_COMPETITORS_ARRAY: (state, competitorsArray) => {
             state.competitorsArray = competitorsArray
+        },
+        SET_AVPRICE_DATA_ARRAY: (state, avpriceDataArray) => {
+            state.avpriceDataArray = avpriceDataArray
+        },
+        SET_ROOM_DATA_ARRAY: (state, roomDataArray) => {
+            state.roomDataArray = roomDataArray
         },
         SET_COMPETITORS_PRICE_ARRAY: (state, competitorsPricesArray) => {
             state.competitorsPricesArray = competitorsPricesArray
@@ -54,6 +64,10 @@ export const store = new Vuex.Store({
         setMessage: ({commit, state}, message) => {
             commit('SET_MESSAGE', message)
             return state.message
+        },
+        setavpriceDataArray: ({commit}, competitorsPricesArray) => {
+            commit('SET_AVPRICE_DATA_ARRAY', competitorsPricesArray)
+            return true
         },
         setCompetitorsArray: ({commit}, competitorsArray) => {
             commit('SET_COMPETITORS_ARRAY', competitorsArray)
