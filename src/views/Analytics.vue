@@ -61,15 +61,15 @@
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
-                competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
-                hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
+                // competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
+                // hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
                 items: [],
                 selectedValue: 'All'
 
             }
         },
         created() {
-            this.getCompetitorsIDs()
+            // this.getCompetitorsIDs()
             this.getHotelsPrices()
         },
         methods: {
@@ -77,12 +77,86 @@
 
                 if (!this.executedB) {
 
-                    apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue)
+                    apiRequests.getCompetitorPricesApex(this.selectedValue)
                         .then(response => {
 
-                            this.myData = response.data.data
+                            // console.log(response.data)
+
+                            this.myData = response.data.data;
 
                             this.items = this.myData.rooms
+
+
+                            /*
+                            var data = response.data.data
+
+                            data.forEach(function (item) {
+                                hotel_name = item.hotel_name
+                                priceArray.push(item.price)
+                                checkInArray.push(item.check_in_date)
+
+                                item.competitors_data.forEach(function (itemB) {
+                                    if (!(itemB.hotel_name in competitorsPriceArray)) {
+                                        competitorsPriceArray[itemB.hotel_name] = []
+                                    }
+                                    competitorsPriceArray[itemB.hotel_name].push(itemB.price)
+                                })
+
+                                // item.competitors_data.forEach(function (itemC) {
+                                //     // competitiorsArray.push(itemC.price)
+                                //     // competitiorsArray.forEach(function (itemD) {
+                                //     //
+                                //     //     if (itemD == itemC.hotel_id) {
+                                //     //         competitorsPriceArray[itemC.hotel_id].push(itemC.price)
+                                //     //     }
+                                //     //
+                                //     // })
+                                //
+                                // })
+
+                            })
+
+
+                            // var competitorsPriceArray = [45, 4, 9, 16, 25];
+                            competitorsPriceArray.forEach(myFunction);
+
+                            function myFunction(value, index, array) {
+
+                                console.log(value + index + array)
+                            }
+
+
+
+                            // var dA = competitorsPriceArray;
+                            //
+                            //
+                            //
+                            // for(let i = 0; i < dA.length; i++){
+                            //
+                            //
+                            // }
+
+                            // var dataArray = Object.keys(response.data.data).map((key) => {
+                            //     return response.data.data[key]
+                            // })
+
+
+                            // dataArray.forEach(function (item) {
+                            //
+                            //     console.log(item.competitors_data[0].hotel_name)
+                            //     item.competitors_data.forEach(function (item) {
+                            //         // console.log(item)
+                            //     })
+                            //     hotel_name = item.hotel_name
+                            //     priceArray.push(item.price)
+                            //     // this.series = [{
+                            //     //     data: item.price
+                            //     // }]
+                            // });
+                            // dataArray.forEach(function (item) {
+                            //     checkInArray.push(item.check_in_date)
+                            // });
+    */
 
                             this.trigger = true
                         })
@@ -95,6 +169,10 @@
 
                 this.getHotelDataWithDates(this.dateOne, this.dateTwo)
 
+                // this.$nextTick(() => {
+                //     // Add the component back in
+                //     this.trigger = true
+                // });
             },
             updateRoomType(){
                 this.$store.dispatch('roomtype', this.selectedValue)
@@ -127,7 +205,7 @@
 
             },
             getHotelDataWithDates(dateOne, dateTwo) {
-                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue, dateOne, dateTwo)
+                apiRequests.getCompetitorPricesApex(this.selectedValue, dateOne, dateTwo)
                     .then(response => {
 
                         this.myData = response.data.data

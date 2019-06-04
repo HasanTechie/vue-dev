@@ -53,6 +53,7 @@
         data() {
             return {
                 drawer: true,
+                dialog: false,
                 links: [
                     {icon: 'home', text: 'Home', routename: 'home'},
                     {icon: 'list', text: 'Select Competitor Hotels', routename: 'selectcompetitor'},
@@ -64,28 +65,11 @@
         computed: {
             ...authComputed
         },
-        created() {
-            this.checkStatus()
-        },
         methods: {
             logout() {
                 this.$store.dispatch('logout')
+                location.reload()
             },
-            checkStatus() {
-                if (localStorage.getItem('user')) {
-
-                    if (JSON.parse(localStorage.getItem('user')).user) {
-                        if (!JSON.parse(localStorage.getItem('user')).user.status) {
-                            this.$store.dispatch('logout')
-                            alert('Please contact for activation')
-                        }
-                    } else {
-                        this.$store.dispatch('logout')
-                        alert('Incorrect password')
-                    }
-
-                }
-            }
         }
     }
 </script>

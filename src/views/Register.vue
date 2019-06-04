@@ -8,20 +8,38 @@
                         <v-spacer></v-spacer>
                     </v-toolbar>
                     <v-card-text>
-                        <v-form>
+                        <v-form ref="form">
                             <v-text-field prepend-icon="person" v-model="name" label="Your Name"
-                                          type="text"></v-text-field>
+                                          type="text" :rules="inputNameRules"></v-text-field>
                             <v-text-field prepend-icon="email" v-model="email" label="Your Email"
-                                          type="text"></v-text-field>
+                                          type="text" :rules="inputEmailRules"></v-text-field>
                             <v-text-field id="password" prepend-icon="lock" v-model="password" label="Your Password"
-                                          type="password"></v-text-field>
+                                          type="password" :rules="inputPasswordRules"></v-text-field>
                             <v-layout>
                                 <v-icon>hotel</v-icon>&nbsp;&nbsp;<multiselect v-model="value" :options="options"
                                                                                :custom-label="nameWithCity"
+                                                                               @input="onChange"
                                                                                placeholder="Select your Hotel"
                                                                                label="selecthotel"
-                                                                               track-by="name"></multiselect>
+                                                                               track-by="name"
+                            ></multiselect>
                             </v-layout>
+                            <v-layout v-show="showSelectError">
+                                <span class="red--text ml-4 caption">
+                                    &nbsp;&nbsp;&nbsp;{{showSelectError}}
+                                </span>
+                            </v-layout>
+                            <v-switch
+                                    v-model="terms"
+                                    color="indigo"
+                                    value="indigo"
+                                    hide-details
+                                    label="I agree to all Terms and Conditions"
+                                    :rules="inputSwitchRules"
+                            ></v-switch>
+                            <!--                            <v-layout>-->
+                            <!--                                -->
+                            <!--                            </v-layout>-->
                         </v-form>
                     </v-card-text>
 
@@ -32,7 +50,7 @@
 
                     <v-card-text>
                         <router-link to="/login">
-                            Already have an account? Login
+                            <v-btn outline color="blue">Already have an account? Login</v-btn>
                         </router-link>
                     </v-card-text>
                 </v-card>
@@ -59,6 +77,23 @@
                 email: null,
                 password: null,
                 hotel_id: null,
+                showSelectError: null,
+                inputNameRules: [
+                    v => !!v || 'Name is required',
+                    v => v && v.length >= 3 || 'Minimum length is 3 characters'
+                ],
+                inputEmailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+/.test(v) || 'E-mail must be valid'
+                ],
+                inputPasswordRules: [
+                    v => !!v || 'Password is required',
+                    v => v && v.length >= 6 || 'Minimum length is 6 characters'
+                ],
+                inputSwitchRules: [
+                    v => !!v || 'inValid',
+                ],
+                terms: false,
                 value: [],
                 options: [],
             }
@@ -67,6 +102,9 @@
             this.getAllHotels()
         },
         methods: {
+            onChange() {
+                this.showSelectError = null
+            },
             nameWithCity({name, city}) {
                 return `${name} — ${city}`
             },
@@ -76,7 +114,6 @@
                         var dataArray = Object.keys(response.data.data).map((key) => {
                             return response.data.data[key]
                         })
-
                         this.options = dataArray;
                     })
                     .catch(error => {
@@ -84,30 +121,27 @@
                     })
             },
             register() {
-                this.$store.dispatch('register', {
-                    name: this.name,
-                    email: this.email,
-                    password: this.password,
-                    hotel_id: this.value.hotel_id
-                }).then(() => {
-                    location.reload()
-                    this.$router.push({name: 'home'})
-                })
+                if (!this.value.hotel_id) {
+                    this.showSelectError = 'Please Select your Hotel'
+                }
 
-                // axios.post('/register', {
-                //     name: this.name,
-                //     email: this.email,
-                //     password: this.password
-                // }).then((response) => {
-                //     console.log('req response' + response)
-                // }).catch((error) => {
-                //     console.log('req error' + error)
-                // })
+                if (this.$refs.form.validate()) {
+                    if (this.value.hotel_id) {
+                        this.$store.dispatch('register', {
+                            name: this.name,
+                            email: this.email,
+                            password: this.password,
+                            hotel_id: this.value.hotel_id
+                        }).then(() => {
+                            location.reload()
+                            this.$router.push({name: 'home'})
+                        })
+                    }
+                }
             }
         }
     }
 </script>
 
 <style scoped>
-
 </style>

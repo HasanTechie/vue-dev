@@ -71,7 +71,6 @@
       this.getCompetitorAvPrices()
       this.getCompetitorRoomPrices()
       this.today = this.getTodayDate()
-      console.log('Todays Date:'+this.today)
     },
     methods: {
       changeSort (column) {

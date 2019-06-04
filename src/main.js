@@ -3,6 +3,7 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import {store} from './vuex/store'
+import VueSweetalert2 from 'vue-sweetalert2';
 import MultiFiltersPlugin from './plugins/MultiFiltersPlugin'
 
 import upperFirst from 'lodash/upperFirst'
@@ -11,7 +12,7 @@ import camelCase from 'lodash/camelCase'
 //to be removed
 // import axios from 'axios'
 // window.axios=axios
-// axios.defaults.baseURL = 'http://solidps.test/api';
+// axios.defaults.baseURL = 'http://35.158.76.194/api';
 //
 
 // import component and stylesheet
@@ -24,7 +25,11 @@ const datepickerOptions = {}
 // make sure we can use it in our components
 Vue.use(AirbnbStyleDatepicker, datepickerOptions)
 
-
+const options = {
+  confirmButtonColor: '#41b882',
+  cancelButtonColor: '#ff7674'
+}
+Vue.use(VueSweetalert2,options);
 
 const requireComponent = require.context(
     // The relative path of the components folder

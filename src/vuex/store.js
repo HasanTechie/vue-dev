@@ -57,7 +57,7 @@ export const store = new Vuex.Store({
             localStorage.removeItem(('user'))
             state.user = null
             axios.defaults.headers.common['Authorization'] = null
-            location.reload()
+            // location.reload()
         }
     },
     actions: {
@@ -94,6 +94,37 @@ export const store = new Vuex.Store({
                 .post('http://35.158.76.194/api/login', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
+                })
+        },
+        storeCompetitor({commit}, dataToBeStored) {
+            var config = {
+                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+            };
+            return axios
+                .post('http://35.158.76.194/api/competitors', dataToBeStored, config)
+                .then(() => {
+                })
+        },
+        deleteCompetitor({commit}, dataToBeDeleted) {
+            var config = {
+                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+            };
+
+            return axios
+                .get('http://35.158.76.194/api/competitors&user_id=' + dataToBeDeleted.user_id +
+                    '&hotel_id=' + dataToBeDeleted.hotel_id, config)
+                .then(() => {
+                })
+        },
+        getAllCompetitor({commit}) {
+            var config = {
+                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+            };
+
+            return axios
+                .get('http://35.158.76.194/api/competitors', config)
+                .then(({data}) => {
+                    return data
                 })
         },
         logout({commit}) {

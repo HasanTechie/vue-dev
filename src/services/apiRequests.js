@@ -14,25 +14,20 @@ export default {
         return apiClient.get('/hotels&get=0' + this.getApiKey() + '&city=' + city)
     },
     getPrices() {
-        return apiClient.get('roomsprices&get=40' + this.getApiKey() + '&hotelid=28&datefrom=2019-04-25&dateto=2019-12-25')
+        return apiClient.get('roomsprices&get=40' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-25')
     },
     getCompetitorAvgPrices(competitorsids) {
-        return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
-    },
-    getCompetitorAvgPricesFix(competitorsids='1024,3045,4106') {
         return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
     },
     getCompetitorAvgPricesForDates(competitorsids, dateOne, dateTwo) {
         return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
     },
-    getCompetitorPricesApex(hotelid, competitorsids, selectedValue, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
-        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids + '&room=' + selectedValue)
+    getCompetitorPricesApex(selectedValue, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
+        var userid = JSON.parse(localStorage.getItem('user')).user.id;
+        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&userid=' + userid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&room=' + selectedValue)
     },
-    getCompetitorRoomsPrices(competitorsids='1024,3045,4106', hotelid='21') {
-        return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid='+hotelid+'&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
-    },
-    getCompetitorRoomsPricesFix(competitorsids='1024,3045,4106', hotelid='21') {
-        return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid='+hotelid+'&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
+    getCompetitorRoomsPrices(competitorsids) {
+        return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28&competitorsid=' + competitorsids)
     },
     getCompetitors() {
         return '&competitorsid=' + this.$store.getters.competitorsids
