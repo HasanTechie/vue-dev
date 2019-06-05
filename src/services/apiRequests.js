@@ -38,17 +38,27 @@ export default {
                                 competitorsids, 
                                 selectedValue, 
                                 dateOne = '2019-01-01', 
-                                dateTwo = '2021-01-01') {
+                                dateTwo = '2019-08-01') {
         return apiClient.get('competitorspricesapex&get=50' + 
         this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + 
         dateOne + '&dateto=' + dateTwo + '&competitorsid=' + 
         competitorsids + '&room=' + selectedValue)
     },
     getCompetitorRoomsPrices(   competitorsids,
-                                hotelid='21') {
+                                hotelid='21') 
+    {
         return apiClient.get('competitorsroomsprices&get=50' + 
-        this.getApiKey() + '&hotelid='+hotelid+'&datefrom=2019-04-25'+
-        '&dateto=2020-05-28&competitorsid=' + competitorsids)
+            this.getApiKey() + '&hotelid='+hotelid+'&datefrom=2019-04-25'+
+            '&dateto=2020-05-28&competitorsid=' + competitorsids)
+    },
+    getMyCompetitorRoomsPrices( competitorsids,
+                                dateFrom,
+                                dateTo,
+                                hotelid='21') 
+    {
+        return apiClient.get('competitorsroomsprices&get=50' + 
+            this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateFrom +
+                        '&dateto=' + dateTo + '&competitorsid=' + competitorsids)
     },
     getCompetitorRoomsPricesFix(competitorsids='1024,3045,4106', 
                                 hotelid='21') {
