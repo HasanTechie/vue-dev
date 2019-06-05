@@ -60,7 +60,6 @@
                 })
             },
             updateSelections(hotel_id) {
-
                 this.$store.dispatch('deleteCompetitor', {
                         user_id: JSON.parse(localStorage.getItem('user')).user.id,
                         hotel_id: hotel_id
@@ -72,7 +71,6 @@
                 this.value = this.value.filter(function (returnableObjects) {
                     return returnableObjects.hotel_id !== hotel_id;
                 });
-
                 // this.value = this.value.filter(hotel => hotel.hotel_id !== hotel_id); //can be done
             },
             nameWithCity({name, city}) {
@@ -80,16 +78,16 @@
             },
             getAllHotels() {
                 apiRequests.getHotels()
-                    .then(response => {
-                        var dataArray = Object.keys(response.data.data).map((key) => {
-                            return response.data.data[key]
-                        })
-                        // use Vuex store
-                        this.options = dataArray
+                .then(response => {
+                    var dataArray = Object.keys(response.data.data).map((key) => {
+                        return response.data.data[key]
                     })
-                    .catch(error => {
-                        console.log('There was an error:' + error.response)
-                    })
+                    // use Vuex store
+                    this.options = dataArray
+                })
+                .catch(error => {
+                    console.log('There was an error:' + error.response)
+                })
             },
             updateSelectedHotels() {
                 this.updateSelectedHotelsHasan()

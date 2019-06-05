@@ -40,7 +40,7 @@
       roomsdatadownloaded: false,
       avpricedatadownloaded: false,
       props:{
-        today: '2019-05-24'
+        today: ''
       },
       pagination: {
         sortBy: 'name'
@@ -170,8 +170,12 @@
           // make request for according uids
           console.log(apiCompetitorsString.replace(" ", ""))
           //TODO should be done with the vuex storage...
-          apiRequests.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
-          //apiRequests.getCompetitorRoomsPricesFix()
+          //apiRequests.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
+          apiRequests.getCompetitorAvgPricesForDates(
+            apiCompetitorsString.replace(" ", ""),
+            this.today,
+            this.today
+          )
           .then(response => {
             console.log(response.data)
             //var dataArray = JSON.parse(JSON.stringify(response.data.data))
@@ -233,8 +237,11 @@
           // make request for according uids
           console.log(apiCompetitorsString.replace(" ", ""))
           //TODO should be done with the vuex storage...
-          apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
-          apiRequests.getCompetitorAvgPricesForDates(this.today)
+          //apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
+          apiRequests.getCompetitorAvgPricesForDates(
+                                apiCompetitorsString.replace(" ", ""),
+                                this.today,
+                                this.today)
           //apiRequests.getCompetitorAvgPricesFix()
             .then(response => {
             console.log(response.data)

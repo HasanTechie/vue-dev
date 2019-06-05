@@ -73,6 +73,10 @@ export const store = new Vuex.Store({
             commit('SET_COMPETITORS_ARRAY', competitorsArray)
             return true
         },
+        setRoomDataArray: ({commit}, roomDataArray) => {
+            commit('SET_ROOM_DATA_ARRAY', roomDataArray)
+            return true
+        },
         setCompetitorsPriceArray: ({commit}, competitorsPricesArray) => {
             commit('SET_COMPETITORS_PRICE_ARRAY', competitorsPricesArray)
             return true
@@ -96,7 +100,7 @@ export const store = new Vuex.Store({
                     commit('SET_USER_DATA', data)
                 })
         },
-        storeCompetitor({commit}, dataToBeStored) {
+        storeCompetitor( dataToBeStored) {
             var config = {
                 headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
             };
@@ -105,7 +109,7 @@ export const store = new Vuex.Store({
                 .then(() => {
                 })
         },
-        deleteCompetitor({commit}, dataToBeDeleted) {
+        deleteCompetitor( dataToBeDeleted) {
             var config = {
                 headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
             };
@@ -116,7 +120,7 @@ export const store = new Vuex.Store({
                 .then(() => {
                 })
         },
-        getAllCompetitor({commit}) {
+        getAllCompetitor() {
             var config = {
                 headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
             };
