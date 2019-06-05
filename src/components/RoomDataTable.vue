@@ -67,10 +67,11 @@
       ],
     }),
     created() {
+      this.today = this.getTodayDate()
+      this.$store.dispatch('setToday', this.today)
       this.getCompetitorsIDs()
       this.getCompetitorAvPrices()
       this.getCompetitorRoomPrices()
-      this.today = this.getTodayDate()
     },
     methods: {
       changeSort (column) {
@@ -116,7 +117,8 @@
           obj.name = (competitorNames[i]),
           obj.room = (competitorRoomNames[i]),
           obj.currentprice = (currentHotelPrice).toFixed(2),
-          obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2)
+          obj.marketvalue = (competitorPrices[i]+ Math.random()*
+          (15.0-8.5)).toFixed(2)
           
           roomdata.push(obj)
         }
@@ -142,12 +144,25 @@
       getCompetitorRoomPrices()
       {
         console.log('=>updating selected comptetior room prices')
-        // check if the data has been loaded all ready. if not got through
-        // the long process of downloading. Else dont download but get from loca
-        // storage
-        if (this.roomsdatadownloaded){
-          var roomDataArray = JSON.parse(JSON.stringify(this.$store.getters.roomDataArray))
-          console.log('This is the competitors data from store')
+
+        // FROM STORE
+        var competitorsArray = JSON.parse(JSON.stringify(
+                                this.$store.getters.competitorsArray))
+        var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
+        var apiCompetitorsString = ''+competitorsUids.join()+''
+        
+        apiRequests
+        .getCompetitorRoomsPricesForDates(  apiCompetitorsString.replace(" ", ""),
+                                            this.today,
+                                            this.today)
+        .then(response => {
+          console.log(response.data)
+          var roomDataArray = Object.keys(response.data.data).map((key) => {
+                        return response.data.data[key]
+          })
+          // save the downloaded data
+          this.$store.dispatch('setRoomDataArray', roomDataArray)
+          console.log('This is the competitors data from server')
           let competitorsData = roomDataArray['0'].competitors_data
           console.log(Object.values(competitorsData))
           let competitorPrices = []
@@ -159,62 +174,37 @@
             competitorNames.push(competitorsData[i].hotel_name)
             competitorRoomNames.push(competitorsData[i].room)
           }
-          this.constructRooms(competitorNames, competitorRoomNames, currentHotelPrice,
-                        competitorPrices, competitorPrices)
-        }else{
-          var competitorsArray = JSON.parse(JSON.stringify(
-                                  this.$store.getters.competitorsArray))
-          var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
-          var apiCompetitorsString = ''+competitorsUids.join()+''
-
-          // make request for according uids
-          console.log(apiCompetitorsString.replace(" ", ""))
-          //TODO should be done with the vuex storage...
-          //apiRequests.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
-          apiRequests.getCompetitorAvgPricesForDates(
-            apiCompetitorsString.replace(" ", ""),
-            this.today,
-            this.today
-          )
-          .then(response => {
-            console.log(response.data)
-            //var dataArray = JSON.parse(JSON.stringify(response.data.data))
-            var roomDataArray = Object.keys(response.data.data).map((key) => {
-                          return response.data.data[key]
-            })
-
-            // save the downloaded data
-            this.$store.dispatch('setRoomDataArray', roomDataArray)
-
-            console.log('This is the competitors data from server')
-            let competitorsData = roomDataArray['0'].competitors_data
-            console.log(Object.values(competitorsData))
-            let competitorPrices = []
-            let competitorNames = []
-            let competitorRoomNames = []
-            let currentHotelPrice = roomDataArray['0'].price
-            for (let i=0; i<competitorsData.length; i+=1) {
-              competitorPrices.push(competitorsData[i].price)
-              competitorNames.push(competitorsData[i].hotel_name)
-              competitorRoomNames.push(competitorsData[i].room)
-            }
-            this.constructRooms(competitorNames, competitorRoomNames, currentHotelPrice,
-                          competitorPrices, competitorPrices)
-              this.roomsdownloaded = true
-          })
-          .catch(error => {
-              console.log('There was an error:' + error.response)
-          })
+          this.constructRooms(competitorNames, competitorRoomNames, 
+                        currentHotelPrice, competitorPrices, competitorPrices)
+          this.roomsdownloaded = true
+        })
+        .catch(error => {
+          console.log('There was an error:' + error.response)
+        })
         }
       },
       getCompetitorAvPrices(){
         console.log('=>updating selected comptetior average prices')
-        // iterate through hotel uids of selected competitors
-        // and pick their prices
-        if(this.avpricedatadownloaded){
+        var competitorsArray = JSON.parse(JSON.stringify(
+                                this.$store.getters.competitorsArray))
+        var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
+        var apiCompetitorsString = '' + competitorsUids.join() + ''
+    
+        this.$store.dispatch('setCompetitorsUids', 
+                              apiCompetitorsString.replace(" ", ""))
 
-          var avpriceDataArray = JSON.parse(JSON.stringify(this.$store.getters.avpriceDataArray))
-          console.log('This is the competitors av price data from store')
+        console.log("this.today :" + this.today)
+        apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
+        .then(response => {
+          console.log(response.data)
+          //var dataArray = JSON.parse(JSON.stringify(response.data.data))
+          var avpriceDataArray = Object.keys(response.data.data).map((key) => {
+                        return response.data.data[key]
+          })
+
+          // save the downloaded data
+          this.$store.dispatch('setavpriceDataArray', avpriceDataArray)
+          console.log('This is the competitors av price data from server')
           let competitorsData = avpriceDataArray['0'].competitors_data
           console.log(Object.values(competitorsData))
           let competitorPrices = []
@@ -226,50 +216,12 @@
           }
           this.constructHotelAvs(competitorNames, currentHotelPrice,
                         competitorPrices, competitorPrices)
-        }else{
-          var competitorsArray = JSON.parse(JSON.stringify(
-                                  this.$store.getters.competitorsArray))
-          var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
-          var apiCompetitorsString = ''+competitorsUids.join()+''
-      
-          this.$store.dispatch('setCompetitorsUids', apiCompetitorsString.replace(" ", ""))
-
-          // make request for according uids
-          console.log(apiCompetitorsString.replace(" ", ""))
-          //TODO should be done with the vuex storage...
-          //apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
-          apiRequests.getCompetitorAvgPricesForDates(
-                                apiCompetitorsString.replace(" ", ""),
-                                this.today,
-                                this.today)
-          //apiRequests.getCompetitorAvgPricesFix()
-            .then(response => {
-            console.log(response.data)
-            //var dataArray = JSON.parse(JSON.stringify(response.data.data))
-            var avpriceDataArray = Object.keys(response.data.data).map((key) => {
-                          return response.data.data[key]
-            })
-
-            // save the downloaded data
-            this.$store.dispatch('setavpriceDataArray', avpriceDataArray)
-            console.log('This is the competitors av price data from server')
-            let competitorsData = avpriceDataArray['0'].competitors_data
-            console.log(Object.values(competitorsData))
-            let competitorPrices = []
-            let competitorNames = []
-            let currentHotelPrice = avpriceDataArray['0'].price
-            for (let i=0; i<competitorsData.length; i+=1) {
-              competitorPrices.push(competitorsData[i].price)
-              competitorNames.push(competitorsData[i].hotel_name)
-            }
-            this.constructHotelAvs(competitorNames, currentHotelPrice,
-                          competitorPrices, competitorPrices)
-            this.avpricedatadownloaded = true
-          })
-          .catch(error => {
-              console.log('There was an error:' + error.response)
-          })
-        }
+          this.avpricedatadownloaded = true
+        })
+        .catch(error => {
+            console.log('There was an error:' + error.response)
+        })
+        
       },
       getCompetitorsIDs() {
         var competitorsArray = JSON.parse(JSON.stringify(
@@ -282,13 +234,9 @@
       getHotelDataWithDates(dateOne, dateTwo) {
         apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue, dateOne, dateTwo)
         .then(response => {
-
             this.myData = response.data.data
-
             this.trigger = true
-
         })
       }
-    }
   }
 </script>
