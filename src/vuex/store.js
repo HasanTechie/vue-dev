@@ -119,7 +119,7 @@ export const store = new Vuex.Store({
                 .then(() => {
                 })
         },
-        deleteCompetitor( dataToBeDeleted) {
+        deleteCompetitor(dataToBeDeleted) {
             var config = {
                 headers: {'Authorization': "Bearer " + 
                 JSON.parse(localStorage.getItem('user')).access_token}
