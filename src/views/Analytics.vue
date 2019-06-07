@@ -71,6 +71,7 @@
         created() {
             // this.getCompetitorsIDs()
             this.getHotelsPrices()
+            this.testingData
         },
         methods: {
             getHotelsPrices() {
@@ -213,6 +214,12 @@
                         this.trigger = true
                         // });
                     })
+            },
+
+            testingData(){
+                apiRequests.getCompetitorAvgPrices('1024').then(response => {
+                    console.log(response.data)
+                })
             }
         }
     }
