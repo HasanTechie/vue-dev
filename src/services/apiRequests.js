@@ -8,8 +8,9 @@ const apiClient = axios.create({
         'Content-Type': 'application/json'
     }
 })
-
-const userid = JSON.parse(localStorage.getItem('user')).user.id;
+if (localStorage.getItem('user').user.id) {
+    var userid = JSON.parse(localStorage.getItem('user')).user.id;
+}
 
 export default {
     getHotels(city = 'All') {
