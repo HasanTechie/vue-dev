@@ -71,7 +71,7 @@
         created() {
             // this.getCompetitorsIDs()
             this.getHotelsPrices()
-            this.testingData
+            this.testingData()
         },
         methods: {
             getHotelsPrices() {
@@ -217,7 +217,7 @@
             },
 
             testingData(){
-                apiRequests.getCompetitorAvgPrices('1024').then(response => {
+                apiRequests.getCompetitorRoomsPrices().then(response => {
                     console.log(response.data)
                 })
             }
