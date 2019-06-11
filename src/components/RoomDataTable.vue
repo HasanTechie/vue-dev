@@ -29,9 +29,11 @@
 
   import apiRequests from '@/services/apiRequests.js'
   import SubDataTable from '@/components/SubDataTable.vue'
+  import { mapState } from 'vuex';
 
   export default {
     name: "RoomDataTable",
+    computed: mapState(['today']),
     components: {
       SubDataTable
     },
@@ -67,12 +69,27 @@
       ],
     }),
     created() {
-      this.today = this.getTodayDate()
-      this.$store.dispatch('setToday', this.today)
       this.getCompetitorsIDs()
       this.getCompetitorAvPrices()
       this.getCompetitorRoomPrices()
     },
+    mounted() {
+      this.$store.watch(
+        (state, getters) => getters.today,
+        (newValue, oldValue) => {
+          console.log(`Updating from ${oldValue} to ${newValue}`)
+          this.today = newValue
+        }
+      )
+    },
+    watch: {
+      today(newToday){
+        console.log('today changed to:' + newToday)
+        this.getCompetitorAvPrices()
+        this.getCompetitorRoomPrices()
+      }
+    },
+    
     methods: {
       changeSort (column) {
         if (this.pagination.sortBy === column) {
@@ -167,14 +184,17 @@
                               apiCompetitorsString.replace(" ", ""))
 
         console.log("this.today :" + this.today)
-        apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
+        //apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
+        apiRequests.getCompetitorAvgPricesForDates( apiCompetitorsString.replace(" ", ""),
+                                                    this.today,
+                                                    this.today)
         .then(response => {
           console.log(response.data)
           //var dataArray = JSON.parse(JSON.stringify(response.data.data))
           var avpriceDataArray = Object.keys(response.data.data).map((key) => {
                         return response.data.data[key]
           })
-
+          console.log('Average Prices for date : ' + this.today)
           // save the downloaded data
           this.$store.dispatch('setavpriceDataArray', avpriceDataArray)
           console.log('This is the competitors av price data from server')
@@ -207,15 +227,17 @@
         var apiCompetitorsString = ''+competitorsUids.join()+''
         
         apiRequests
-        //.getCompetitorRoomsPricesForDates(  apiCompetitorsString.replace(" ", ""),
-        //                                    this.today,
-        //                                    this.today)
-        .getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
+        .getMyCompetitorRoomsPrices(  apiCompetitorsString.replace(" ", ""),
+                                            this.today,
+                                            this.today)
+        //.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
         .then(response => {
           console.log(response.data)
           var roomDataArray = Object.keys(response.data.data).map((key) => {
                         return response.data.data[key]
           })
+          console.log('Room Prices for date : ' + this.today)
+
           // save the downloaded data
           this.$store.dispatch('setRoomDataArray', roomDataArray)
           console.log('This is the competitors data from server')

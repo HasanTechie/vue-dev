@@ -8,6 +8,9 @@ const apiClient = axios.create({
         'Content-Type': 'application/json'
     }
 })
+if (localStorage.getItem('user')) {
+    var userid = JSON.parse(localStorage.getItem('user')).user.id;
+}
 
 export default {
     getHotels(city = 'All') {
@@ -30,24 +33,23 @@ export default {
         '&dateto=2020-05-28&competitorsid=' + competitorsids)
     },
     getCompetitorAvgPricesForDates(competitorsids, dateOne, dateTwo) {
-        return apiClient.get('competitorsavgprices&get=50' + 
+        return apiClient.get('competitorsavgpricesold&get=0' + 
         this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + 
         '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
     },
-    getCompetitorPricesApex(    hotelid, 
-                                competitorsids, 
-                                selectedValue, 
-                                dateOne = '2019-01-01', 
-                                dateTwo = '2019-08-01') {
-        return apiClient.get('competitorspricesapex&get=50' + 
-        this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + 
-        dateOne + '&dateto=' + dateTwo + '&competitorsid=' + 
-        competitorsids + '&room=' + selectedValue)
+    getCompetitorPricesApex(selectedValue, 
+                            dateOne = '2019-01-01', 
+                            dateTwo = '2021-01-01') 
+    {
+        var userid = JSON.parse(localStorage.getItem('user')).user.id;
+        return apiClient.get('competitorspricesapex&get=0' + 
+        this.getApiKey() + '&userid=' + userid + '&datefrom=' + 
+        dateOne + '&dateto=' + dateTwo + '&room=' + selectedValue)
     },
     getCompetitorRoomsPrices(   competitorsids,
                                 hotelid='21') 
     {
-        return apiClient.get('competitorsroomsprices&get=50' + 
+        return apiClient.get('competitorsroomspricesold&get=50' + 
             this.getApiKey() + '&hotelid='+hotelid+'&datefrom=2019-04-25'+
             '&dateto=2020-05-28&competitorsid=' + competitorsids)
     },
@@ -56,7 +58,7 @@ export default {
                                 dateTo,
                                 hotelid='21') 
     {
-        return apiClient.get('competitorsroomsprices&get=50' + 
+        return apiClient.get('competitorsroomspricesold&get=50' + 
             this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateFrom +
                         '&dateto=' + dateTo + '&competitorsid=' + competitorsids)
     },
@@ -65,6 +67,9 @@ export default {
         return apiClient.get('competitorsroomsprices&get=50' + 
         this.getApiKey() + '&hotelid='+hotelid+'&datefrom=2019-04-25'+
         '&dateto=2020-05-28&competitorsid=' + competitorsids)
+    },
+    getCompetitorRoomsAvgPricesNew(room = 'All', dateOne, dateTwo) {
+        return apiClient.get('competitorsavgprices&get=0' + this.getApiKey() + '&userid=' + userid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&room=' + room)
     },
     getCompetitors() {
         return '&competitorsid=' + this.$store.getters.competitorsids

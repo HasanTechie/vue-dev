@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="display-2 mb-3 font-weight-light">Monthly View</h1>
+        <h1 class="display-2 mb-3 font-weight-light">Events</h1>
         <v-layout row wrap>
             <v-flex
                     sm12
@@ -130,7 +130,7 @@
                 >
                     <template v-slot:activator="{ on }">
                         <v-text-field
-                            v-model="now"
+                            v-model="today"
                             label="Today"
                             prepend-icon="event"
                             readonly
@@ -138,7 +138,7 @@
                         ></v-text-field>
                     </template>
                     <v-date-picker
-                            v-model="now"
+                            v-model="today"
                             no-title
                             scrollables
                     >
@@ -198,7 +198,7 @@
                 <v-sheet height="900">
                     <v-calendar
                             ref="calendar"
-                            v-model="start"
+                            v-model="today"
                             :type="type"
                             :start="start"
                             :end="end"
@@ -406,15 +406,17 @@
             events : [],
             hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
         }),
-
+        watch:{
+            today(newValue){
+                this.$store.dispatch('setToday', newValue)
+            }
+        },
 
         methods: {
             updateRoomType(){
                 this.$store.dispatch('roomtype', this.roomtype)
-
             },
             getEvents(){
-
                 console.log("=> download events...")
                 apiRequests.getEvents()
                 .then(response => {
@@ -424,9 +426,6 @@
                 .catch(error => {
                     console.log('There was an error:' + error.response)
                 })
-            },
-            contructEvents(){
-                
             },
             todayDate() {
                 var today = new Date()
@@ -488,7 +487,8 @@
             }
         },
         created() {
-            this.today = this.todayDate()
+            // get date from vuex
+            this.today = this.$store.getters.today
             this.getRoomTypes()
             this.getEvents()
         }
