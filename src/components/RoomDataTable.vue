@@ -11,8 +11,14 @@
       <template v-slot:items="props">
         <tr @click="props.expanded = !props.expanded">
           <td>{{ props.item.name }}</td>
-          <td class="text-xs-right">{{ props.item.currentprice }}</td>
-          <td class="text-xs-right">{{ props.item.marketvalue }}</td>
+          <template v-if="props.item.currentprice > props.item.marketvalue">
+            <td class="text-xs-right" bgcolor="green">{{ props.item.currentprice }}</td>
+            <td class="text-xs-right" bgcolor="green">{{ props.item.marketvalue }}</td>
+          </template>
+          <template v-else>
+            <td class="text-xs-right" bgcolor="red">{{ props.item.currentprice }}</td>
+            <td class="text-xs-right" bgcolor="red">{{ props.item.marketvalue }}</td>
+          </template>
         </tr>
       </template>
       <template v-slot:expand="props">
@@ -42,8 +48,9 @@
       roomsdatadownloaded: false,
       avpricedatadownloaded: false,
       props:{
-        today: ''
+        //today: ''
       },
+      today: '',
       pagination: {
         sortBy: 'name'
       },
@@ -69,6 +76,7 @@
       ],
     }),
     created() {
+      this.today = this.$store.getters.today
       this.getCompetitorsIDs()
       this.getCompetitorAvPrices()
       this.getCompetitorRoomPrices()
@@ -79,6 +87,7 @@
         (newValue, oldValue) => {
           console.log(`Updating from ${oldValue} to ${newValue}`)
           this.today = newValue
+          return newValue
         }
       )
     },
@@ -91,6 +100,11 @@
     },
     
     methods: {
+      // assuming v-if call methods from here
+      potential(){
+
+      },
+
       changeSort (column) {
         if (this.pagination.sortBy === column) {
           this.pagination.descending = !this.pagination.descending
