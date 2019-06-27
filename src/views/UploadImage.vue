@@ -16,7 +16,7 @@
                 >
                     <template v-slot:selection="{ index, text }">
                         <v-chip
-                                v-if="index < 2"
+                                v-if="index < 4"
                                 color="indigo accent-4"
                                 dark
                                 label
@@ -50,21 +50,20 @@
         data() {
             return {
                 files: [],
-                form: new FormData
             }
         },
         methods: {
             uploadImages() {
 
+                var form = new FormData
 
-                this.form.append('picture',this.files[0])
+                for (let i = 0; i < this.files.length; i++) {
+                    form.append('images[]', this.files[i])
+                }
 
-                this.$store.dispatch('uploadImages', {
-                   form : this.form
-                }).then(() => {
-                    // location.reload()
+                this.files = [];
+                this.$store.dispatch('uploadImages', form).then(() => {
                 })
-                // console.log(this.files[0])
             }
         }
     }

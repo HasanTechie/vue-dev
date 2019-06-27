@@ -63,7 +63,7 @@ export const store = new Vuex.Store({
             localStorage.setItem('user', JSON.stringify(userData))
             axios.defaults.headers.common['Authorization'] = `Bearer ${
                 userData.token
-                }`
+            }`
         },
         CLEAR_USER_DATA(state) {
             localStorage.removeItem(('user'))
@@ -124,22 +124,36 @@ export const store = new Vuex.Store({
         },
         uploadImages({commit}, form) {
 
-            console.log('reached');
-
             var config = {
                 headers: {
-                    'Content-type': 'multipart/form-data',
-                    // 'Authorization': "Bearer " +
-                    //     JSON.parse(localStorage.getItem('user')).access_token
+                    'Authorization': "Bearer " +
+                        JSON.parse(localStorage.getItem('user')).access_token
                 }
             };
 
             return axios
-                .post(serverURL + '/uploadImages',form,config)
+                .post(serverURL + '/uploadImages', form, config)
                 .then(({data}) => {
                     console.log(data)
                     console.log(commit)
                     // commit('SET_IMAGES', data)
+                })
+        },
+        uploadCSVs({commit}, form) {
+
+            var config = {
+                headers: {
+                    'Authorization': "Bearer " +
+                        JSON.parse(localStorage.getItem('user')).access_token
+                }
+            };
+
+            return axios
+                .post(serverURL + '/uploadCSVs', form, config)
+                .then(({data}) => {
+                    console.log(data)
+                    console.log(commit)
+                    // commit('SET_CSVs', data)
                 })
         },
         storeCompetitor(dataToBeStored) {
