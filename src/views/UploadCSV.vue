@@ -55,15 +55,18 @@
         methods: {
             uploadCSVs() {
 
-                var form = new FormData
+                if (this.files.length) {
 
-                for (let i = 0; i < this.files.length; i++) {
-                    form.append('CSVs[]', this.files[i])
+                    var form = new FormData
+
+                    for (let i = 0; i < this.files.length; i++) {
+                        form.append('CSVs[]', this.files[i])
+                    }
+
+                    this.files = [];
+                    this.$store.dispatch('uploadCSVs', form).then(() => {
+                    })
                 }
-
-                this.files = [];
-                this.$store.dispatch('uploadCSVs', form).then(() => {
-                })
             }
         }
     }
