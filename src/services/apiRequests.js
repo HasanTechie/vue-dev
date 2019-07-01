@@ -21,6 +21,16 @@ export default {
         return apiClient.get('roomsprices&get=40' + this.getApiKey() +
         '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-25')
     },
+    getPricesNew(userid, date) {
+        return apiClient.get('allroomsprices&get=0' + this.getApiKey() +
+        '&userid='+userid+'&datefrom='+date+'&dateto='+date)
+    },
+    getMyPrices(hotelid, date) {
+        var call = 'roomsprices&get=40' + this.getApiKey() +
+        '&hotelid='+hotelid+'&datefrom='+date+'&dateto='+date
+        console.log(call)
+        return apiClient.get(call)
+    },
     getCompetitorAvgPrices(competitorsids) {
         return apiClient.get('competitorsavgprices&get=50' + 
         this.getApiKey() + 
@@ -46,21 +56,17 @@ export default {
         this.getApiKey() + '&userid=' + userid + '&datefrom=' + 
         dateOne + '&dateto=' + dateTwo + '&room=' + selectedValue)
     },
-    getCompetitorRoomsPrices(   competitorsids,
-                                hotelid='21') 
+    getMyCompetitorRoomsPricesOld( competitorsids,
+                                date,hotelid) 
     {
         return apiClient.get('competitorsroomspricesold&get=50' + 
-            this.getApiKey() + '&hotelid='+hotelid+'&datefrom=2019-04-25'+
-            '&dateto=2020-05-28&competitorsid=' + competitorsids)
+            this.getApiKey() + '&hotelid='+hotelid + '&datefrom=' + date +
+                        '&dateto=' + date+ '&competitorsid=' + competitorsids)
     },
-    getMyCompetitorRoomsPrices( competitorsids,
-                                dateFrom,
-                                dateTo,
-                                hotelid='21') 
-    {
-        return apiClient.get('competitorsroomspricesold&get=50' + 
-            this.getApiKey() + '&hotelid=' + hotelid + '&datefrom=' + dateFrom +
-                        '&dateto=' + dateTo + '&competitorsid=' + competitorsids)
+    getMyCompetitorRoomsPricesNew(room = 'All', date) {
+        return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() 
+        + '&userid=' + userid + '&datefrom=' + date + '&dateto=' + 
+        date + '&room=' + room)
     },
     getCompetitorRoomsPricesFix(competitorsids='1024,3045,4106', 
                                 hotelid='21') {

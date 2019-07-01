@@ -406,22 +406,32 @@
             events : [],
             hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
         }),
+
         watch:{
             today(newValue){
                 this.$store.dispatch('setToday', newValue)
+            },
+            roomtype(newValue){
+                this.$store.dispatch('setRoomType', newValue)
             }
         },
-
+        created() {
+            // get date from vuex
+            this.today = this.$store.getters.today
+            this.getRoomTypes()
+            this.getEvents()
+            this.updateRoomType()
+        },
         methods: {
             updateRoomType(){
-                this.$store.dispatch('roomtype', this.roomtype)
+                this.$store.dispatch('setRoomType', this.roomtype)
             },
             getEvents(){
                 console.log("=> download events...")
                 apiRequests.getEvents()
                 .then(response => {
                     this.events = response.data.data
-                    console.log(response.data)
+                    //console.log(response.data)
                 })
                 .catch(error => {
                     console.log('There was an error:' + error.response)
@@ -486,12 +496,7 @@
                 return map
             }
         },
-        created() {
-            // get date from vuex
-            this.today = this.$store.getters.today
-            this.getRoomTypes()
-            this.getEvents()
-        }
+        
     }
 </script>
 

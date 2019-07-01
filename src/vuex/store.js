@@ -13,6 +13,7 @@ export const store = new Vuex.Store({
         avpriceDataArray: [],
         roomDataArray: [],
         today: '',
+        roomtype : '',
         user: null
     },
     getters: {
@@ -25,6 +26,7 @@ export const store = new Vuex.Store({
         competitorsPricesArray: state => state.competitorsPricesArray,
         competitorsUids: state => state.competitorsUids,
         today : state => state.today,
+        roomtype : state => state.roomtype,
         loggedIn() {
             return !!localStorage.getItem('user')
         }
@@ -50,6 +52,9 @@ export const store = new Vuex.Store({
         },
         SET_TODAY: (state, today) => {
             state.today = today
+        },
+        SET_ROOM_TYPE: (state, roomtype) => {
+            state.roomtype = roomtype
         },
         SET_USER_DATA(state, userData) {
             state.user = userData
@@ -92,6 +97,10 @@ export const store = new Vuex.Store({
         },
         setToday: ({commit}, today) => {
             commit('SET_TODAY', today)
+            return true
+        },
+        setRoomType: ({commit}, roomtype) => {
+            commit('SET_ROOM_TYPE', roomtype)
             return true
         },
         register({commit}, credentials) {

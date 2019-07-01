@@ -78,8 +78,15 @@
     created() {
       this.today = this.$store.getters.today
       this.getCompetitorsIDs()
-      this.getCompetitorAvPrices()
-      this.getCompetitorRoomPrices()
+      this.roomtype = this.$store.getters.roomtype
+      //this.getCompetitorAvPrices()
+      // since only the old api is available we use the room data with
+      // the room data competitorApiCall to get the data of the user
+      // and also calculate average values from it. that way we can
+      // also compute averages not only for the whole competitor or
+      // user prices but also for the selected ones
+      this.getPriceData()
+      //this.getCompetitorRoomPrices()
     },
     mounted() {
       this.$store.watch(
@@ -89,13 +96,30 @@
           this.today = newValue
           return newValue
         }
+      ),
+      this.$store.watch(
+        (state, getters) => getters.roomtype,
+        (newValue, oldValue) => {
+          console.log(`Updating from ${oldValue} to ${newValue}`)
+          this.roomtype = newValue
+          this.getPriceData()
+          return newValue
+        }
       )
     },
     watch: {
       today(newToday){
         console.log('today changed to:' + newToday)
-        this.getCompetitorAvPrices()
-        this.getCompetitorRoomPrices()
+        //this.getCompetitorAvPrices()
+        this.getPriceData()
+        //this.getCompetitorRoomPrices()
+      },
+      roomtype(newRoomType){
+        console.log('today changed to:' + newRoomType)
+        //this.getCompetitorAvPrices()
+
+        
+        //this.getCompetitorRoomPrices()
       }
     },
     
@@ -121,14 +145,16 @@
         let day = toTwoDigits(today.getDate())
         return `${year}-${month}-${day}`
       },
-      constructHotelAvs( competitorNames, currentHotelPrice,
-                      competitorPrices){
+      constructHotelAvs( Names, currentHotelPrice, Prices){
+        console.log('constructHotelAvs entered')
+        console.log(Names)
+
         let hoteldata = []
-        for (let i=0; i<competitorNames.length; i+=1) {
+        for (let i=0; i<Names.length; i+=1) {
           var obj = {}
-          obj.name = (competitorNames[i]),
+          obj.name = (Names[i]),
           obj.currentprice = (currentHotelPrice).toFixed(2),
-          obj.marketvalue = (competitorPrices[i]+ Math.random()*(15.0-8.5)).toFixed(2)
+          obj.marketvalue = (Prices[i]+ Math.random()*(15.0-8.5)).toFixed(2)
 
           if (obj.currentprice < obj.marketvalue) {
             //obj.color = 'red'
@@ -155,24 +181,27 @@
         }
         this.rooms = roomdata
       },
-      getValuesByKey(array, key) {
+      getValuesByKey(array, key) 
+      {
         let values = [];
         for (let i=0; i<array.length; i+=1) {
           values.push(array[''+i+''][key]);
         }
         return values;
       },
-      getValuesOfKeyAtKeyWithValue(array, getKey, atKey, atKeyValue) {
+      getValuesOfKeyAtKeyWithValue(array, getKey, atKey, atKeyValue) 
+      {
         let values = [];
         for (let i=0; i<array.length; i+=1) {
-        console.log(array[i][atKey])
+        //console.log(array[i][atKey])
         if (array[i][atKey] === atKeyValue){
           values.push(array[i][getKey]);
           }
         }
         return values;
       },
-      getCompetitorsIDs() {
+      getCompetitorsIDs() 
+      {
         var competitorsArray = JSON.parse(JSON.stringify(
             this.$store.getters.competitorsArray))
 
@@ -180,7 +209,8 @@
             this.competitors.push(competitorsArray['' + i + '']['hotel_id']);
         }
       },
-      getHotelDataWithDates(dateOne, dateTwo) {
+      getHotelDataWithDates(dateOne, dateTwo) 
+      {
         apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.selectedValue, dateOne, dateTwo)
         .then(response => {
             this.myData = response.data.data
@@ -188,7 +218,7 @@
         })
       },
       getCompetitorAvPrices(){
-        console.log('=>updating selected comptetior average prices')
+        //console.log('=>updating selected comptetior average prices')
         var competitorsArray = JSON.parse(JSON.stringify(
                                 this.$store.getters.competitorsArray))
         var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
@@ -197,23 +227,23 @@
         this.$store.dispatch('setCompetitorsUids', 
                               apiCompetitorsString.replace(" ", ""))
 
-        console.log("this.today :" + this.today)
+        //console.log("this.today :" + this.today)
         //apiRequests.getCompetitorAvgPrices(apiCompetitorsString.replace(" ", ""))
         apiRequests.getCompetitorAvgPricesForDates( apiCompetitorsString.replace(" ", ""),
                                                     this.today,
                                                     this.today)
         .then(response => {
-          console.log(response.data)
+          //console.log(response.data)
           //var dataArray = JSON.parse(JSON.stringify(response.data.data))
           var avpriceDataArray = Object.keys(response.data.data).map((key) => {
                         return response.data.data[key]
           })
-          console.log('Average Prices for date : ' + this.today)
+          //console.log('Average Prices for date : ' + this.today)
           // save the downloaded data
           this.$store.dispatch('setavpriceDataArray', avpriceDataArray)
-          console.log('This is the competitors av price data from server')
+          //console.log('This is the competitors av price data from server')
           let competitorsData = avpriceDataArray['0'].competitors_data
-          console.log(Object.values(competitorsData))
+          //console.log(Object.values(competitorsData))
           let competitorPrices = []
           let competitorNames = []
           let currentHotelPrice = avpriceDataArray['0'].price
@@ -230,33 +260,185 @@
         })
         
       },
+      translate2CompetitorData(responseData)
+      {
+        var competitorData = []
+        for (let i=1; i<responseData[0].data.length; i+=1) {
+          competitorData.push(responseData[0].data[i].price)
+          competitorData.push(responseData[0].data[i].hotel_name)
+          competitorData.push(responseData[0].data[i].room)
+        }
+        return competitorData
+      },
+      getPriceData()
+      {
+        console.log('=>updating selected comptetior room prices')
+        var userid = JSON.parse(localStorage.getItem('user')).user.id
+        //console.log('user ID is: ' + userid)
+
+        apiRequests
+        .getPricesNew(userid, this.today)
+        .then(response => {
+          var responseData = Object.keys(response.data.data).map((key) => {
+                        return response.data.data[key]
+          })
+                  
+
+          // user hotel data is saved in the first entry 
+          // get the users hotelroom prices 
+
+          var usersCompetitorData = responseData[0].data
+          let allroomdata = []
+          let avOfAllRoomData = []
+          //console.log('usersCompetitorData')
+          //console.log(usersCompetitorData)
+
+          for (let i=0; i<usersCompetitorData.length; i+=1) {
+            var allRoomObj = {}
+            var avOfAllRoomObj = {}
+            if (allRoomObj.room == this.roomtype || this.roomtype == 'All')
+            {
+              
+              avOfAllRoomObj.name = (usersCompetitorData[i][0].hotel_name),
+              avOfAllRoomObj.currentprice = parseFloat((0.0).toFixed(2)),
+              avOfAllRoomObj.marketvalue = parseFloat((0.0 + Math.random()*(15.0-8.5))
+                                            .toFixed(2))
+              var iDataLength = usersCompetitorData[i].length
+              for (let j=0; j<iDataLength; j+=1) {
+                // filter for selected roomtype
+                
+                  // seperate rooms
+                  allRoomObj.name = (usersCompetitorData[i][j].hotel_name),
+                  allRoomObj.room = (usersCompetitorData[i][j].room),
+                  allRoomObj.currentprice = (usersCompetitorData[i][j]
+                                        .price).toFixed(2),
+                  allRoomObj.marketvalue = (usersCompetitorData[i][j]
+                                        .price + Math.random()*(15.0-8.5)).toFixed(2)
+
+                  avOfAllRoomObj.currentprice += parseFloat(allRoomObj.currentprice)
+                  avOfAllRoomObj.marketvalue += parseFloat(allRoomObj.marketvalue)
+                
+
+                allroomdata.push(allRoomObj)
+              }
+              avOfAllRoomObj.currentprice = (avOfAllRoomObj.currentprice/
+                                            iDataLength.toFixed(2)).toFixed(2)
+              avOfAllRoomObj.marketvalue = (avOfAllRoomObj.marketvalue/
+                                            iDataLength.toFixed(2)).toFixed(2)
+              avOfAllRoomData.push(avOfAllRoomObj)
+            }
+          }
+          //console.log('allroomdata')
+          //console.log(allroomdata)
+          console.log('avOfAllRoomData')
+          console.log(avOfAllRoomData)
+          this.hotels = avOfAllRoomData
+          this.rooms = allroomdata
+          // compute hotels averages first
+          
+          
+
+          //this.constructHotelAvs(userNames, userPrices, userPrices)
+          
+          //this.constructRooms(userNames, userRoomNames, 
+          //             currentHotelPrice, userPrices, userPrices)
+          
+          //this.roomsdownloaded = true
+        })
+        .catch(error => {
+          console.log('There was an error:' + error.response)
+        })
+        
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        
+      },
       getCompetitorRoomPrices()
       {
+        
         console.log('=>updating selected comptetior room prices')
 
         // FROM STORE
+        /*
         var competitorsArray = JSON.parse(JSON.stringify(
                                 this.$store.getters.competitorsArray))
         var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
         var apiCompetitorsString = ''+competitorsUids.join()+''
-        
+        console.log('This Hotel ID is: ' + this.hotelid)
+        //console.log('Competitior IDs are: ' + competitorsUids)
+        */
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        /*
         apiRequests
-        .getMyCompetitorRoomsPrices(  apiCompetitorsString.replace(" ", ""),
-                                            this.today,
-                                            this.today)
-        //.getCompetitorRoomsPrices(apiCompetitorsString.replace(" ", ""))
+        // so far only userid=7 works
+        .getPricesNew(this.hotelid, this.today)
+        .then(response => {
+          console.log('getprices response..')
+          console.log(response.data)
+          var responseData = Object.keys(response.data.data).map((key) => {
+                        return response.data.data[key]
+          })
+          console.log('responseData.data[0]')
+          console.log(responseData[0].data[0])
+          // user hotel data is saved in the first entry 
+          // get the users hotelroom prices 
+          var usersData = responseData[0].data[0]
+
+          let userPrices = []
+          let userNames = []
+          let userRoomNames = []
+          let currentHotelPrice = roomDataArray['0'].price
+          for (let i=0; i<usersData.length; i+=1) {
+            userPrices.push(usersData[i].price)
+            userNames.push(usersData[i].hotel_name)
+            userRoomNames.push(usersData[i].room)
+          }
+          this.constructHotelAvs(userNames, currentHotelPrice,
+                        userPrices, userPrices)
+          
+          this.constructRooms(userNames, userRoomNames, 
+                       currentHotelPrice, userPrices, userPrices)
+          //let roomData = response.data[0].data
+
+          //let competitorPrices = []
+          //let competitorNames = []
+          //let competitorRoomNames = []
+          //let currentHotelPrice = roomData['0'].price
+          //for (let i=0; i<priceDataArray.length; i+=1) {
+          //  competitorPrices.push(competitorsData[i].price)
+          //  competitorNames.push(competitorsData[i].hotel_name)
+          //  competitorRoomNames.push(competitorsData[i].room)
+          //}
+          //console.log(Object.values(competitorNames))
+          // compute hotel averages first
+          ///
+          
+          
+          //this.roomsdownloaded = true
+        })
+        .catch(error => {
+          console.log('There was an error:' + error.response)
+        })
+        */
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        /* 
+        apiRequests
+        .getMyCompetitorRoomsPricesOld(  apiCompetitorsString.replace(" ", ""),
+                                            this.today,this.hotelid)
+        //.getMyCompetitorRoomsPricesNew(  apiCompetitorsString.replace(" ", ""),
+        //                                    this.today,this.hotelid)
         .then(response => {
           console.log(response.data)
           var roomDataArray = Object.keys(response.data.data).map((key) => {
                         return response.data.data[key]
           })
-          console.log('Room Prices for date : ' + this.today)
-
+          //console.log('Room Prices for date : ' + this.today)
+          //console.log('roomDataArray: ')
+          //console.log(roomDataArray)
           // save the downloaded data
           this.$store.dispatch('setRoomDataArray', roomDataArray)
-          console.log('This is the competitors data from server')
+          //console.log('This is the competitors data from server')
           let competitorsData = roomDataArray['0'].competitors_data
-          console.log(Object.values(competitorsData))
+          //console.log(Object.values(competitorsData))
           let competitorPrices = []
           let competitorNames = []
           let competitorRoomNames = []
@@ -266,14 +448,32 @@
             competitorNames.push(competitorsData[i].hotel_name)
             competitorRoomNames.push(competitorsData[i].room)
           }
+          console.log(Object.values(competitorNames))
+          // compute hotel averages first
+          this.constructHotelAvs(competitorNames, currentHotelPrice,
+                        competitorPrices, competitorPrices)
+          
           this.constructRooms(competitorNames, competitorRoomNames, 
                         currentHotelPrice, competitorPrices, competitorPrices)
+          
           this.roomsdownloaded = true
         })
         .catch(error => {
           console.log('There was an error:' + error.response)
         })
-        }
+        */
       }
+    }
   }
+  
 </script>
+<style>
+table.v-table tbody td,
+table.v-table tbody th {
+  height: 29px;
+}
+.v-card__text {
+    padding: 3px;
+    width: 100%;
+}
+</style>
