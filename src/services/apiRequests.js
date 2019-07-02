@@ -9,7 +9,9 @@ const apiClient = axios.create({
     }
 })
 if (localStorage.getItem('user')) {
-    var userid = JSON.parse(localStorage.getItem('user')).user.id;
+    if (JSON.parse(localStorage.getItem('user')).user.id !== 'undefined') {
+        var userid = JSON.parse(localStorage.getItem('user')).user.id;
+    }
 }
 
 export default {
