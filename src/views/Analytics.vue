@@ -17,6 +17,7 @@
                                 id="datepicker-trigger"
                                 placeholder="Select dates"
                                 :value="formatDates(dateOne, dateTwo)"
+                                v-on:close="updateRoomType"
                         ></v-text-field>
 
                         <AirbnbStyleDatepicker

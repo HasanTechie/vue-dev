@@ -1,23 +1,27 @@
 <template>
   <div>
-    <v-toolbar flat color="white">
-    </v-toolbar>
+    <v-flex
+            sm12
+            lg12
+            class="pa-3 feature-pane"
+    >
     <v-data-table
       :headers="HotelHeaders"
       :items="hotels"
       :expand="expand"
       item-key="name"
+      hide-actions
     >
       <template v-slot:items="props">
         <tr @click="props.expanded = !props.expanded">
           <td>{{ props.item.name }}</td>
           <template v-if="props.item.currentprice > props.item.marketvalue">
-            <td class="text-xs-right" bgcolor="green">{{ props.item.currentprice }}</td>
-            <td class="text-xs-right" bgcolor="green">{{ props.item.marketvalue }}</td>
+            <td class="text-xs-left" bgcolor="green">{{ props.item.currentprice }}</td>
+            <td class="text-xs-left" bgcolor="green">{{ props.item.marketvalue }}</td>
           </template>
           <template v-else>
-            <td class="text-xs-right" bgcolor="red">{{ props.item.currentprice }}</td>
-            <td class="text-xs-right" bgcolor="red">{{ props.item.marketvalue }}</td>
+            <td class="text-xs-left" bgcolor="red">{{ props.item.currentprice }}</td>
+            <td class="text-xs-left" bgcolor="red">{{ props.item.marketvalue }}</td>
           </template>
         </tr>
       </template>
@@ -29,6 +33,7 @@
       ></SubDataTable> 
       </template>
     </v-data-table>
+    </v-flex>
   </div>
 </template>
 <script>
@@ -58,15 +63,15 @@
       hotels: [],
       rooms: [],
       HotelHeaders: [
-        { text: 'Competitor Hotel', align: 'left', value: 'name' },
+        { text: 'Hotel Name', align: 'left', value: 'name' },
         { text: 'Average Current Price', value: 'currentprice' },
-        { text: 'Average Market Value', value: 'marketvalue' },
+        { text: 'LUNA Value', value: 'marketvalue' },
 
       ],
       RoomHeaders: [
         { text: 'Room Type', align: 'left', value: 'name' },
-        { text: 'Competitors Price', value: 'competitorpriceav' },
-        { text: 'Market Value', value: 'marketvalue' },
+        { text: 'Current Price', value: 'competitorpriceav' },
+        { text: 'LUNA Value', value: 'marketvalue' },
       ],
       competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
       hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
@@ -334,146 +339,33 @@
           console.log(avOfAllRoomData)
           this.hotels = avOfAllRoomData
           this.rooms = allroomdata
-          // compute hotels averages first
           
-          
-
-          //this.constructHotelAvs(userNames, userPrices, userPrices)
-          
-          //this.constructRooms(userNames, userRoomNames, 
-          //             currentHotelPrice, userPrices, userPrices)
-          
-          //this.roomsdownloaded = true
         })
         .catch(error => {
           console.log('There was an error:' + error.response)
         })
-        
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        
+       
       },
-      getCompetitorRoomPrices()
-      {
-        
-        console.log('=>updating selected comptetior room prices')
-
-        // FROM STORE
-        /*
-        var competitorsArray = JSON.parse(JSON.stringify(
-                                this.$store.getters.competitorsArray))
-        var competitorsUids = this.getValuesByKey(competitorsArray,'hotel_id')
-        var apiCompetitorsString = ''+competitorsUids.join()+''
-        console.log('This Hotel ID is: ' + this.hotelid)
-        //console.log('Competitior IDs are: ' + competitorsUids)
-        */
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        /*
-        apiRequests
-        // so far only userid=7 works
-        .getPricesNew(this.hotelid, this.today)
-        .then(response => {
-          console.log('getprices response..')
-          console.log(response.data)
-          var responseData = Object.keys(response.data.data).map((key) => {
-                        return response.data.data[key]
-          })
-          console.log('responseData.data[0]')
-          console.log(responseData[0].data[0])
-          // user hotel data is saved in the first entry 
-          // get the users hotelroom prices 
-          var usersData = responseData[0].data[0]
-
-          let userPrices = []
-          let userNames = []
-          let userRoomNames = []
-          let currentHotelPrice = roomDataArray['0'].price
-          for (let i=0; i<usersData.length; i+=1) {
-            userPrices.push(usersData[i].price)
-            userNames.push(usersData[i].hotel_name)
-            userRoomNames.push(usersData[i].room)
-          }
-          this.constructHotelAvs(userNames, currentHotelPrice,
-                        userPrices, userPrices)
-          
-          this.constructRooms(userNames, userRoomNames, 
-                       currentHotelPrice, userPrices, userPrices)
-          //let roomData = response.data[0].data
-
-          //let competitorPrices = []
-          //let competitorNames = []
-          //let competitorRoomNames = []
-          //let currentHotelPrice = roomData['0'].price
-          //for (let i=0; i<priceDataArray.length; i+=1) {
-          //  competitorPrices.push(competitorsData[i].price)
-          //  competitorNames.push(competitorsData[i].hotel_name)
-          //  competitorRoomNames.push(competitorsData[i].room)
-          //}
-          //console.log(Object.values(competitorNames))
-          // compute hotel averages first
-          ///
-          
-          
-          //this.roomsdownloaded = true
-        })
-        .catch(error => {
-          console.log('There was an error:' + error.response)
-        })
-        */
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        /* 
-        apiRequests
-        .getMyCompetitorRoomsPricesOld(  apiCompetitorsString.replace(" ", ""),
-                                            this.today,this.hotelid)
-        //.getMyCompetitorRoomsPricesNew(  apiCompetitorsString.replace(" ", ""),
-        //                                    this.today,this.hotelid)
-        .then(response => {
-          console.log(response.data)
-          var roomDataArray = Object.keys(response.data.data).map((key) => {
-                        return response.data.data[key]
-          })
-          //console.log('Room Prices for date : ' + this.today)
-          //console.log('roomDataArray: ')
-          //console.log(roomDataArray)
-          // save the downloaded data
-          this.$store.dispatch('setRoomDataArray', roomDataArray)
-          //console.log('This is the competitors data from server')
-          let competitorsData = roomDataArray['0'].competitors_data
-          //console.log(Object.values(competitorsData))
-          let competitorPrices = []
-          let competitorNames = []
-          let competitorRoomNames = []
-          let currentHotelPrice = roomDataArray['0'].price
-          for (let i=0; i<competitorsData.length; i+=1) {
-            competitorPrices.push(competitorsData[i].price)
-            competitorNames.push(competitorsData[i].hotel_name)
-            competitorRoomNames.push(competitorsData[i].room)
-          }
-          console.log(Object.values(competitorNames))
-          // compute hotel averages first
-          this.constructHotelAvs(competitorNames, currentHotelPrice,
-                        competitorPrices, competitorPrices)
-          
-          this.constructRooms(competitorNames, competitorRoomNames, 
-                        currentHotelPrice, competitorPrices, competitorPrices)
-          
-          this.roomsdownloaded = true
-        })
-        .catch(error => {
-          console.log('There was an error:' + error.response)
-        })
-        */
-      }
     }
   }
-  
 </script>
-<style>
-table.v-table tbody td,
-table.v-table tbody th {
-  height: 29px;
-}
-.v-card__text {
-    padding: 3px;
-    width: 100%;
-}
+<style >
+  .feature-pane {
+      position: relative;
+      padding-top: 0px;
+      box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
+      border-radius:20px;
+  }
+  .theme--light.v-table {
+    background-color: #fafafa;
+    color: rgba(0,0,0,0.87);
+  }
+  table.v-table tbody td,
+  table.v-table tbody th {
+    height: 29px;
+  }
+  .v-card__text {
+      padding: 3px;
+      width: 100%;
+  }
 </style>

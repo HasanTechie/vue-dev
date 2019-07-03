@@ -10,8 +10,8 @@
                       class="elevation-10">
           <template v-slot:items="props">
             <td>{{ props.item.room }}</td>
-            <td class="text-xs-right">{{ props.item.currentprice }}</td>
-            <td class="text-xs-right">{{ props.item.marketvalue }}</td>
+            <td class="text-xs-left">{{ props.item.currentprice }}</td>
+            <td class="text-xs-left">{{ props.item.marketvalue }}</td>
           </template>
         </v-data-table>
       </v-card-text>

@@ -4,7 +4,7 @@
         <v-layout row wrap>
             <v-flex
                     sm12
-                    lg3
+                    lg12
                     class="pa-3 mb-3 feature-pane"
             >
                 <v-btn
@@ -177,25 +177,14 @@
                     label="Room Type"
                     v-on:close="updateRoomType"
                 ></v-select>
-                <v-select
-                    v-if="type === 'custom-daily'"
-                    v-model="maxDays"
-                    :items="maxDaysOptions"
-                    label="# of Days"
-                ></v-select>
-                <v-select
-                        v-if="hasIntervals"
-                        v-model="styleInterval"
-                        :items="styleIntervalOptions"
-                        label="Styling"
-                ></v-select>
             </v-flex>
             <v-flex
                     sm12
-                    lg9
-                    class="pl-3"
+                    lg12
+                    class="pa-3 mb-3 feature-pane"
             >
-                <v-sheet height="900">
+            
+                <v-sheet height="600">
                     <v-calendar
                             ref="calendar"
                             v-model="today"
@@ -212,7 +201,6 @@
                             :interval-minutes="intervals.minutes"
                             :interval-count="intervals.count"
                             :interval-height="intervals.height"
-                            :interval-style="intervalStyle"
                             :show-interval-label="showIntervalLabel"
                             :color="color"
                     >
@@ -294,6 +282,7 @@
 
 <script>
     import apiRequests from '@/services/apiRequests.js'
+    //import RoomDataTable from '@/components/RoomDataTable.vue'
 
     const weekdaysDefault = [0, 1, 2, 3, 4, 5, 6]
 
@@ -304,33 +293,12 @@
         height: 40
     }
 
-    const stylings = {
-        default(interval) {
-            return interval
-        },
-        workday(interval) {
-            const inactive = interval.weekday === 0 ||
-                interval.weekday === 6 ||
-                interval.hour < 9 ||
-                interval.hour >= 17
-            const startOfHour = interval.minute === 0
-            const dark = this.dark
-            const mid = dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
-
-            return {
-                backgroundColor: inactive ? (dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)') : undefined,
-                borderTop: startOfHour ? undefined : '1px dashed ' + mid
-            }
-        },
-        past(interval) {
-            return {
-                backgroundColor: interval.past ? (this.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)') : undefined
-            }
-        }
-    }
+    
     export default {
         name: "Calender",
-
+        components: {
+            //RoomDataTable
+        },
         data: () => ({
             dark: false,
             today: null,
@@ -342,6 +310,10 @@
             minWeeks: 1,
             now: null,
             type: 'month',
+            roomtypes : [],
+            roomtype : 'All',
+            events : [],
+            hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
             typeOptions: [
                 {text: 'Day', value: 'day'},
                 {text: '4 Day', value: '4day'},
@@ -363,48 +335,9 @@
                 {text: 'Workday', value: {first: 16, minutes: 30, count: 20, height: 40}}
             ],
             maxDays: 7,
-            maxDaysOptions: [
-                {text: '7 days', value: 7},
-                {text: '5 days', value: 5},
-                {text: '4 days', value: 4},
-                {text: '3 days', value: 3}
-            ],
-            styleInterval: 'default',
-            styleIntervalOptions: [
-                {text: 'Default', value: 'default'},
-                {text: 'Workday', value: 'workday'},
-                {text: 'Past', value: 'past'}
-            ],
+
             color: 'primary',
-            colorOptions: [
-                {text: 'Primary', value: 'primary'},
-                {text: 'Secondary', value: 'secondary'},
-                {text: 'Accent', value: 'accent'},
-                {text: 'Red', value: 'red'},
-                {text: 'Pink', value: 'pink'},
-                {text: 'Purple', value: 'purple'},
-                {text: 'Deep Purple', value: 'deep-purple'},
-                {text: 'Indigo', value: 'indigo'},
-                {text: 'Blue', value: 'blue'},
-                {text: 'Light Blue', value: 'light-blue'},
-                {text: 'Cyan', value: 'cyan'},
-                {text: 'Teal', value: 'teal'},
-                {text: 'Green', value: 'green'},
-                {text: 'Light Green', value: 'light-green'},
-                {text: 'Lime', value: 'lime'},
-                {text: 'Yellow', value: 'yellow'},
-                {text: 'Amber', value: 'amber'},
-                {text: 'Orange', value: 'orange'},
-                {text: 'Deep Orange', value: 'deep-orange'},
-                {text: 'Brown', value: 'brown'},
-                {text: 'Blue Gray', value: 'blue-gray'},
-                {text: 'Gray', value: 'gray'},
-                {text: 'Black', value: 'black'}
-            ],
-            roomtypes : [],
-            roomtype : 'All',
-            events : [],
-            hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id
+            
         }),
 
         watch:{
@@ -476,9 +409,7 @@
             }
         },
         computed: {
-            intervalStyle() {
-                return stylings[this.styleInterval].bind(this)
-            },
+            
             hasIntervals() {
                 return this.type in {
                     'week': 1, 'day': 1, '4day': 1, 'custom-daily': 1
@@ -517,8 +448,10 @@
     }
     .feature-pane {
         position: relative;
-        padding-top: 30px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        padding-top: 10px;
+        box-shadow: 0 10px 10px rgba(63, 81, 181, 0.3);
+        border-radius:20px;
+
     }
 
     .day-header {
@@ -558,7 +491,7 @@
         margin: 0px;
         padding: 0px 6px;
         background-color: #1867c0;
-        color: #ffffff;
+        color: #fafafa;
         border: 1px solid #1867c0;
         border-radius: 2px;
         left: 0;
