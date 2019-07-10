@@ -1,18 +1,29 @@
 <template>
     <div id="app">
         <label class="typo__label">Select Competitor Hotels</label>
-        <multiselect v-model="value" :options="options" :custom-label="nameWithCity" :multiple="true"
-                     :close-on-select="true"
-                     :clear-on-select="true" :preserve-search="false" placeholder="Pick some" label="name"
-                     track-by="name" :preselect-first="true" v-on:close="updateSelectedHotels">
-            <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single"
-                                                                                     v-if="values.length &amp;&amp; !isOpen">{{ values.length }} hotels selected</span>
+        <multiselect v-model="value" 
+                    :options="options" 
+                    :custom-label="nameWithCity" 
+                    :multiple="true"
+                    :close-on-select="true"
+                    :clear-on-select="true" 
+                    :preserve-search="false" 
+                    placeholder="Pick some" 
+                    label="name"
+                    track-by="name" 
+                    :preselect-first="true" 
+                    v-on:close="updateSelectedHotels">
+            <template   slot="selection" 
+                        slot-scope="{ values, search, isOpen }">
+                        <span class="multiselect__single"
+                              v-if="values.length &amp;&amp; !isOpen">{{ values.length }} hotels selected</span>
             </template>
         </multiselect>
         <!--        <pre class="language-json"><code>{{ value }}</code></pre>-->
 
         <br>
-        <h2 v-if="this.value.length" class="blue--text headline">Competitors Selected : {{ this.value.length }}</h2>
+        <h2 v-if="this.value.length" 
+            class="blue--text headline">Competitors Selected : {{ this.value.length }}</h2>
         <br>
         <div v-for="item in value" :key="item.hotel_id * Math.random()">
             <v-chip v-model="item.status" close color="blue title" dark text-color="white"
@@ -60,7 +71,6 @@
                 })
             },
             updateSelections(hotel_id) {
-
                 this.$store.dispatch('deleteCompetitor', {
                         user_id: JSON.parse(localStorage.getItem('user')).user.id,
                         hotel_id: hotel_id
@@ -72,7 +82,6 @@
                 this.value = this.value.filter(function (returnableObjects) {
                     return returnableObjects.hotel_id !== hotel_id;
                 });
-
                 // this.value = this.value.filter(hotel => hotel.hotel_id !== hotel_id); //can be done
             },
             nameWithCity({name, city}) {
@@ -80,16 +89,16 @@
             },
             getAllHotels() {
                 apiRequests.getHotels()
-                    .then(response => {
-                        var dataArray = Object.keys(response.data.data).map((key) => {
-                            return response.data.data[key]
-                        })
-                        // use Vuex store
-                        this.options = dataArray
+                .then(response => {
+                    var dataArray = Object.keys(response.data.data).map((key) => {
+                        return response.data.data[key]
                     })
-                    .catch(error => {
-                        console.log('There was an error:' + error.response)
-                    })
+                    // use Vuex store
+                    this.options = dataArray
+                })
+                .catch(error => {
+                    console.log('There was an error:' + error.response)
+                })
             },
             updateSelectedHotels() {
                 this.updateSelectedHotelsHasan()

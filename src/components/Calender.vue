@@ -1,10 +1,10 @@
 <template>
     <div>
-        <h1 class="display-2 mb-3 font-weight-light">Monthly View</h1>
+        <h1 class="display-2 mb-3 font-weight-light">Events</h1>
         <v-layout row wrap>
             <v-flex
                     sm12
-                    lg3
+                    lg12
                     class="pa-3 mb-3 feature-pane"
             >
                 <v-btn
@@ -130,15 +130,15 @@
                 >
                     <template v-slot:activator="{ on }">
                         <v-text-field
-                                v-model="now"
-                                label="Today"
-                                prepend-icon="event"
-                                readonly
-                                v-on="on"
+                            v-model="today"
+                            label="Today"
+                            prepend-icon="event"
+                            readonly
+                            v-on="on"
                         ></v-text-field>
                     </template>
                     <v-date-picker
-                            v-model="now"
+                            v-model="today"
                             no-title
                             scrollables
                     >
@@ -166,33 +166,28 @@
                         type="number"
                 ></v-text-field>
                 <v-select
-                        v-if="hasIntervals"
-                        v-model="intervals"
-                        :items="intervalsOptions"
-                        label="Intervals"
+                    v-if="hasIntervals"
+                    v-model="intervals"
+                    :items="intervalsOptions"
+                    label="Intervals"
                 ></v-select>
                 <v-select
-                        v-if="type === 'custom-daily'"
-                        v-model="maxDays"
-                        :items="maxDaysOptions"
-                        label="# of Days"
-                ></v-select>
-                <v-select
-                        v-if="hasIntervals"
-                        v-model="styleInterval"
-                        :items="styleIntervalOptions"
-                        label="Styling"
+                    :items="roomtypes"
+                    v-model="roomtype"
+                    label="Room Type"
+                    v-on:close="updateRoomType"
                 ></v-select>
             </v-flex>
             <v-flex
                     sm12
-                    lg9
-                    class="pl-3"
+                    lg12
+                    class="pa-3 mb-3 feature-pane"
             >
-                <v-sheet height="500">
+            
+                <v-sheet height="600">
                     <v-calendar
                             ref="calendar"
-                            v-model="start"
+                            v-model="today"
                             :type="type"
                             :start="start"
                             :end="end"
@@ -206,18 +201,61 @@
                             :interval-minutes="intervals.minutes"
                             :interval-count="intervals.count"
                             :interval-height="intervals.height"
-                            :interval-style="intervalStyle"
                             :show-interval-label="showIntervalLabel"
                             :color="color"
                     >
-                        <template v-slot:day="day">
-                            <v-sheet
-                                    v-if="day.day % 3 === 0"
-                                    :color="color"
-                                    class="white--text pa-1"
+                        <template v-slot:day="{ date }">
+                            <template v-for="event in eventsMap[date]">
+                            <v-menu
+                                :key="event.name"
+                                v-model="event.open"
+                                full-width
+                                offset-x
                             >
-                                day slot {{ day.date }}
-                            </v-sheet>
+                                <template v-slot:activator="{ on }">
+                                <div
+                                    v-if="!event.time"
+                                    v-ripple
+                                    class="my-event"
+                                    v-on="on"
+                                    v-html="event.name"
+                                ></div>
+                                </template>
+                                <v-card
+                                color="grey lighten-4"
+                                min-width="350px"
+                                flat
+                                >
+                                <v-toolbar
+                                    color="primary"
+                                    dark
+                                >
+                                    <v-btn icon>
+                                    <v-icon>edit</v-icon>
+                                    </v-btn>
+                                    <v-toolbar-title v-html="event.name"></v-toolbar-title>
+                                    <v-spacer></v-spacer>
+                                    <v-btn icon>
+                                    <v-icon>favorite</v-icon>
+                                    </v-btn>
+                                    <v-btn icon>
+                                    <v-icon>more_vert</v-icon>
+                                    </v-btn>
+                                </v-toolbar>
+                                <v-card-title primary-title>
+                                    <span v-html="event.url"></span>
+                                </v-card-title>
+                                <v-card-actions>
+                                    <v-btn
+                                    flat
+                                    color="secondary"
+                                    >
+                                    Cancel
+                                    </v-btn>
+                                </v-card-actions>
+                                </v-card>
+                            </v-menu>
+                            </template>
                         </template>
                         <template v-slot:header="day">
                             <div
@@ -244,6 +282,7 @@
 
 <script>
     import apiRequests from '@/services/apiRequests.js'
+    //import RoomDataTable from '@/components/RoomDataTable.vue'
 
     const weekdaysDefault = [0, 1, 2, 3, 4, 5, 6]
 
@@ -254,33 +293,12 @@
         height: 40
     }
 
-    const stylings = {
-        default(interval) {
-            return interval
-        },
-        workday(interval) {
-            const inactive = interval.weekday === 0 ||
-                interval.weekday === 6 ||
-                interval.hour < 9 ||
-                interval.hour >= 17
-            const startOfHour = interval.minute === 0
-            const dark = this.dark
-            const mid = dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
-
-            return {
-                backgroundColor: inactive ? (dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)') : undefined,
-                borderTop: startOfHour ? undefined : '1px dashed ' + mid
-            }
-        },
-        past(interval) {
-            return {
-                backgroundColor: interval.past ? (this.dark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.05)') : undefined
-            }
-        }
-    }
+    
     export default {
         name: "Calender",
-
+        components: {
+            //RoomDataTable
+        },
         data: () => ({
             dark: false,
             today: null,
@@ -292,6 +310,10 @@
             minWeeks: 1,
             now: null,
             type: 'month',
+            roomtypes : [],
+            roomtype : 'All',
+            events : [],
+            hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
             typeOptions: [
                 {text: 'Day', value: 'day'},
                 {text: '4 Day', value: '4day'},
@@ -313,49 +335,41 @@
                 {text: 'Workday', value: {first: 16, minutes: 30, count: 20, height: 40}}
             ],
             maxDays: 7,
-            maxDaysOptions: [
-                {text: '7 days', value: 7},
-                {text: '5 days', value: 5},
-                {text: '4 days', value: 4},
-                {text: '3 days', value: 3}
-            ],
-            styleInterval: 'default',
-            styleIntervalOptions: [
-                {text: 'Default', value: 'default'},
-                {text: 'Workday', value: 'workday'},
-                {text: 'Past', value: 'past'}
-            ],
+
             color: 'primary',
-            colorOptions: [
-                {text: 'Primary', value: 'primary'},
-                {text: 'Secondary', value: 'secondary'},
-                {text: 'Accent', value: 'accent'},
-                {text: 'Red', value: 'red'},
-                {text: 'Pink', value: 'pink'},
-                {text: 'Purple', value: 'purple'},
-                {text: 'Deep Purple', value: 'deep-purple'},
-                {text: 'Indigo', value: 'indigo'},
-                {text: 'Blue', value: 'blue'},
-                {text: 'Light Blue', value: 'light-blue'},
-                {text: 'Cyan', value: 'cyan'},
-                {text: 'Teal', value: 'teal'},
-                {text: 'Green', value: 'green'},
-                {text: 'Light Green', value: 'light-green'},
-                {text: 'Lime', value: 'lime'},
-                {text: 'Yellow', value: 'yellow'},
-                {text: 'Amber', value: 'amber'},
-                {text: 'Orange', value: 'orange'},
-                {text: 'Deep Orange', value: 'deep-orange'},
-                {text: 'Brown', value: 'brown'},
-                {text: 'Blue Gray', value: 'blue-gray'},
-                {text: 'Gray', value: 'gray'},
-                {text: 'Black', value: 'black'}
-            ]
+            
         }),
 
-
+        watch:{
+            today(newValue){
+                this.$store.dispatch('setToday', newValue)
+            },
+            roomtype(newValue){
+                this.$store.dispatch('setRoomType', newValue)
+            }
+        },
+        created() {
+            // get date from vuex
+            this.today = this.$store.getters.today
+            this.getRoomTypes()
+            this.getEvents()
+            this.updateRoomType()
+        },
         methods: {
-
+            updateRoomType(){
+                this.$store.dispatch('setRoomType', this.roomtype)
+            },
+            getEvents(){
+                console.log("=> download events...")
+                apiRequests.getEvents()
+                .then(response => {
+                    this.events = response.data.data
+                    //console.log(response.data)
+                })
+                .catch(error => {
+                    console.log('There was an error:' + error.response)
+                })
+            },
             todayDate() {
                 var today = new Date()
                 var dd = today.getDate()
@@ -385,12 +399,17 @@
             },
             showIntervalLabel(interval) {
                 return interval.minute === 0
+            },
+            getRoomTypes() {
+                apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.roomtype)
+                .then(response => {
+                    this.myData = response.data.data
+                    this.roomtypes = this.myData.rooms
+                })
             }
         },
         computed: {
-            intervalStyle() {
-                return stylings[this.styleInterval].bind(this)
-            },
+            
             hasIntervals() {
                 return this.type in {
                     'week': 1, 'day': 1, '4day': 1, 'custom-daily': 1
@@ -400,20 +419,39 @@
                 return this.type in {
                     'custom-weekly': 1, 'custom-daily': 1
                 }
+            },
+            // convert the list of events into a map of lists keyed by date
+            eventsMap () {
+                const map = {}
+                this.events.forEach(e => (map[e.event_date] = map[e.event_date] || []).push(e))
+                return map
             }
         },
-        created() {
-            this.today = this.todayDate()
-        }
+        
     }
 </script>
 
-<style scoped>
-
+<style lang="stylus" scoped>
+    .my-event {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-radius: 2px;
+        background-color: #1867c0;
+        color: #ffffff;
+        border: 1px solid #1867c0;
+        width: 100%;
+        font-size: 8px;
+        padding: 3px;
+        cursor: pointer;
+        margin-bottom: 1px;
+    }
     .feature-pane {
         position: relative;
-        padding-top: 30px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        padding-top: 10px;
+        box-shadow: 0 10px 10px rgba(63, 81, 181, 0.3);
+        border-radius:20px;
+
     }
 
     .day-header {
@@ -453,7 +491,7 @@
         margin: 0px;
         padding: 0px 6px;
         background-color: #1867c0;
-        color: #ffffff;
+        color: #fafafa;
         border: 1px solid #1867c0;
         border-radius: 2px;
         left: 0;

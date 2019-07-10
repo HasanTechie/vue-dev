@@ -10,6 +10,10 @@ export const store = new Vuex.Store({
         competitorsArray: [],
         competitorsPricesArray: [],
         competitorsUids: '',
+        avpriceDataArray: [],
+        roomDataArray: [],
+        today: '',
+        roomtype : '',
         user: null
     },
     getters: {
@@ -17,8 +21,12 @@ export const store = new Vuex.Store({
             return state.message
         },
         competitorsArray: state => state.competitorsArray,
+        roomDataArray: state => state.roomDataArray,
+        avpriceDataArray: state => state.avpriceDataArray,
         competitorsPricesArray: state => state.competitorsPricesArray,
         competitorsUids: state => state.competitorsUids,
+        today : state => state.today,
+        roomtype : state => state.roomtype,
         loggedIn() {
             return !!localStorage.getItem('user')
         }
@@ -30,11 +38,23 @@ export const store = new Vuex.Store({
         SET_COMPETITORS_ARRAY: (state, competitorsArray) => {
             state.competitorsArray = competitorsArray
         },
+        SET_AVPRICE_DATA_ARRAY: (state, avpriceDataArray) => {
+            state.avpriceDataArray = avpriceDataArray
+        },
+        SET_ROOM_DATA_ARRAY: (state, roomDataArray) => {
+            state.roomDataArray = roomDataArray
+        },
         SET_COMPETITORS_PRICE_ARRAY: (state, competitorsPricesArray) => {
             state.competitorsPricesArray = competitorsPricesArray
         },
         SET_COMPETITORS_UIDS: (state, competitorsUids) => {
             state.competitorsUids = competitorsUids
+        },
+        SET_TODAY: (state, today) => {
+            state.today = today
+        },
+        SET_ROOM_TYPE: (state, roomtype) => {
+            state.roomtype = roomtype
         },
         SET_USER_DATA(state, userData) {
             state.user = userData
@@ -55,8 +75,16 @@ export const store = new Vuex.Store({
             commit('SET_MESSAGE', message)
             return state.message
         },
+        setavpriceDataArray: ({commit}, competitorsPricesArray) => {
+            commit('SET_AVPRICE_DATA_ARRAY', competitorsPricesArray)
+            return true
+        },
         setCompetitorsArray: ({commit}, competitorsArray) => {
             commit('SET_COMPETITORS_ARRAY', competitorsArray)
+            return true
+        },
+        setRoomDataArray: ({commit}, roomDataArray) => {
+            commit('SET_ROOM_DATA_ARRAY', roomDataArray)
             return true
         },
         setCompetitorsPriceArray: ({commit}, competitorsPricesArray) => {
@@ -67,7 +95,14 @@ export const store = new Vuex.Store({
             commit('SET_COMPETITORS_UIDS', competitorsUids)
             return true
         },
-
+        setToday: ({commit}, today) => {
+            commit('SET_TODAY', today)
+            return true
+        },
+        setRoomType: ({commit}, roomtype) => {
+            commit('SET_ROOM_TYPE', roomtype)
+            return true
+        },
         register({commit}, credentials) {
             return axios
                 .post('http://35.158.76.194/api/register', credentials)
@@ -82,29 +117,34 @@ export const store = new Vuex.Store({
                     commit('SET_USER_DATA', data)
                 })
         },
-        storeCompetitor({commit}, dataToBeStored) {
+        storeCompetitor( dataToBeStored) {
             var config = {
-                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+                headers: {'Authorization': "Bearer " + 
+                JSON.parse(localStorage.getItem('user')).access_token}
             };
             return axios
-                .post('http://35.158.76.194/api/competitors', dataToBeStored, config)
+                .post('http://35.158.76.194/api/competitors', 
+                dataToBeStored, config)
                 .then(() => {
                 })
         },
-        deleteCompetitor({commit}, dataToBeDeleted) {
+        deleteCompetitor(dataToBeDeleted) {
             var config = {
-                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+                headers: {'Authorization': "Bearer " + 
+                JSON.parse(localStorage.getItem('user')).access_token}
             };
 
             return axios
-                .get('http://35.158.76.194/api/competitors&user_id=' + dataToBeDeleted.user_id +
-                    '&hotel_id=' + dataToBeDeleted.hotel_id, config)
+                .get('http://35.158.76.194/api/competitors&user_id=' + 
+                dataToBeDeleted.user_id + '&hotel_id=' + 
+                dataToBeDeleted.hotel_id, config)
                 .then(() => {
                 })
         },
-        getAllCompetitor({commit}) {
+        getAllCompetitor() {
             var config = {
-                headers: {'Authorization': "Bearer " + JSON.parse(localStorage.getItem('user')).access_token}
+                headers: {'Authorization': "Bearer " + 
+                JSON.parse(localStorage.getItem('user')).access_token}
             };
 
             return axios
