@@ -1,21 +1,29 @@
+
 <template>
     <div>
         <v-container fulid>
             <Calender/>
-            <DataTable/>
+            <RoomDataTable/>
         </v-container>
-
     </div>
 </template>
 
+
+
+
 <script>
     import Calender from '@/components/Calender.vue'
-    import DataTable from '@/components/DataTable.vue';
+    //import DataTable from '@/components/DataTable.vue';
+    import RoomDataTable from '@/components/RoomDataTable.vue';
+    //import Chart from '@/components/Chart.vue';
 
     export default {
         name: 'Monthly',
         components: {
-            Calender, DataTable
+            Calender,
+            //Chart,
+            //DataTable, 
+            RoomDataTable
         }
     }
 </script>

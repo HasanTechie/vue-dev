@@ -7,6 +7,7 @@
                             :items="items"
                             v-model="selectedValue"
                             label="Room Type"
+                            v-on:close="updateRoomType"
                     ></v-select>
                 </v-flex>
                 <v-flex xs6 sm3 d-flex>
@@ -16,6 +17,7 @@
                                 id="datepicker-trigger"
                                 placeholder="Select dates"
                                 :value="formatDates(dateOne, dateTwo)"
+                                v-on:close="updateRoomType"
                         ></v-text-field>
 
                         <AirbnbStyleDatepicker
@@ -45,7 +47,6 @@
     import Chart from '@/components/Chart.vue'
     import apiRequests from '@/services/apiRequests.js'
     import format from 'date-fns/format'
-    // import MoonLoader from 'vue-spinner/src/MoonLoader.vue'
 
     export default {
         name: 'Analytics',
@@ -175,7 +176,9 @@
                 //     this.trigger = true
                 // });
             },
-
+            updateRoomType(){
+                this.$store.dispatch('roomtype', this.selectedValue)
+            },
             formatDates(dateOne, dateTwo) {
                 let formattedDates = ''
                 if (dateOne) {

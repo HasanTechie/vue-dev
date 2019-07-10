@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 import {store} from './vuex/store'
 import VueSweetalert2 from 'vue-sweetalert2';
+import MultiFiltersPlugin from './plugins/MultiFiltersPlugin'
 
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
@@ -66,6 +67,8 @@ requireComponent.keys().forEach(fileName => {
 })
 
 Vue.config.productionTip = false
+
+Vue.use(MultiFiltersPlugin)
 
 new Vue({
   router,

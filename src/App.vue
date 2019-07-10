@@ -1,5 +1,6 @@
 <template>
     <v-app>
+
         <Navbar/>
         <v-content class="ma-4">
             <router-view></router-view>
@@ -15,6 +16,7 @@
         components: {
             Navbar
         },
+        today: '',
         data() {
             return {
                 //
@@ -22,6 +24,9 @@
         },
         created() {
             this.checkStatus()
+            this.today = this.getTodayDate()
+            // dispatch to vuex
+            this.$store.dispatch('setToday', this.today)
         },
         methods: {
             checkStatus() {
@@ -42,7 +47,15 @@
                     }
 
                 }
-            }
+            },
+            getTodayDate(){
+                const toTwoDigits = num => num < 10 ? '0' + num : num
+                let today = new Date()
+                let year = today.getFullYear()
+                let month = toTwoDigits(today.getMonth() + 1)
+                let day = toTwoDigits(today.getDate())
+                return `${year}-${month}-${day}`
+      },
         }
     }
 </script>
