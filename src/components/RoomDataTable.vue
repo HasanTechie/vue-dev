@@ -312,16 +312,16 @@
               for (let j=0; j<iDataLength; j+=1) {
                 // filter for selected roomtype
                 
-                  // seperate rooms
-                  allRoomObj.name = usersCompetitorData[i][j].hotel_name
-                  allRoomObj.room = usersCompetitorData[i][j].room
-                  allRoomObj.currentprice = (usersCompetitorData[i][j]
-                                        .price).toFixed(2)
-                  allRoomObj.marketvalue = (usersCompetitorData[i][j]
-                                        .price ).toFixed(2)
+                // seperate rooms
+                allRoomObj.name = usersCompetitorData[i][j].hotel_name
+                allRoomObj.room = usersCompetitorData[i][j].room
+                allRoomObj.currentprice = (usersCompetitorData[i][j]
+                                      .price).toFixed(2)
+                allRoomObj.marketvalue = (usersCompetitorData[i][j]
+                                      .price ).toFixed(2)
 
-                  avOfAllRoomObj.currentprice += parseFloat(allRoomObj.currentprice)
-                  avOfAllRoomObj.marketvalue += parseFloat(allRoomObj.marketvalue)
+                avOfAllRoomObj.currentprice += parseFloat(allRoomObj.currentprice)
+                avOfAllRoomObj.marketvalue += parseFloat(allRoomObj.marketvalue)
                 
 
                 allroomdata.push({name:allRoomObj.name, 
