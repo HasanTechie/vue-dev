@@ -81,7 +81,7 @@ export default {
         return '&competitorsid=' + this.$store.getters.competitorsids
     },
     getEvents(city = 'Berlin') {
-        return apiClient.get('events&get=50' + this.getApiKey() +
+        return apiClient.get('events&get=0' + this.getApiKey() +
         '&city=' + city)
     },
     getApiKey() {

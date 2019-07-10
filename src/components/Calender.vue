@@ -184,7 +184,7 @@
                     class="pa-3 mb-3 feature-pane"
             >
             
-                <v-sheet height="600">
+                <v-sheet height="1000">
                     <v-calendar
                             ref="calendar"
                             v-model="today"
