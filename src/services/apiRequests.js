@@ -10,7 +10,7 @@ const apiClient = axios.create({
 })
 
 if (localStorage.getItem('user')) {
-    if (localStorage.getItem('user').user) {
+    if (JSON.parse(localStorage.getItem('user')).user) {
         var userid = JSON.parse(localStorage.getItem('user')).user.id;
     }
 }
