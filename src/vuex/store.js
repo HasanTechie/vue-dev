@@ -4,8 +4,6 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-var serverURL = 'http://35.158.76.194/api';
-
 export const store = new Vuex.Store({
     state: {
         message: '',
@@ -15,7 +13,7 @@ export const store = new Vuex.Store({
         avpriceDataArray: [],
         roomDataArray: [],
         today: '',
-        roomtype: '',
+        roomtype : '',
         user: null
     },
     getters: {
@@ -27,8 +25,8 @@ export const store = new Vuex.Store({
         avpriceDataArray: state => state.avpriceDataArray,
         competitorsPricesArray: state => state.competitorsPricesArray,
         competitorsUids: state => state.competitorsUids,
-        today: state => state.today,
-        roomtype: state => state.roomtype,
+        today : state => state.today,
+        roomtype : state => state.roomtype,
         loggedIn() {
             return !!localStorage.getItem('user')
         }
@@ -107,41 +105,37 @@ export const store = new Vuex.Store({
         },
         register({commit}, credentials) {
             return axios
-                .post(serverURL + '/register', credentials)
+                .post('http://35.158.76.194/api/register', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })
         },
         login({commit}, credentials) {
             return axios
-                .post(serverURL + '/login', credentials)
+                .post('http://35.158.76.194/api/login', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })
         },
-        storeCompetitor(dataToBeStored) {
+        storeCompetitor( dataToBeStored) {
             var config = {
-                headers: {
-                    'Authorization': "Bearer " +
-                        JSON.parse(localStorage.getItem('user')).access_token
-                }
+                headers: {'Authorization': "Bearer " +
+                        JSON.parse(localStorage.getItem('user')).access_token}
             };
             return axios
-                .post(serverURL + '/competitors',
+                .post('http://35.158.76.194/api/competitors',
                     dataToBeStored, config)
                 .then(() => {
                 })
         },
         deleteCompetitor(dataToBeDeleted) {
             var config = {
-                headers: {
-                    'Authorization': "Bearer " +
-                        JSON.parse(localStorage.getItem('user')).access_token
-                }
+                headers: {'Authorization': "Bearer " +
+                        JSON.parse(localStorage.getItem('user')).access_token}
             };
 
             return axios
-                .get(serverURL + '/competitors&user_id=' +
+                .get('http://35.158.76.194/api/competitors&user_id=' +
                     dataToBeDeleted.user_id + '&hotel_id=' +
                     dataToBeDeleted.hotel_id, config)
                 .then(() => {
@@ -149,14 +143,12 @@ export const store = new Vuex.Store({
         },
         getAllCompetitor() {
             var config = {
-                headers: {
-                    'Authorization': "Bearer " +
-                        JSON.parse(localStorage.getItem('user')).access_token
-                }
+                headers: {'Authorization': "Bearer " +
+                        JSON.parse(localStorage.getItem('user')).access_token}
             };
 
             return axios
-                .get(serverURL + '/competitors', config)
+                .get('http://35.158.76.194/api/competitors', config)
                 .then(({data}) => {
                     return data
                 })
