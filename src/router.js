@@ -6,6 +6,7 @@ import Login from './views/Login.vue'
 import SelectCompetitor from './views/SelectCompetitor.vue'
 import Analytics from './views/Analytics.vue'
 import Monthly from './views/Monthly.vue'
+import CSV from './views/CSV.vue'
 
 Vue.use(Router)
 
@@ -41,6 +42,13 @@ const router = new Router({
             name: 'analytics',
             component: Analytics,
             meta: {requiresAuth: true}
+        },
+        {
+            path: '/csv',
+            name: 'CSV',
+            component: CSV,
+            meta: {requiresAuth: true}
+            //props: [today]
         },
         {
             path: '/monthly',

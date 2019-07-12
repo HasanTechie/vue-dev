@@ -4,7 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-var serverURL = 'http://35.158.76.194';
+var serverURL = 'http://35.158.76.194/api';
 
 export const store = new Vuex.Store({
     state: {
@@ -107,14 +107,14 @@ export const store = new Vuex.Store({
         },
         register({commit}, credentials) {
             return axios
-                .post(serverURL + '/api/register', credentials)
+                .post(serverURL + '/register', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })
         },
         login({commit}, credentials) {
             return axios
-                .post(serverURL + '/api/login', credentials)
+                .post(serverURL + '/login', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
                 })
@@ -127,7 +127,7 @@ export const store = new Vuex.Store({
                 }
             };
             return axios
-                .post(serverURL + '/api/competitors',
+                .post(serverURL + '/competitors',
                     dataToBeStored, config)
                 .then(() => {
                 })
@@ -141,7 +141,7 @@ export const store = new Vuex.Store({
             };
 
             return axios
-                .get(serverURL + '/api/competitors&user_id=' +
+                .get(serverURL + '/competitors&user_id=' +
                     dataToBeDeleted.user_id + '&hotel_id=' +
                     dataToBeDeleted.hotel_id, config)
                 .then(() => {
@@ -156,7 +156,7 @@ export const store = new Vuex.Store({
             };
 
             return axios
-                .get(serverURL + '/api/competitors', config)
+                .get(serverURL + '/competitors', config)
                 .then(({data}) => {
                     return data
                 })
