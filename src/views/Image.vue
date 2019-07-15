@@ -49,6 +49,21 @@
                 images: []
             }
         },
+        methods: {
+            OnDragEnter(e) {
+                e.preventDefault();
+
+                this.dragCount++;
+                this.isDragging = true;
+                return false;
+            },
+            OnDragLeave(e) {
+                e.preventDefault();
+                this.dragCount--;
+                if (this.dragCount <= 0)
+                    this.isDragging = false;
+            },
+        }
     }
 </script>
 
