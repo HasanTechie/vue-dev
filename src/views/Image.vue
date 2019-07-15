@@ -40,7 +40,15 @@
 
 <script>
     export default {
-        name: "Image"
+        name: "Image",
+        data() {
+            return {
+                isDragging: false,
+                dragCount: 0,
+                files: [],
+                images: []
+            }
+        },
     }
 </script>
 
