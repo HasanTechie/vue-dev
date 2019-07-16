@@ -95,6 +95,19 @@
                 }
                 return `${(Math.round(size * 100) / 100)} ${fSExt[i]}`;
             },
+            upload() {
+                const formData = new FormData();
+
+                this.files.forEach(file => {
+                    formData.append('images[]', file, file.name);
+                });
+                axios.post('/images-upload', formData)
+                    .then(response => {
+                        this.$toastr.s('All images uplaoded successfully');
+                        this.images = [];
+                        this.files = [];
+                    })
+            }
         }
     }
 </script>
