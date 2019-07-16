@@ -6,8 +6,8 @@ import Login from './views/Login.vue'
 import SelectCompetitor from './views/SelectCompetitor.vue'
 import Analytics from './views/Analytics.vue'
 import Monthly from './views/Monthly.vue'
-import CSV from './views/CSV.vue'
-import Image from './views/Image.vue'
+import CSV from './views/UploadCSV.vue'
+import ImageUpload from './views/UploadImage.vue'
 
 Vue.use(Router)
 
@@ -52,8 +52,8 @@ const router = new Router({
         },
         {
             path: '/image',
-            name: 'Image',
-            component: Image,
+            name: 'ImageUpload',
+            component: ImageUpload,
             meta: {requiresAuth: true}
         },
         {
