@@ -50,7 +50,7 @@
 
                     <v-card-text>
                         <router-link to="/login">
-                            <v-btn outline color="blue">Already have an account? Login</v-btn>
+                            <v-btn outlined color="blue">Already have an account? Login</v-btn>
                         </router-link>
                     </v-card-text>
                 </v-card>

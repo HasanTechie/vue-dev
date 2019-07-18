@@ -1,7 +1,7 @@
 <template>
     <nav>
-        <v-toolbar app>
-            <v-toolbar-side-icon v-if="loggedIn" class="indigo--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+        <v-app-bar app>
+            <v-app-bar-nav-icon v-if="loggedIn" class="indigo--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <router-link style="text-decoration: none;" :to="{name: 'home'}">
                 <v-toolbar-title class="indigo--text">
                     <span class="font-weight-light display-1">Soli</span>
@@ -10,35 +10,35 @@
             </router-link>
             <v-spacer></v-spacer>
             <div v-if="!loggedIn">
-                <v-btn flat router
+                <v-btn text router
                        :to="{name: 'register'}">
                     <span class="indigo--text">Register</span>
                     <v-icon right class="indigo--text">person_add</v-icon>
                 </v-btn>
-                <v-btn flat router
+                <v-btn text router
                        :to="{name: 'login'}">
                     <span class="indigo--text">Login</span>
                     <v-icon right class="indigo--text">person</v-icon>
                 </v-btn>
             </div>
             <div v-if="loggedIn">
-                <v-btn flat @click="logout">
+                <v-btn text @click="logout">
                     <span class="indigo--text">Logout</span>
                     <v-icon right class="indigo--text">exit_to_app</v-icon>
                 </v-btn>
             </div>
-        </v-toolbar>
+        </v-app-bar>
         <div v-if="loggedIn">
             <v-navigation-drawer v-model="drawer" app class="indigo">
                 <v-list>
-                    <v-list-tile v-for="link in links" :key="link.text" router :to="{name: link.routename}">
-                        <v-list-tile-action>
+                    <v-list-item v-for="link in links" :key="link.text" router :to="{name: link.routename}">
+                        <v-list-item-action>
                             <v-icon class="white--text">{{link.icon}}</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title class="white--text">{{link.text}}</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title class="white--text">{{link.text}}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
                 </v-list>
             </v-navigation-drawer>
         </div>

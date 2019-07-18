@@ -9,7 +9,7 @@
             >
                 <v-btn
                         fab
-                        outline
+                        outlined
                         small
                         absolute
                         left
@@ -22,7 +22,7 @@
                 </v-btn>
                 <v-btn
                         fab
-                        outline
+                        outlined
                         small
                         absolute
                         right
@@ -57,14 +57,14 @@
                     >
                         <v-spacer></v-spacer>
                         <v-btn
-                                flat
+                                text
                                 color="primary"
                                 @click="startMenu = false"
                         >
                             Cancel
                         </v-btn>
                         <v-btn
-                                flat
+                                text
                                 color="primary"
                                 @click="$refs.startMenu.save(start)"
                         >
@@ -101,14 +101,14 @@
                     >
                         <v-spacer></v-spacer>
                         <v-btn
-                                flat
+                                text
                                 color="primary"
                                 @click="endMenu = false"
                         >
                             Cancel
                         </v-btn>
                         <v-btn
-                                flat
+                                text
                                 color="primary"
                                 @click="$refs.endMenu.save(end)"
                         >
@@ -144,14 +144,14 @@
                     >
                         <v-spacer></v-spacer>
                         <v-btn
-                                flat
+                                text
                                 color="primary"
                                 @click="nowMenu = false"
                         >
                             Cancel
                         </v-btn>
                         <v-btn
-                                flat
+                                text
                                 color="primary"
                                 @click="$refs.nowMenu.save(now)"
                         >
@@ -224,7 +224,7 @@
                                 <v-card
                                 color="grey lighten-4"
                                 min-width="350px"
-                                flat
+                                text
                                 >
                                 <v-toolbar
                                     color="primary"
@@ -247,7 +247,7 @@
                                 </v-card-title>
                                 <v-card-actions>
                                     <v-btn
-                                    flat
+                                    text
                                     color="secondary"
                                     >
                                     Cancel

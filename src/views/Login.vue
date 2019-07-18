@@ -22,7 +22,7 @@
                     </v-card-actions>
                     <v-card-text>
                         <router-link to="/register">
-                            <v-btn outline color="blue">Dont have an account? Register</v-btn>
+                            <v-btn outlined color="blue">Dont have an account? Register</v-btn>
                         </router-link>
                     </v-card-text>
                 </v-card>

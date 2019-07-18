@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import {store} from './vuex/store'
 import vuetify from './plugins/vuetify';
+import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
 import VueSweetalert2 from 'vue-sweetalert2';
 import MultiFiltersPlugin from './plugins/MultiFiltersPlugin'
 
