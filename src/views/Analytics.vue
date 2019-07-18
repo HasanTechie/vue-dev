@@ -2,7 +2,7 @@
     <div>
         <v-container fluid grid-list-xl>
             <v-layout wrap align-center>
-                <v-flex xs6 sm3 d-flex>
+                <v-flex xs6 sm2 d-flex>
                     <v-select
                             :items="items"
                             v-model="selectedValue"
@@ -10,7 +10,7 @@
                             v-on:close="updateRoomType"
                     ></v-select>
                 </v-flex>
-                <v-flex xs6 sm3 d-flex>
+                <v-flex xs6 sm2 d-flex>
                     <div class="datepicker-trigger">
 
                         <v-text-field
@@ -31,8 +31,8 @@
                         />
                     </div>
                 </v-flex>
-                <v-btn color="success" @click="updateChart">Update Chart</v-btn>
             </v-layout>
+                <v-btn color="success" @click="updateChart">Update Chart</v-btn>
             <div class="text-xs-center" v-if="!trigger">
                     <v-progress-circular class="mt-5" indeterminate width="14" color="blue" size="256"></v-progress-circular>
             </div>

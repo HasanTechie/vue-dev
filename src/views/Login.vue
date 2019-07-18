@@ -20,7 +20,7 @@
                         <v-spacer></v-spacer>
                         <v-btn color="primary" @click="login">Login</v-btn>
                     </v-card-actions>
-                    <v-card-text>
+                    <v-card-text class="pa-3">
                         <router-link to="/register">
                             <v-btn outlined color="blue">Dont have an account? Register</v-btn>
                         </router-link>
