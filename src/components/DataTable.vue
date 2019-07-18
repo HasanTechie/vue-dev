@@ -43,7 +43,7 @@
             <v-data-table :headers="subHeaders"
                           :items="rooms"
                           item-key="color"
-                          hide-actions
+                          hide-default-footer
                           class="elevation-10">
               <template v-slot:items="props">
                 <td>{{ props.item.name }}</td>

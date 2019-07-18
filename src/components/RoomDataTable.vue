@@ -10,7 +10,7 @@
       :items="hotels"
       :expand="expand"
       item-key="name"
-      hide-actions
+      hide-default-footer
     >
       <template v-slot:items="props">
         <tr @click="props.expanded = !props.expanded">

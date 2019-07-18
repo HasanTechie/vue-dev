@@ -6,7 +6,7 @@
                       :items="myitems"
                       :search="mysearch"
                       item-key="color"
-                      hide-actions
+                      hide-default-footer
                       class="elevation-10">
           <template v-slot:items="props">
             <td>{{ props.item.room }}</td>
