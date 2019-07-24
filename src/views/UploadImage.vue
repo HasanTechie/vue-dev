@@ -43,7 +43,7 @@
 
 <script>
     export default {
-        name: "ImageUpload",
+        name: "UploadImage",
         data() {
             return {
                 files: []
