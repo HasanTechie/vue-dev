@@ -49,12 +49,22 @@
         name: "UploadImage",
         data() {
             return {
-                files: []
+                files: [],
+                form: new FormData
             }
         },
         methods: {
             uploadImages() {
 
+
+                this.form.append('picture',this.files[0])
+
+                this.$store.dispatch('uploadImages', {
+                   form : this.form
+                }).then(() => {
+                    // location.reload()
+                })
+                // console.log(this.files[0])
             }
         }
     }

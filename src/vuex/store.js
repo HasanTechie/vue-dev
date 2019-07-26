@@ -70,6 +70,9 @@ export const store = new Vuex.Store({
             state.user = null
             axios.defaults.headers.common['Authorization'] = null
             // location.reload()
+        },
+        SET_IMAGES(state) {
+            console.log(state)
         }
     },
     actions: {
@@ -117,6 +120,26 @@ export const store = new Vuex.Store({
                 .post(serverURL + '/login', credentials)
                 .then(({data}) => {
                     commit('SET_USER_DATA', data)
+                })
+        },
+        uploadImages({commit}, form) {
+
+            console.log('reached');
+
+            var config = {
+                headers: {
+                    'Content-type': 'multipart/form-data',
+                    // 'Authorization': "Bearer " +
+                    //     JSON.parse(localStorage.getItem('user')).access_token
+                }
+            };
+
+            return axios
+                .post(serverURL + '/uploadImages',form,config)
+                .then(({data}) => {
+                    console.log(data)
+                    console.log(commit)
+                    // commit('SET_IMAGES', data)
                 })
         },
         storeCompetitor(dataToBeStored) {
