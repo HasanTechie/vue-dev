@@ -4,7 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-var serverURL = 'http://35.158.76.194/api';
+var serverURL = 'http://backend.test/api';
 
 export const store = new Vuex.Store({
     state: {

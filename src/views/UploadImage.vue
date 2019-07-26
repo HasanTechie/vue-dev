@@ -26,16 +26,19 @@
                         </v-chip>
 
                         <span
-                                v-else-if="index === 2"
+                                v-else-if="index === 4"
                                 class="overline grey--text text--darken-3 mx-2"
                         >
-        +{{ files.length - 2 }} File(s)
-      </span>
+                        +{{ files.length - 4 }} File(s)
+                        </span>
                     </template>
                 </v-file-input>
             </v-flex>
             <v-flex xs12 sm3 d-flex>
-                <v-btn color="success" @click="uploadImages"><v-icon left>cloud_done</v-icon>Upload Images</v-btn>
+                <v-btn color="success" @click="uploadImages">
+                    <v-icon left>cloud_done</v-icon>
+                    Upload Images
+                </v-btn>
             </v-flex>
         </v-layout>
     </v-container>
@@ -49,6 +52,11 @@
                 files: []
             }
         },
+        methods: {
+            uploadImages() {
+
+            }
+        }
     }
 </script>
 
