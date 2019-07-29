@@ -72,7 +72,7 @@
         created() {
             // this.getCompetitorsIDs()
             this.getHotelsPrices()
-            // this.testingData()
+            this.testingData()
         },
         methods: {
             getHotelsPrices() {
@@ -219,11 +219,11 @@
                     })
             },
 
-            // testingData(){
-            //     apiRequests.getCompetitorRoomsPrices().then(response => {
-            //         console.log(response.data)
-            //     })
-            // }
+            testingData(){
+                apiRequests.getProcessedCSVs().then(response => {
+                    console.log(response.data)
+                })
+            }
         }
     }
 </script>
