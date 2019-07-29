@@ -110,4 +110,8 @@ export default {
         return apiClient.get('competitorsroomsprices&get=0' + this.getApiKey() + '&userid=' + userid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&room=' + room)
 // master
     },
+
+    getProcessedCSVs(){
+        return apiClient.get('getprocessedcsvs&get=0' + this.getApiKey() + '&userid=' + userid)
+    }
 }
