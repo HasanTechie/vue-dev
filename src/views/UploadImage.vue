@@ -64,7 +64,7 @@
                     }
 
                     this.files = [];
-                    this.$store.dispatch('uploadImages', form).then(() => {
+                    this.$store.dispatch('uploadImagesToServer', form).then(() => {
                     })
                 }
             }

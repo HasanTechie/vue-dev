@@ -27,7 +27,7 @@
         <br>
         <div v-for="item in value" :key="item.hotel_id * Math.random()">
             <v-chip v-model="item.status" close color="blue title" dark text-color="white"
-                    @input="updateSelections(item.hotel_id)" label>
+                    @click:close="deleteSelections(item.hotel_id)" label>
                 <v-avatar>
                     <v-icon>arrow_right_alt</v-icon>
                 </v-avatar>
@@ -70,7 +70,8 @@
                     // console.log(this.value)
                 })
             },
-            updateSelections(hotel_id) {
+            deleteSelections(hotel_id) {
+
                 this.$store.dispatch('deleteCompetitor', {
                         user_id: JSON.parse(localStorage.getItem('user')).user.id,
                         hotel_id: hotel_id
@@ -110,13 +111,16 @@
                     var competitorsArray = JSON.parse(JSON.stringify(this.value))
                     var last = competitorsArray.pop();
 
-                    this.$store.dispatch('storeCompetitor', {
-                            user_id: JSON.parse(localStorage.getItem('user')).user.id,
-                            hotel_id: last.hotel_id,
-                            name: last.name,
-                            address: last.address,
-                            city: last.city
-                        }
+                    var form = new FormData
+
+                    form.append('user_id', JSON.parse(localStorage.getItem('user')).user.id)
+                    form.append('hotel_id', last.hotel_id)
+                    form.append('address', last.address)
+                    form.append('city', last.city)
+
+                    console.log(form)
+
+                    this.$store.dispatch('storeCompetitor', {form}
                     ).then(() => {
                         this.getSelectedCompetitors()
                         // console.log('added');

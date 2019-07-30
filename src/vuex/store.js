@@ -4,7 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-var serverURL = 'http://35.158.76.194/api';
+var serverURL = 'http://backend.test/api';
 
 export const store = new Vuex.Store({
     state: {
@@ -122,7 +122,7 @@ export const store = new Vuex.Store({
                     commit('SET_USER_DATA', data)
                 })
         },
-        uploadImages({commit}, form) {
+        storeCompetitor(form) {
 
             var config = {
                 headers: {
@@ -132,42 +132,10 @@ export const store = new Vuex.Store({
             };
 
             return axios
-                .post(serverURL + '/uploadImages', form, config)
+                .post(serverURL + '/competitors', form, config)
                 .then(({data}) => {
-                    console.log(data)
-                    console.log(commit)
-                    // commit('SET_IMAGES', data)
-                })
-        },
-        uploadCSVs({commit}, form) {
-
-            var config = {
-                headers: {
-                    'Authorization': "Bearer " +
-                        JSON.parse(localStorage.getItem('user')).access_token
-                }
-            };
-
-            return axios
-                .post(serverURL + '/uploadCSVs', form, config)
-                .then(({data}) => {
-                    console.log(data)
-                    console.log(commit)
-                    // commit('SET_CSVs', data)
-                })
-        },
-        storeCompetitor(dataToBeStored) {
-            var config = {
-                headers: {
-                    'Authorization': "Bearer " +
-                        JSON.parse(localStorage.getItem('user')).access_token
-                }
-            };
-            return axios
-                .post(serverURL + '/competitors',
-                    dataToBeStored, config)
-                .then(() => {
-                })
+                console.log(data)
+            })
         },
         deleteCompetitor(dataToBeDeleted) {
             var config = {
@@ -196,6 +164,41 @@ export const store = new Vuex.Store({
                 .get(serverURL + '/competitors', config)
                 .then(({data}) => {
                     return data
+                })
+        },
+
+        uploadImagesToServer(form) {
+
+            var config = {
+                headers: {
+                    'Authorization': "Bearer " +
+                        JSON.parse(localStorage.getItem('user')).access_token
+                }
+            };
+
+            return axios
+                .post(serverURL + '/uploadImages', form, config)
+                .then(({data}) => {
+                    console.log(data)
+                    // console.log(commit)
+                    // commit('SET_IMAGES', data)
+                })
+        },
+        uploadCSVsToServer(form) {
+
+            var config = {
+                headers: {
+                    'Authorization': "Bearer " +
+                        JSON.parse(localStorage.getItem('user')).access_token
+                }
+            };
+
+            return axios
+                .post(serverURL + '/uploadCSVs', form, config)
+                .then(({data}) => {
+                    console.log(data)
+                    // console.log(commit)
+                    // commit('SET_CSVs', data)
                 })
         },
         logout({commit}) {
