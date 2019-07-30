@@ -9,6 +9,7 @@ const apiClient = axios.create({
     }
 })
 
+
 if (localStorage.getItem('user')) {
     if (JSON.parse(localStorage.getItem('user')).user) {
         var userid = JSON.parse(localStorage.getItem('user')).user.id;
@@ -44,6 +45,11 @@ export default {
             this.getApiKey() +
             '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28' +
             '&competitorsid=' + competitorsids)
+    },
+    getProcessedCSVs(user_id) {
+        return apiClient.get('getprocessedcsvs&get=0' +
+            this.getApiKey() +
+            '&userid=' + user_id)
     },
     getCompetitorAvgPricesFix(competitorsids = '1024,3045,4106') {
         return apiClient.get('competitorsavgprices&get=50' +

@@ -7,20 +7,9 @@
       </div>
       <div class="panel-body">
         <div class="form-group">
-        <v-data-table v-if="parse_csv"
-            :headers="mockheaders"
-            :items="mockitems"
-            :items-per-page="10"
-            item-key="name"
-            class="elevation-1"
-            :footer-props="{
-                showFirstLastPage: true,
-                firstIcon: 'mdi-arrow-collapse-left',
-                lastIcon: 'mdi-arrow-collapse-right',
-                prevIcon: 'mdi-minus',
-                nextIcon: 'mdi-plus'
-            }"
-        ></v-data-table>    
+        
+        <vue-csv-import url="/url/to/post" :map-fields="['array', 'of', 'field', 'names']"></vue-csv-import>
+  
         </div>    
       </div>
     </div>
@@ -29,8 +18,10 @@
 </template>
 
 <script>
+    import { VueCsvImport } from 'vue-csv-import'
     export default {
         name: "CSVImport",
+        components: { VueCsvImport },
         data() {
             return {
                 channel_name: '',

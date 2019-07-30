@@ -1,168 +1,221 @@
 <template>
-    <div id="app">
-    <div class="container">
-        <div class="panel panel-sm">
-        <div class="panel-heading"> 
-            <h4>CSV Import</h4>
+    <div class="vue-csv-uploader">
+        <div class="form">
+            <div class="vue-csv-uploader-part-one">
+                <div class="form-check form-group csv-import-checkbox" v-if="headers === null">
+                    <slot name="hasHeaders" :headers="hasHeaders" :toggle="toggleHasHeaders">
+                        <input :class="checkboxClass" type="checkbox" id="hasHeaders" :value="hasHeaders" @change="toggleHasHeaders">
+                        <label class="form-check-label" for="hasHeaders">
+                            File Has Headers
+                        </label>
+                    </slot>
+                </div>
+                <div class="form-group csv-import-file">
+                    <input ref="csv" type="file" :class="inputClass" name="csv">
+                </div>
+                <div class="form-group">
+                    <slot name="next" :load="load">
+                        <input type="submit" :class="buttonClass" @click.prevent="load" :value="loadBtnText">
+                    </slot>
+                </div>
+            </div>
+            <div class="vue-csv-uploader-part-two">
+                <div class="vue-csv-mapping" v-if="sample">
+                    <table :class="tableClass">
+                        <slot name="thead">
+                            <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>CSV Column</th>
+                            </tr>
+                            </thead>
+                        </slot>
+                        <tbody>
+                        <tr v-for="(field, key) in fieldsToMap" :key="key">
+                            <td>{{ field.label }}</td>
+                            <td>
+                                <select class="form-control" v-model="map[field.key]">
+                                    <option v-for="(column, key) in firstRow" :key="key" :value="key">{{ column }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group" v-if="url">
+                        <slot name="submit" :submit="submit">
+                            <input type="submit" :class="buttonClass" @click.prevent="submit" :value="submitBtnText">
+                        </slot>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-            <div class="form-group">
-            <label for="csv_file" class="control-label col-sm-3 text-right">CSV file to import</label>
-            <div class="col-sm-9">
-                <input type="file" id="csv_file" name="csv_file" class="form-control" @change="loadCSV($event)">
-            </div>
-            </div>
-            <div class="col-sm-offset-3 col-sm-9">
-            <div class="checkbox-inline">
-                <label for="header_rows"><input type="checkbox" id="header_rows"> File contains header row?</label>
-            </div>
-            </div>
-            
-            <div class="col-sm-offset-3 col-sm-9">
-            <a href="#" class="btn btn-primary">Parse CSV</a>
-            </div>
-            <table v-if="parse_csv">
-            <thead>
-                <tr>
-                <th v-for="key in parse_header"
-                    @click="sortBy(key)"
-                    :class="{ active: sortKey == key }">
-                    {{ key | capitalize }}
-                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-                    </span>
-                </th>
-                </tr>
-            </thead> 
-            <tr v-for="csv in parse_csv">
-                <td v-for="key in parse_header">
-                {{csv[key]}}
-                </td>
-            </tr>
-            
-            </table>
-        </div>
-        </div>
-        
-    </div>
     </div>
 </template>
 
 <script>
-new Vue({
-  el: "#app",
-  data() {
-    return {
-      channel_name: '',
-      channel_fields: [],
-      channel_entries: [],
-      parse_header: [],
-      parse_csv: [],
-      sortOrders:{},
-      sortKey: ''
+    import _ from 'lodash';
+    import axios from 'axios';
+    import Papa from 'papaparse';
+    export default {
+        props: {
+            value: Array,
+            url: {
+                type: String
+            },
+            mapFields: {
+                required: true
+            },
+            callback: {
+                type: Function,
+                default: () => {
+                }
+            },
+            catch: {
+                type: Function,
+                default: () => {
+                }
+            },
+            finally: {
+                type: Function,
+                default: () => {
+                }
+            },
+            parseConfig: {
+                type: Object,
+                default() {
+                    return {};
+                }
+            },
+            headers: {
+                default: null
+            },
+            loadBtnText: {
+                type: String,
+                default: "Next"
+            },
+            submitBtnText: {
+                type: String,
+                default: "Submit"
+            },
+            tableClass: {
+                type: String,
+                default: "table"
+            },
+            checkboxClass: {
+                type: String,
+                default: "form-check-input"
+            },
+            buttonClass: {
+                type: String,
+                default: "btn btn-primary"
+            },
+            inputClass: {
+                type: String,
+                default: "form-control-file"
+            },
+            
+        },
+        data: () => ({
+            form: {
+                csv: null,
+            },
+            fieldsToMap: [],
+            map: {},
+            hasHeaders: true,
+            csv: null,
+            sample: null,
+            userid: JSON.parse(localStorage.getItem('user')).user.id,
+ 
+        }),
+        created() {
+            this.load();
+            this.hasHeaders = this.headers;
+            if (_.isArray(this.mapFields)) {
+                this.fieldsToMap = _.map(this.mapFields, (item) => {
+                    return {
+                        key: item,
+                        label: item
+                    };
+                });
+            } else {
+                this.fieldsToMap = _.map(this.mapFields, (label, key) => {
+                    return {
+                        key: key,
+                        label: label
+                    };
+                });
+            }
+        },
+        methods: {
+            submit() {
+                const _this = this;
+                this.form.csv = this.buildMappedCsv();
+                this.$emit('input', this.form.csv);
+                if (this.url) {
+                    axios.post(this.url, this.form).then(response => {
+                        _this.callback(response);
+                    }).catch(response => {
+                        _this.catch(response);
+                    }).finally(response => {
+                        _this.finally(response);
+                    });
+                } else {
+                    _this.callback(this.form.csv);
+                }
+            },
+            buildMappedCsv() {
+                const _this = this;
+                let csv = this.hasHeaders ? _.drop(this.csv) : this.csv;
+                return _.map(csv, (row) => {
+                    let newRow = {};
+                    _.forEach(_this.map, (column, field) => {
+                        _.set(newRow, field, _.get(row, column));
+                    });
+                    return newRow;
+                });
+            },
+            load() {
+                const _this = this;
+                this.readFile((output) => {
+                    _this.sample = _.get(Papa.parse(output, { preview: 2, skipEmptyLines: true }), "data");
+                    _this.csv = _.get(Papa.parse(output, { skipEmptyLines: true }), "data");
+                });
+            },
+            readFile(callback) {
+                let file = this.$refs.csv.files[0];
+                if (file) {
+                    let reader = new FileReader();
+                    reader.readAsText(file, "UTF-8");
+                    reader.onload = function (evt) {
+                        callback(evt.target.result);
+                    };
+                    reader.onerror = function () {
+                    };
+                }
+            },
+            toggleHasHeaders() {
+                this.hasHeaders = !this.hasHeaders;
+            }
+        },
+        watch: {
+            map: {
+                handler: function (newVal) {
+                    if (!this.url) {
+                        var hasAllKeys = this.mapFields.every(function (item) {
+                            return newVal.hasOwnProperty(item);
+                        });
+                        if (hasAllKeys) {
+                            this.submit();
+                        }
+                    }
+                },
+                deep: true
+            }
+        },
+        computed: {
+            firstRow() {
+                return _.get(this, "sample.0");
+            }
+        },
     };
-  },
-  filters: {
-    capitalize: function (str) {
-      return str.charAt(0).toUpperCase() + str.slice(1)
-    }
-  },
-  methods: {
-    sortBy: function (key) {
-      var vm = this
-      vm.sortKey = key
-      vm.sortOrders[key] = vm.sortOrders[key] * -1
-    },
-    csvJSON(csv){
-      var vm = this
-      var lines = csv.split("\n")
-      var result = []
-      var headers = lines[0].split(",")
-      vm.parse_header = lines[0].split(",") 
-      lines[0].split(",").forEach(function (key) {
-        vm.sortOrders[key] = 1
-      })
-      
-      lines.map(function(line, indexLine){
-        if (indexLine < 1) return // Jump header line
-        
-        var obj = {}
-        var currentline = line.split(",")
-        
-        headers.map(function(header, indexHeader){
-          obj[header] = currentline[indexHeader]
-        })
-        
-        result.push(obj)
-      })
-      
-      result.pop() // remove the last item because undefined values
-      
-      return result // JavaScript object
-    },
-    loadCSV(e) {
-      var vm = this
-      if (window.FileReader) {
-        var reader = new FileReader();
-        reader.readAsText(e.target.files[0]);
-        // Handle errors load
-        reader.onload = function(event) {
-          var csv = event.target.result;
-          vm.parse_csv = vm.csvJSON(csv)
-          
-        };
-        reader.onerror = function(evt) {
-          if(evt.target.error.name == "NotReadableError") {
-            alert("Canno't read file !");
-          }
-        };
-      } else {
-        alert('FileReader are not supported in this browser.');
-      }
-    }
-  }
-});  
 </script>
-
-<style scoped>
-    html, body {
-    margin: 0;
-    padding: 0;
-    }
-    body {
-    margin: 32px auto;
-    }
-    .panel {
-    border: 2px solid #dfdfdf;
-    box-shadow: rgba(0, 0, 0, 0.15) 0 1px 0 0;
-    margin: 10px;
-    } 
-    .panel.panel-sm {
-    max-width: 700px;
-    margin: 10px auto;
-    }
-    .panel-heading {
-    border-bottom: 2px solid #dfdfdf;
-    }
-    .panel-heading h1, .panel-heading h2, .panel-heading h3, .panel-heading h4, .panel-heading h5, .panel-heading h6 {
-    margin: 0;
-    padding: 0;
-    }
-    .panel-body .checkbox-inline {
-    padding: 15px 20px;
-    }
-    table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    }
-
-    td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-    }
-
-    tr:nth-child(even) {
-    background-color: #dddddd;
-    }
-</style>
