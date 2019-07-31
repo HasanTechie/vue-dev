@@ -38,7 +38,7 @@
                                     >
                                     +{{ files.length - 4 }} File(s)
                                     </span>
-                                </teMplate>
+                                </template>
                             </v-file-input>
 
                         </v-flex>
@@ -47,7 +47,7 @@
                             <v-divider></v-divider>
                         </v-flex>
 
-                        <v-flex xs12 sm12 md12 align-center="true">
+                        <v-flex xs12 sm12 md12>
                             <v-btn color="success" @click="uploadCSVs">
                                 <v-icon left>cloud_done</v-icon>
                                 Upload
@@ -154,15 +154,25 @@
                                                 response.data.data).map((key) => {
                                                     return response.data.data[key]
                                                 })
-                    console.log(String(responseDataArray[11]['file_url']))
                     
+                    for (var i=responseDataArray.length-1; i>=0; i--) {
+                        if ((responseDataArray[i].uploaded_by == 'ml_algorithm') && 
+                                (responseDataArray[i].user_id == this.userid)) {
+
+                           var url = responseDataArray[i].file_url
+                           break
+                        }
+                    }
+
+                    //console.log(url)
+
+
                     var request = require("request");
                     const csv=require('csvtojson')
 
                     var options = { 
                         method: 'GET',
-                        url: 'https://cors-anywhere.herokuapp.com/'+
-                        String(responseDataArray[11]['file_url'])
+                        url: 'https://cors-anywhere.herokuapp.com/' + url
                     };
 
                     csv()
@@ -180,8 +190,6 @@
                                                 jsonObj[i][this.currentcapacity][0]
                                             ).toFixed(2)
 
-                            console.log('jsonObj[0]: '+
-                                jsonObj[0][this.currentcapacity][0])
 
                             ratedata.push(obj)
                         }
@@ -197,20 +205,30 @@
                 
                 apiRequests.getProcessedCSVs(this.userid)
                 .then(response => {
-                    console.log(response.data)
+                    //console.log(response.data)
                     var responseDataArray = Object.keys(
                                                 response.data.data).map((key) => {
                                                     return response.data.data[key]
                                                 })
-                    console.log(String(responseDataArray[11]['file_url']))
-                    
+                    //console.log(String(responseDataArray.length))
+                    // TODO before we take the next best rates sheet we need to check, which
+                    // one is the most recent. With the information given we only can look
+                    // for the last entry that has attribute uploaded_by=user and the same userid
+                    for (var i=responseDataArray.length-1; i>=0; i--) {
+                        if ((responseDataArray[i].uploaded_by == 'ml_algorithm') && 
+                                (responseDataArray[i].user_id == this.userid)) {
+
+                           var url = responseDataArray[i].file_url
+                           break
+                        }
+                    }
                     var request = require("request");
                     const csv=require('csvtojson')
 
                     var options = { 
                         method: 'GET',
-                        url: 'https://cors-anywhere.herokuapp.com/'+
-                        String(responseDataArray[11]['file_url'])
+                        url: 'https://cors-anywhere.herokuapp.com/'+url
+                        
                     };
 
                     csv()
@@ -230,7 +248,6 @@
                         //console.log(capacities.capacity)
                         // the last entry is the date...
                         this.capacities = capacities
-                        console.log("this.capacities[0]"+this.capacities[0])
 
                         this.currentcapacity = this.capacities[0]
                     })
