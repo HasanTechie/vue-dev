@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div class="my-4">
-            <h1 class="display-1 blue--text">Select Competitor Hotels</h1>
+            <h1 class="display-1 blue--text">Select Competitor Hotels in {{this.city}}</h1>
         </div>
         <multiselect v-model="value"
                      :options="options"
@@ -55,6 +55,7 @@
             return {
                 value: [],
                 options: [],
+                city: JSON.parse(localStorage.getItem('user')).city
             }
         },
 
@@ -89,7 +90,7 @@
                 return `${name} — ${city}`
             },
             getAllHotels() {
-                apiRequests.getHotels()
+                apiRequests.getHotels(this.city)
                     .then(response => {
                         var dataArray = Object.keys(response.data.data).map((key) => {
                             return response.data.data[key]
