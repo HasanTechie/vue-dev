@@ -1,20 +1,22 @@
 <template>
     <div id="app">
-        <label class="typo__label">Select Competitor Hotels</label>
-        <multiselect v-model="value" 
-                    :options="options" 
-                    :custom-label="nameWithCity" 
-                    :multiple="true"
-                    :close-on-select="true"
-                    :clear-on-select="true" 
-                    :preserve-search="false" 
-                    placeholder="Pick some" 
-                    label="name"
-                    track-by="name" 
-                    :preselect-first="true" 
-                    v-on:close="updateSelectedHotels">
-            <template   slot="selection" 
-                        slot-scope="{ values, search, isOpen }">
+        <div class="my-4">
+            <h1 class="display-1 blue--text">Select Competitor Hotels</h1>
+        </div>
+        <multiselect v-model="value"
+                     :options="options"
+                     :custom-label="nameWithCity"
+                     :multiple="true"
+                     :close-on-select="true"
+                     :clear-on-select="true"
+                     :preserve-search="false"
+                     placeholder="Pick some"
+                     label="name"
+                     track-by="name"
+                     :preselect-first="true"
+                     v-on:close="updateSelectedHotels">
+            <template slot="selection"
+                      slot-scope="{ values, search, isOpen }">
                         <span class="multiselect__single"
                               v-if="values.length &amp;&amp; !isOpen">{{ values.length }} hotels selected</span>
             </template>
@@ -22,7 +24,7 @@
         <!--        <pre class="language-json"><code>{{ value }}</code></pre>-->
 
         <br>
-        <h2 v-if="this.value.length" 
+        <h2 v-if="this.value.length"
             class="blue--text headline">Competitors Selected : {{ this.value.length }}</h2>
         <br>
         <div v-for="item in value" :key="item.hotel_id * Math.random()">
@@ -88,16 +90,16 @@
             },
             getAllHotels() {
                 apiRequests.getHotels()
-                .then(response => {
-                    var dataArray = Object.keys(response.data.data).map((key) => {
-                        return response.data.data[key]
+                    .then(response => {
+                        var dataArray = Object.keys(response.data.data).map((key) => {
+                            return response.data.data[key]
+                        })
+                        // use Vuex store
+                        this.options = dataArray
                     })
-                    // use Vuex store
-                    this.options = dataArray
-                })
-                .catch(error => {
-                    console.log('There was an error:' + error.response)
-                })
+                    .catch(error => {
+                        console.log('There was an error:' + error.response)
+                    })
             },
             updateSelectedHotels() {
                 this.updateSelectedHotelsHasan()
