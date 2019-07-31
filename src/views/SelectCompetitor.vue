@@ -27,7 +27,7 @@
         <br>
         <div v-for="item in value" :key="item.hotel_id * Math.random()">
             <v-chip v-model="item.status" close color="blue title" dark text-color="white"
-                    @input="updateSelections(item.hotel_id)" label>
+                    @click:close="updateSelections(item.hotel_id)" label>
                 <v-avatar>
                     <v-icon>arrow_right_alt</v-icon>
                 </v-avatar>
@@ -76,7 +76,6 @@
                         hotel_id: hotel_id
                     }
                 ).then(() => {
-                    // console.log('deleted');
                 })
 
                 this.value = this.value.filter(function (returnableObjects) {
