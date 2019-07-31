@@ -1,5 +1,14 @@
 <template>
     <div id="app">
+        <v-alert
+                dismissible
+                border="top"
+                colored-border
+                type="info"
+                elevation="2"
+        >
+            Except for hotels in Berlin and Rome, all other cities competitors hotels data will be available in Analytics and Monthly View section after 24hrs of selection of competitors.
+        </v-alert>
         <div class="my-4">
             <h1 class="display-1 blue--text">Select Competitor Hotels in {{this.city}}</h1>
         </div>
