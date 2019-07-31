@@ -122,7 +122,7 @@ export const store = new Vuex.Store({
                     commit('SET_USER_DATA', data)
                 })
         },
-        storeCompetitor(form) {
+        storeCompetitor({commit},dataToBeStored) {
 
             var config = {
                 headers: {
@@ -132,12 +132,12 @@ export const store = new Vuex.Store({
             };
 
             return axios
-                .post(serverURL + '/competitors', form, config)
-                .then(({data}) => {
-                console.log(data)
+                .post(serverURL + '/competitors', dataToBeStored, config)
+                .then(() => {
+                console.log(commit)
             })
         },
-        deleteCompetitor(dataToBeDeleted) {
+        deleteCompetitor({commit},dataToBeDeleted) {
             var config = {
                 headers: {
                     'Authorization': "Bearer " +
@@ -150,6 +150,7 @@ export const store = new Vuex.Store({
                     dataToBeDeleted.user_id + '&hotel_id=' +
                     dataToBeDeleted.hotel_id, config)
                 .then(() => {
+                    console.log(commit)
                 })
         },
         getAllCompetitor() {
@@ -167,7 +168,7 @@ export const store = new Vuex.Store({
                 })
         },
 
-        uploadImagesToServer(form) {
+        uploadImagesToServer({commit},ImagesInFormData) {
 
             var config = {
                 headers: {
@@ -177,14 +178,12 @@ export const store = new Vuex.Store({
             };
 
             return axios
-                .post(serverURL + '/uploadImages', form, config)
-                .then(({data}) => {
-                    console.log(data)
-                    // console.log(commit)
-                    // commit('SET_IMAGES', data)
+                .post(serverURL + '/uploadImages', ImagesInFormData, config)
+                .then(() => {
+                    console.log(commit)
                 })
         },
-        uploadCSVsToServer(form) {
+        uploadCSVsToServer({commit},CSVsInFormData) {
 
             var config = {
                 headers: {
@@ -194,11 +193,9 @@ export const store = new Vuex.Store({
             };
 
             return axios
-                .post(serverURL + '/uploadCSVs', form, config)
-                .then(({data}) => {
-                    console.log(data)
-                    // console.log(commit)
-                    // commit('SET_CSVs', data)
+                .post(serverURL + '/uploadCSVs', CSVsInFormData, config)
+                .then(() => {
+                    console.log(commit)
                 })
         },
         logout({commit}) {
