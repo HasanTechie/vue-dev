@@ -5,32 +5,29 @@
             lg12
             class="pa-3 feature-pane"
     >
-    <v-data-table
-      :headers="HotelHeaders"
-      :items="hotels"
-      :expand="expand"
-      item-key="name"
-      hide-default-footer
+    <v-data-table 
+    :loading="loading" loading-text="Loading... Please wait"
+    d
+    :headers="HotelHeaders"
+    :items="hotels"
+    show-expand
+    item-key="name"
+    hide-default-footer
     >
-      <template v-slot:items="props">
-        <tr @click="props.expanded = !props.expanded">
-          <td>{{ props.item.name }}</td>
-          <template v-if="props.item.currentprice > props.item.marketvalue">
-            <td class="text-xs-left" bgcolor="green">{{ props.item.currentprice }}</td>
-            <td class="text-xs-left" bgcolor="green">{{ props.item.marketvalue }}</td>
-          </template>
-          <template v-else>
-            <td class="text-xs-left" bgcolor="red">{{ props.item.currentprice }}</td>
-            <td class="text-xs-left" bgcolor="red">{{ props.item.marketvalue }}</td>
-          </template>
-        </tr>
-      </template>
-      <template v-slot:expand="props">
-
-      <SubDataTable v-bind:myheaders="RoomHeaders"
-                    v-bind:myitems="rooms"
-                    v-bind:mysearch="props.item.name"
-      ></SubDataTable> 
+    <template v-slot:item.marketvalue="{ item }">
+      <v-chip color="green" text-color="white">{{ item.marketvalue }}</v-chip>
+    </template>
+    <template v-slot:item.currentprice="{ item }">
+      <v-chip color="primary" text-color="white">{{ item.currentprice }}</v-chip>
+    </template>
+      <template v-slot:expanded-item="props">
+        <td :colspan="100">
+          <SubDataTable 
+                        v-bind:myheaders="RoomHeaders"
+                        v-bind:myitems="rooms"
+                        v-bind:mysearch="props.item.name"
+          ></SubDataTable> 
+        </td>
       </template>
     </v-data-table>
     </v-flex>
@@ -49,6 +46,7 @@
       SubDataTable
     },
     data: () => ({
+      loading: true,
       expand: true,
       roomsdatadownloaded: false,
       avpricedatadownloaded: false,
@@ -65,12 +63,13 @@
       HotelHeaders: [
         { text: 'Hotel Name', align: 'left', value: 'name' },
         { text: 'Average Current Price', value: 'currentprice' },
-        { text: 'LUNA Value', value: 'marketvalue' },
+        { text: 'Average LUNA Value', value: 'marketvalue' },
 
       ],
       RoomHeaders: [
-        { text: 'Room Type', align: 'left', value: 'name' },
-        { text: 'Current Price', value: 'competitorpriceav' },
+        { text: 'Hotel Name', align: 'left', value: 'name' },
+        { text: 'Room Type', align: 'left', value: 'room' },
+        { text: 'Current Price', value: 'currentprice' },
         { text: 'LUNA Value', value: 'marketvalue' },
       ],
       competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
@@ -170,21 +169,6 @@
           hoteldata.push(obj)
         }
         this.hotels = hoteldata
-      },
-      constructRooms(competitorNames, competitorRoomNames, currentHotelPrice,
-                      competitorPrices){
-        let roomdata = []
-        for (let i=0; i<competitorNames.length; i+=1) {
-          var obj = {}
-          obj.name = (competitorNames[i]),
-          obj.room = (competitorRoomNames[i]),
-          obj.currentprice = (currentHotelPrice).toFixed(2),
-          obj.marketvalue = (competitorPrices[i]+ Math.random()*
-          (15.0-8.5)).toFixed(2)
-          
-          roomdata.push(obj)
-        }
-        this.rooms = roomdata
       },
       getValuesByKey(array, key) 
       {
@@ -318,7 +302,7 @@
                 allRoomObj.currentprice = (usersCompetitorData[i][j]
                                       .price).toFixed(2)
                 allRoomObj.marketvalue = (usersCompetitorData[i][j]
-                                      .price ).toFixed(2)
+                                      .price_should ).toFixed(2)
 
                 avOfAllRoomObj.currentprice += parseFloat(allRoomObj.currentprice)
                 avOfAllRoomObj.marketvalue += parseFloat(allRoomObj.marketvalue)
@@ -336,8 +320,8 @@
               avOfAllRoomData.push(avOfAllRoomObj)
             }
           }
-          //console.log('allroomdata')
-          //console.log(allroomdata)
+          console.log('allroomdata')
+          console.log(allroomdata)
           console.log('avOfAllRoomData')
           console.log(avOfAllRoomData)
           this.hotels = avOfAllRoomData
@@ -347,7 +331,7 @@
         .catch(error => {
           console.log('There was an error:' + error.response)
         })
-       
+      this.loading = false
       },
     }
   }
