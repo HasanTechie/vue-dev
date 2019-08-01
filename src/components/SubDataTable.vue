@@ -1,22 +1,19 @@
 <template>
-  <div id="roomtable">
-    <v-card class="elevation-10">
-      <v-card-text>
-        <v-data-table :headers="myheaders"
-                      :items="myitems"
-                      :search="mysearch"
-                      item-key="color"
-                      hide-default-footer
-                      class="elevation-10">
-          <template v-slot:items="props">
-            <td>{{ props.item.room }}</td>
-            <td class="text-xs-left">{{ props.item.currentprice }}</td>
-            <td class="text-xs-left">{{ props.item.marketvalue }}</td>
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </v-card>
-  </div>
+  <v-data-table 
+  dark
+  :headers="myheaders"
+  :items="myitems"
+  :search="mysearch"
+  hide-default-footer
+>
+  <template v-slot:item.marketvalue="{ item }">
+      <v-chip color="green" text-color="white">{{ item.marketvalue }}</v-chip>
+    </template>
+    <template v-slot:item.currentprice="{ item }">
+      <v-chip color="primary" text-color="white">{{ item.currentprice }}</v-chip>
+    </template>
+  </v-data-table>
+
 </template>
 
 

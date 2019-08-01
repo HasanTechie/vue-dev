@@ -1,20 +1,31 @@
 <template>
     <div id="app">
-        <label class="typo__label">Select Competitor Hotels</label>
-        <multiselect v-model="value" 
-                    :options="options" 
-                    :custom-label="nameWithCity" 
-                    :multiple="true"
-                    :close-on-select="true"
-                    :clear-on-select="true" 
-                    :preserve-search="false" 
-                    placeholder="Pick some" 
-                    label="name"
-                    track-by="name" 
-                    :preselect-first="true" 
-                    v-on:close="updateSelectedHotels">
-            <template   slot="selection" 
-                        slot-scope="{ values, search, isOpen }">
+        <v-alert
+                dismissible
+                border="top"
+                colored-border
+                type="info"
+                elevation="2"
+        >
+            Except for hotels in Berlin and Rome, all other cities competitors hotels data will be available in Analytics and Monthly View section after 24hrs of selection of competitors.
+        </v-alert>
+        <div class="my-4">
+            <h1 class="display-1 blue--text">Select Competitor Hotels in {{this.city}}</h1>
+        </div>
+        <multiselect v-model="value"
+                     :options="options"
+                     :custom-label="nameWithCity"
+                     :multiple="true"
+                     :close-on-select="true"
+                     :clear-on-select="true"
+                     :preserve-search="false"
+                     placeholder="Pick some"
+                     label="name"
+                     track-by="name"
+                     :preselect-first="true"
+                     v-on:close="updateSelectedHotels">
+            <template slot="selection"
+                      slot-scope="{ values, search, isOpen }">
                         <span class="multiselect__single"
                               v-if="values.length &amp;&amp; !isOpen">{{ values.length }} hotels selected</span>
             </template>
@@ -22,12 +33,12 @@
         <!--        <pre class="language-json"><code>{{ value }}</code></pre>-->
 
         <br>
-        <h2 v-if="this.value.length" 
+        <h2 v-if="this.value.length"
             class="blue--text headline">Competitors Selected : {{ this.value.length }}</h2>
         <br>
         <div v-for="item in value" :key="item.hotel_id * Math.random()">
             <v-chip v-model="item.status" close color="blue title" dark text-color="white"
-                    @input="updateSelections(item.hotel_id)" label>
+                    @click:close="updateSelections(item.hotel_id)" label>
                 <v-avatar>
                     <v-icon>arrow_right_alt</v-icon>
                 </v-avatar>
@@ -53,6 +64,7 @@
             return {
                 value: [],
                 options: [],
+                city: JSON.parse(localStorage.getItem('user')).city
             }
         },
 
@@ -76,7 +88,6 @@
                         hotel_id: hotel_id
                     }
                 ).then(() => {
-                    // console.log('deleted');
                 })
 
                 this.value = this.value.filter(function (returnableObjects) {
@@ -88,17 +99,17 @@
                 return `${name} — ${city}`
             },
             getAllHotels() {
-                apiRequests.getHotels()
-                .then(response => {
-                    var dataArray = Object.keys(response.data.data).map((key) => {
-                        return response.data.data[key]
+                apiRequests.getHotels(this.city)
+                    .then(response => {
+                        var dataArray = Object.keys(response.data.data).map((key) => {
+                            return response.data.data[key]
+                        })
+                        // use Vuex store
+                        this.options = dataArray
                     })
-                    // use Vuex store
-                    this.options = dataArray
-                })
-                .catch(error => {
-                    console.log('There was an error:' + error.response)
-                })
+                    .catch(error => {
+                        console.log('There was an error:' + error.response)
+                    })
             },
             updateSelectedHotels() {
                 this.updateSelectedHotelsHasan()

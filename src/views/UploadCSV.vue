@@ -120,7 +120,7 @@
                     }
 
                     this.files = [];
-                    this.$store.dispatch('uploadCSVs', form).then(() => {
+                    this.$store.dispatch('uploadCSVsToServer', form).then(() => {
                     })
                 }
             },
