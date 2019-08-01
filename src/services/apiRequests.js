@@ -46,7 +46,7 @@ export default {
             '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28' +
             '&competitorsid=' + competitorsids)
     },
-    getProcessedCSVs(user_id) {
+    getProcessedCSVsById(user_id) {
         return apiClient.get('getprocessedcsvs&get=0' +
             this.getApiKey() +
             '&userid=' + user_id)
@@ -118,6 +118,7 @@ export default {
     },
 
     getProcessedCSVs(){
-        return apiClient.get('getprocessedcsvs&get=0' + this.getApiKey() + '&userid=' + userid)
+        return apiClient.get('getprocessedcsvs&get=0' + 
+        this.getApiKey() + '&userid=' + userid)
     }
 }
