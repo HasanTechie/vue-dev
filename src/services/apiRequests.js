@@ -13,6 +13,7 @@ const apiClient = axios.create({
 if (localStorage.getItem('user')) {
     if (JSON.parse(localStorage.getItem('user')).user) {
         var userid = JSON.parse(localStorage.getItem('user')).user.id;
+        var usercity = JSON.parse(localStorage.getItem('user')).city;
     }
 }
 
@@ -98,9 +99,9 @@ export default {
     getCompetitors() {
         return '&competitorsid=' + this.$store.getters.competitorsids
     },
-    getEvents(city = 'Berlin') {
+    getEvents() {
         return apiClient.get('events&get=0' + this.getApiKey() +
-            '&city=' + city)
+            '&city=' + usercity)
     },
 // oldercolored
     getApiKey() {
