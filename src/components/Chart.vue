@@ -142,7 +142,29 @@
 
                     yaxis: {
                         title: {
-                            text: 'Pricing in Euro'
+                            text: 'Pricing in Euro - €',
+                            style: {
+                                color: undefined,
+                                fontSize: '14px',
+                                fontFamily: undefined,
+                                cssClass: 'apexcharts-xaxis-title'
+                            }
+                        },
+                        labels: {
+                            show: true,
+                            rotate: 0,
+                            rotateAlways: false,
+                            hideOverlappingLabels: false,
+                            trim: true,
+                            minHeight: undefined,
+                            maxHeight: 120,
+                            showDuplicates: false,
+                            style: {
+                                colors: [],
+                                fontSize: '12px',
+                                fontFamily: undefined,
+                                cssClass: 'apexcharts-xaxis-label'
+                            },
                         },
                     },
 
