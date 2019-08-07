@@ -35,7 +35,12 @@
                         id: 'line-chart'
                     },
                     stroke: {
-                        //curve: 'smooth'
+                        show: true,
+                        // curve: 'smooth',
+                        lineCap: 'butt',
+                        colors: undefined,
+                        width: 3,
+                        dashArray: 0,
                     },
                     xaxis: {
                         type: 'datetime',
@@ -101,12 +106,12 @@
                         },
                         crosshairs: {
                             show: true,
-                            width: 1, // tickWidth/barWidth or an integer
+                            width: 2, // tickWidth/barWidth or an integer
                             position: 'back',
-                            opacity: 0.9,
+                            opacity: 0.6,
                             stroke: {
                                 color: '#b6b6b6',
-                                width: 0,
+                                width: 1,
                                 dashArray: 0
                             },
                             fill: {
