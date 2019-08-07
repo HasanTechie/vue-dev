@@ -38,19 +38,20 @@
                         //curve: 'smooth'
                     },
                     xaxis: {
+                        type: 'datetime',
                         categories: this.myData.xAxis,
                         labels: {
                             show: true,
-                            rotate: -45,
+                            rotate: 0,
                             rotateAlways: false,
-                            hideOverlappingLabels: true,
+                            hideOverlappingLabels: false,
                             trim: true,
                             minHeight: undefined,
                             maxHeight: 120,
                             showDuplicates: false,
                             style: {
                                 colors: [],
-                                fontSize: '6px',
+                                fontSize: '12px',
                                 fontFamily: undefined,
                                 cssClass: 'apexcharts-xaxis-label'
                             },
@@ -72,7 +73,7 @@
                             width: '100%',
                             height: 1,
                             offsetX: 0,
-                            offsetY: -8
+                            offsetY: 0
                         },
                         axisTicks: {
                             show: true,
