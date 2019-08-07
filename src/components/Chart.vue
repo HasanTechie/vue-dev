@@ -39,7 +39,7 @@
                         // curve: 'smooth',
                         lineCap: 'butt',
                         colors: undefined,
-                        width: 3,
+                        width: 3.2,
                         dashArray: 0,
                     },
                     xaxis: {
