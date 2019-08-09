@@ -1,44 +1,59 @@
 <template>
     <div>
         <v-container fluid grid-list-xl>
-            <v-layout wrap align-center>
-                <v-flex xs6 sm2 d-flex>
-                    <v-select
-                            :items="items"
-                            v-model="selectedValue"
-                            label="Room Type"
-                            v-on:close="updateRoomType"
-                    ></v-select>
-                </v-flex>
-                <v-flex xs6 sm2 d-flex>
-                    <div class="datepicker-trigger">
-
-                        <v-text-field
-                                id="datepicker-trigger"
-                                placeholder="Select dates"
-                                :value="formatDates(dateOne, dateTwo)"
+            <div v-if="triggerSecond">
+                <v-layout wrap align-center>
+                    <v-flex xs6 sm2 d-flex>
+                        <v-select
+                                :items="items"
+                                v-model="selectedValue"
+                                label="Room Type"
                                 v-on:close="updateRoomType"
-                        ></v-text-field>
+                        ></v-select>
+                    </v-flex>
+                    <v-flex xs6 sm2 d-flex>
+                        <div class="datepicker-trigger">
 
-                        <AirbnbStyleDatepicker
-                                :trigger-element-id="'datepicker-trigger'"
-                                :mode="'range'"
-                                :fullscreen-mobile="true"
-                                :date-one="dateOne"
-                                :date-two="dateTwo"
-                                @date-one-selected="val => { dateOne = val }"
-                                @date-two-selected="val => { dateTwo = val }"
-                        />
-                    </div>
-                </v-flex>
-            </v-layout>
+                            <v-text-field
+                                    id="datepicker-trigger"
+                                    placeholder="Select dates"
+                                    :value="formatDates(dateOne, dateTwo)"
+                                    v-on:close="updateRoomType"
+                            ></v-text-field>
+
+                            <AirbnbStyleDatepicker
+                                    :trigger-element-id="'datepicker-trigger'"
+                                    :mode="'range'"
+                                    :fullscreen-mobile="true"
+                                    :date-one="dateOne"
+                                    :date-two="dateTwo"
+                                    @date-one-selected="val => { dateOne = val }"
+                                    @date-two-selected="val => { dateTwo = val }"
+                            />
+                        </div>
+                    </v-flex>
+                </v-layout>
                 <v-btn color="success" @click="updateChart">Update Chart</v-btn>
-            <div class="text-xs-center" v-if="!trigger">
-                    <v-progress-circular class="mt-5" indeterminate width="14" color="blue" size="256"></v-progress-circular>
-            </div>
-            <v-card class="text-xs-center">
+                <div class="text-xs-center" v-if="!trigger">
+                    <v-progress-circular class="mt-5" indeterminate width="14" color="blue"
+                                         size="256"></v-progress-circular>
+                </div>
+                <v-card class="text-xs-center">
                     <Chart v-if="trigger" v-bind:myData="myData"/>
-            </v-card>
+                </v-card>
+            </div>
+
+            <div v-else>
+                <v-alert
+                        dismissible
+                        border="top"
+                        colored-border
+                        type="info"
+                        elevation="2"
+                >
+                    Please select Competitors. After selection you will be able to see prices of competitors in Analytics and Monthly View section within <b>24hrs</b>.
+                </v-alert>
+            </div>
         </v-container>
     </div>
 </template>
@@ -56,6 +71,7 @@
         data() {
             return {
                 trigger: false,
+                triggerSecond: true,
                 executed: false,
                 executedB: false,
                 myData: {},
@@ -88,6 +104,14 @@
 
                             this.items = this.myData.rooms
 
+
+                            if (this.myData.xAxis.length > 3) {
+                                this.triggerSecond = true
+                                this.trigger = true
+                            } else {
+                                this.triggerSecond = false
+                                this.trigger = false
+                            }
 
                             /*
                             var data = response.data.data
@@ -160,7 +184,6 @@
                             // });
     */
 
-                            this.trigger = true
                         })
                     this.executedB = true
                 }
@@ -176,7 +199,7 @@
                 //     this.trigger = true
                 // });
             },
-            updateRoomType(){
+            updateRoomType() {
                 this.$store.dispatch('roomtype', this.selectedValue)
             },
             formatDates(dateOne, dateTwo) {
@@ -219,11 +242,11 @@
                     })
             },
 
-/*            testingData(){
-                apiRequests.getProcessedCSVs().then(response => {
-                    console.log(response.data)
-                })
-            }*/
+            /*            testingData(){
+                            apiRequests.getProcessedCSVs().then(response => {
+                                console.log(response.data)
+                            })
+                        }*/
         }
     }
 </script>
