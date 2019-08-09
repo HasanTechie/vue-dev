@@ -105,7 +105,7 @@
                             this.items = this.myData.rooms
 
 
-                            if (this.myData.xAxis.length > 2) {
+                            if (this.myData.xAxis.length > 20) {
                                 this.triggerSecond = true
                                 this.trigger = true
                             } else {
