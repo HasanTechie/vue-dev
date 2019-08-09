@@ -2,12 +2,12 @@
     <v-container fluid fill-height>
         <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
-                <v-card class="elevation-12">
+                <v-card class="elevation-12 pa-2">
                     <v-toolbar dark color="primary">
                         <v-toolbar-title>Login form</v-toolbar-title>
                         <v-spacer></v-spacer>
                     </v-toolbar>
-                    <v-card-text>
+                    <v-card-text class="pa-4">
                         <v-form ref="form">
                             <v-text-field prepend-icon="email" v-model="email" name="email" label="Your Email"
                                           type="text" :rules="inputEmailRules"></v-text-field>
