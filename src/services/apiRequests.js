@@ -19,9 +19,9 @@ if (localStorage.getItem('user')) {
 
 export default {
 
-    getHotels(city = 'All') {
+    getHotels(country_code = 'All') {
         return apiClient.get('/hotels&get=0' + this.getApiKey() +
-            '&city=' + city)
+            '&country_code=' + country_code)
     },
 
     getPricesNew(userid, date) {

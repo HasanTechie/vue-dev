@@ -10,7 +10,7 @@
             Except for hotels in Berlin and Rome, all other cities competitors hotels data will be available in Analytics and Monthly View section after 24hrs of selection of competitors.
         </v-alert>
         <div class="my-4">
-            <h1 class="display-1 blue--text">Select Competitor Hotels in {{this.city}}</h1>
+            <h1 class="display-1 blue--text">Select Competitor Hotels</h1>
         </div>
         <multiselect v-model="value"
                      :options="options"
@@ -64,7 +64,7 @@
             return {
                 value: [],
                 options: [],
-                city: JSON.parse(localStorage.getItem('user')).city
+                country_code: JSON.parse(localStorage.getItem('user')).country_code
             }
         },
 
@@ -99,7 +99,7 @@
                 return `${name} — ${city}`
             },
             getAllHotels() {
-                apiRequests.getHotels(this.city)
+                apiRequests.getHotels(this.country_code)
                     .then(response => {
                         var dataArray = Object.keys(response.data.data).map((key) => {
                             return response.data.data[key]
