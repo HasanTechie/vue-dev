@@ -1,5 +1,14 @@
 <template>
     <v-container fluid grid-list-xl>
+        <v-alert
+                dismissible
+                border="top"
+                colored-border
+                type="info"
+                elevation="2"
+        >
+            Upload your Hotel's images.
+        </v-alert>
         <v-layout wrap align-center>
             <v-flex xs12 sm3 d-flex>
 

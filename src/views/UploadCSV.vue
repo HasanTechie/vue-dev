@@ -1,7 +1,16 @@
 <template>
+    <div>
+    <v-alert
+            dismissible
+            border="top"
+            colored-border
+            type="info"
+            elevation="2"
+    >
+        Upload your Hotel's occupancy data in CSV format.
+    </v-alert>
     <v-layout row wrap >
-            
-            <v-flex d-flex 
+            <v-flex d-flex
                     xs12 
                     sm12 
                     md3
@@ -81,6 +90,7 @@
                 ></v-data-table>
             </v-flex>
     </v-layout>
+    </div>
 </template>
 
 <script>

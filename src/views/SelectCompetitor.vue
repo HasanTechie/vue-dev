@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <v-alert
                 dismissible
                 border="top"
