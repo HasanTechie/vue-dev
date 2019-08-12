@@ -30,8 +30,6 @@
                               v-if="values.length &amp;&amp; !isOpen">{{ values.length }} hotels selected</span>
             </template>
         </multiselect>
-        <!--        <pre class="language-json"><code>{{ value }}</code></pre>-->
-
         <br>
         <h2 v-if="this.value.length"
             class="blue--text headline">Competitors Selected : {{ this.value.length }}</h2>
