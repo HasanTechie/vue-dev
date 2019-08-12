@@ -34,7 +34,7 @@
         <h2 v-if="this.value.length"
             class="blue--text headline">Competitors Selected : {{ this.value.length }}</h2>
         <br>
-        <div v-for="item in value" :key="item.hotel_id * Math.random()">
+        <div v-for="item in value" :key="item.hotel_id * Math.random()" class="pb-1">
             <v-chip v-model="item.status" close color="blue title" dark text-color="white"
                     @click:close="updateSelections(item.hotel_id)" label>
                 <v-avatar>
