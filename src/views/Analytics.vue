@@ -238,9 +238,16 @@
 
                         this.myData = response.data.data
 
+
+                        if (this.myData.xAxis.length > 2) {
+                            this.triggerSecond = true
+                            this.trigger = true
+                        } else {
+                            this.triggerSecond = false
+                            this.trigger = false
+                        }
                         // this.$nextTick(() => {
                         // Add the component back in
-                        this.trigger = true
                         // });
                     })
             },

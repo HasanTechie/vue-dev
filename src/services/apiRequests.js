@@ -20,41 +20,28 @@ if (localStorage.getItem('user')) {
 export default {
 
     getHotels(country_code = 'All') {
-        return apiClient.get('/hotels&get=0' + this.getApiKey() +
-            '&country_code=' + country_code)
+        return apiClient.get('/hotels&get=0' + this.getApiKey() + '&country_code=' + country_code)
     },
 
     getPricesNew(userid, date) {
-        return apiClient.get('allroomsprices&get=0' + this.getApiKey() +
-            '&userid=' + userid + '&datefrom=' + date + '&dateto=' + date)
+        return apiClient.get('allroomsprices&get=0' + this.getApiKey() + '&userid=' + userid + '&datefrom=' + date + '&dateto=' + date)
     },
 
     getCompetitorAvgPrices(competitorsids) {
 
-        return apiClient.get('competitorsavgprices&get=50' +
-            this.getApiKey() +
-            '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28' +
-            '&competitorsid=' + competitorsids)
+        return apiClient.get('competitorsavgprices&get=50' + this.getApiKey() + '&hotelid=21&datefrom=2019-04-25&dateto=2020-05-28' + '&competitorsid=' + competitorsids)
     },
 
     getProcessedCSVsById(user_id) {
-        return apiClient.get('getprocessedcsvs&get=0' +
-            this.getApiKey() +
-            '&userid=' + user_id)
+        return apiClient.get('getprocessedcsvs&get=0' + this.getApiKey() + '&userid=' + user_id)
     },
 
     getCompetitorAvgPricesForDates(competitorsids, dateOne, dateTwo) {
-        return apiClient.get('competitorsavgpricesold&get=0' +
-            this.getApiKey() + '&hotelid=21&datefrom=' + dateOne +
-            '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
+        return apiClient.get('competitorsavgpricesold&get=0' + this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
     },
 
-    getCompetitorPricesApex(selectedValue,
-                            dateOne = '2019-01-01',
-                            dateTwo = '2021-01-01') {
-        return apiClient.get('competitorspricesapex&get=0' +
-            this.getApiKey() + '&userid=' + userid + '&datefrom=' +
-            dateOne + '&dateto=' + dateTwo + '&room=' + selectedValue)
+    getCompetitorPricesApex(selectedValue, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
+        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&userid=' + userid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&room=' + selectedValue)
     },
 
     getCompetitors() {
@@ -62,13 +49,11 @@ export default {
     },
 
     getEvents() {
-        return apiClient.get('events&get=0' + this.getApiKey() +
-            '&city=' + usercity)
+        return apiClient.get('events&get=0' + this.getApiKey() + '&city=' + usercity)
     },
 
     getApiKey() {
-        return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7f' +
-            'gdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
+        return '&apiKey=KuKMQbgZPv0PRC6GqCMlDQ7fgdamsVY75FrQvHfoIbw4gBaG5UX0wfk6dugKxrtW'
     },
 
     getCompetitorRoomsAvgPrices(room = 'All', dateOne = '2019-01-01', dateTwo = '2021-01-01') {
@@ -80,8 +65,7 @@ export default {
 
     },
 
-    getProcessedCSVs(){
-        return apiClient.get('getprocessedcsvs&get=0' +
-            this.getApiKey() + '&userid=' + userid)
+    getProcessedCSVs() {
+        return apiClient.get('getprocessedcsvs&get=0' + this.getApiKey() + '&userid=' + userid)
     }
 }
