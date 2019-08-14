@@ -6,7 +6,7 @@
                     <v-flex class="lg2" d-flex>
                         <v-select
                                 :items="items"
-                                v-model="selectedValue"
+                                v-model="selectedRoom"
                                 label="Room Type"
                                 v-on:close="updateRoomType"
                         ></v-select>
@@ -54,7 +54,8 @@
                         type="info"
                         elevation="2"
                 >
-                    Please select Competitors. After selection you will be able to see prices of competitors in Analytics and Monthly View section within <b>24hrs</b>.
+                    Please select Competitors. After selection you will be able to see prices of competitors in
+                    Analytics and Monthly View section within <b>24hrs</b>.
                 </v-alert>
             </div>
         </v-container>
@@ -84,12 +85,11 @@
                 // competitors: [JSON.parse(localStorage.getItem('user')).user.hotel_id],
                 // hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
                 items: [],
-                selectedValue: 'All'
+                selectedRoom: 'All'
 
             }
         },
         created() {
-            // this.getCompetitorsIDs()
             this.getHotelsPrices()
             // this.testingData()
         },
@@ -98,15 +98,12 @@
 
                 if (!this.executedB) {
 
-                    apiRequests.getCompetitorPricesApex(this.selectedValue)
+                    apiRequests.getCompetitorPricesApex(this.selectedRoom)
                         .then(response => {
-
-                            // console.log(response.data)
 
                             this.myData = response.data.data;
 
                             this.items = this.myData.rooms
-
 
                             if (this.myData.xAxis.length > 20) {
                                 this.triggerSecond = true
@@ -115,77 +112,6 @@
                                 this.triggerSecond = false
                                 this.trigger = false
                             }
-
-                            /*
-                            var data = response.data.data
-
-                            data.forEach(function (item) {
-                                hotel_name = item.hotel_name
-                                priceArray.push(item.price)
-                                checkInArray.push(item.check_in_date)
-
-                                item.competitors_data.forEach(function (itemB) {
-                                    if (!(itemB.hotel_name in competitorsPriceArray)) {
-                                        competitorsPriceArray[itemB.hotel_name] = []
-                                    }
-                                    competitorsPriceArray[itemB.hotel_name].push(itemB.price)
-                                })
-
-                                // item.competitors_data.forEach(function (itemC) {
-                                //     // competitiorsArray.push(itemC.price)
-                                //     // competitiorsArray.forEach(function (itemD) {
-                                //     //
-                                //     //     if (itemD == itemC.hotel_id) {
-                                //     //         competitorsPriceArray[itemC.hotel_id].push(itemC.price)
-                                //     //     }
-                                //     //
-                                //     // })
-                                //
-                                // })
-
-                            })
-
-
-                            // var competitorsPriceArray = [45, 4, 9, 16, 25];
-                            competitorsPriceArray.forEach(myFunction);
-
-                            function myFunction(value, index, array) {
-
-                                console.log(value + index + array)
-                            }
-
-
-
-                            // var dA = competitorsPriceArray;
-                            //
-                            //
-                            //
-                            // for(let i = 0; i < dA.length; i++){
-                            //
-                            //
-                            // }
-
-                            // var dataArray = Object.keys(response.data.data).map((key) => {
-                            //     return response.data.data[key]
-                            // })
-
-
-                            // dataArray.forEach(function (item) {
-                            //
-                            //     console.log(item.competitors_data[0].hotel_name)
-                            //     item.competitors_data.forEach(function (item) {
-                            //         // console.log(item)
-                            //     })
-                            //     hotel_name = item.hotel_name
-                            //     priceArray.push(item.price)
-                            //     // this.series = [{
-                            //     //     data: item.price
-                            //     // }]
-                            // });
-                            // dataArray.forEach(function (item) {
-                            //     checkInArray.push(item.check_in_date)
-                            // });
-    */
 
                         })
                     this.executedB = true
@@ -197,13 +123,9 @@
 
                 this.getHotelDataWithDates(this.dateOne, this.dateTwo)
 
-                // this.$nextTick(() => {
-                //     // Add the component back in
-                //     this.trigger = true
-                // });
             },
             updateRoomType() {
-                this.$store.dispatch('roomtype', this.selectedValue)
+                this.$store.dispatch('roomtype', this.selectedRoom)
             },
             formatDates(dateOne, dateTwo) {
                 let formattedDates = ''
@@ -233,11 +155,11 @@
 
             },
             getHotelDataWithDates(dateOne, dateTwo) {
-                apiRequests.getCompetitorPricesApex(this.selectedValue, dateOne, dateTwo)
+
+                apiRequests.getCompetitorPricesApex(this.selectedRoom, dateOne, dateTwo)
                     .then(response => {
 
                         this.myData = response.data.data
-
 
                         if (this.myData.xAxis.length > 2) {
                             this.triggerSecond = true
@@ -246,6 +168,15 @@
                             this.triggerSecond = false
                             this.trigger = false
                         }
+
+
+                        // if (this.myData.xAxis.length > 2) {
+                        //     this.triggerSecond = true
+                        //     this.trigger = true
+                        // } else {
+                        //     this.triggerSecond = false
+                        //     this.trigger = false
+                        // }
                         // this.$nextTick(() => {
                         // Add the component back in
                         // });
@@ -257,6 +188,77 @@
                                 console.log(response.data)
                             })
                         }*/
+            /*        getHotelsPrices(){
+                                var data = response.data.data
+
+                                data.forEach(function (item) {
+                                    hotel_name = item.hotel_name
+                                    priceArray.push(item.price)
+                                    checkInArray.push(item.check_in_date)
+
+                                    item.competitors_data.forEach(function (itemB) {
+                                        if (!(itemB.hotel_name in competitorsPriceArray)) {
+                                            competitorsPriceArray[itemB.hotel_name] = []
+                                        }
+                                        competitorsPriceArray[itemB.hotel_name].push(itemB.price)
+                                    })
+
+                                    // item.competitors_data.forEach(function (itemC) {
+                                    //     // competitiorsArray.push(itemC.price)
+                                    //     // competitiorsArray.forEach(function (itemD) {
+                                    //     //
+                                    //     //     if (itemD == itemC.hotel_id) {
+                                    //     //         competitorsPriceArray[itemC.hotel_id].push(itemC.price)
+                                    //     //     }
+                                    //     //
+                                    //     // })
+                                    //
+                                    // })
+
+                                })
+
+
+                                // var competitorsPriceArray = [45, 4, 9, 16, 25];
+                                competitorsPriceArray.forEach(myFunction);
+
+                                function myFunction(value, index, array) {
+
+                                    console.log(value + index + array)
+                                }
+
+
+
+                                // var dA = competitorsPriceArray;
+                                //
+                                //
+                                //
+                                // for(let i = 0; i < dA.length; i++){
+                                //
+                                //
+                                // }
+
+                                // var dataArray = Object.keys(response.data.data).map((key) => {
+                                //     return response.data.data[key]
+                                // })
+
+
+                                // dataArray.forEach(function (item) {
+                                //
+                                //     console.log(item.competitors_data[0].hotel_name)
+                                //     item.competitors_data.forEach(function (item) {
+                                //         // console.log(item)
+                                //     })
+                                //     hotel_name = item.hotel_name
+                                //     priceArray.push(item.price)
+                                //     // this.series = [{
+                                //     //     data: item.price
+                                //     // }]
+                                // });
+                                // dataArray.forEach(function (item) {
+                                //     checkInArray.push(item.check_in_date)
+                                // });
+                            }
+                    */
         }
     }
 </script>

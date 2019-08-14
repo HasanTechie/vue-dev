@@ -40,8 +40,15 @@ export default {
         return apiClient.get('competitorsavgpricesold&get=0' + this.getApiKey() + '&hotelid=21&datefrom=' + dateOne + '&dateto=' + dateTwo + '&competitorsid=' + competitorsids)
     },
 
-    getCompetitorPricesApex(selectedValue, dateOne = '2019-01-01', dateTwo = '2021-01-01') {
-        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&userid=' + userid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&room=' + selectedValue)
+    getCompetitorPricesApex(selectedRoom, dateOne = '2019-01-01', dateTwo = '2020-01-01') {
+
+        if (dateOne === '') {
+            dateOne = '2019-01-01'
+
+            dateTwo = '2021-01-01'
+        }
+
+        return apiClient.get('competitorspricesapex&get=0' + this.getApiKey() + '&userid=' + userid + '&datefrom=' + dateOne + '&dateto=' + dateTwo + '&room=' + selectedRoom)
     },
 
     getCompetitors() {
