@@ -44,7 +44,6 @@ export default {
 
         if (dateOne === '') {
             dateOne = '2019-01-01'
-
             dateTwo = '2021-01-01'
         }
 

@@ -95,17 +95,14 @@
         },
         methods: {
             getHotelsPrices() {
-
                 if (!this.executedB) {
-
-                    apiRequests.getCompetitorPricesApex(this.selectedRoom)
+                    apiRequests.getCompetitorPricesApex(this.selectedRoom, this.dateOne, this.dateTwo)
                         .then(response => {
-
                             this.myData = response.data.data;
 
                             this.items = this.myData.rooms
 
-                            if (this.myData.xAxis.length > 20) {
+                            if (this.myData.xAxis.length > 4) {
                                 this.triggerSecond = true
                                 this.trigger = true
                             } else {
@@ -113,15 +110,17 @@
                                 this.trigger = false
                             }
 
+
                         })
-                    this.executedB = true
+                    this.executedB = true //imp thing
                 }
             },
             updateChart() {
 
                 this.trigger = false
+                this.executedB = false
 
-                this.getHotelDataWithDates(this.dateOne, this.dateTwo)
+                this.getHotelsPrices()
 
             },
             updateRoomType() {
@@ -136,52 +135,57 @@
                     formattedDates += ' - ' + format(dateTwo, this.dateFormat)
                 }
                 if (dateOne && dateTwo) {
+
+                    this.dateOne = dateOne
+                    this.dateTwo = dateTwo
+
                     if (!this.executed) {
-                        this.getHotelDataWithDates(dateOne, dateTwo)
+                        this.getHotelsPrices()
+                        this.executedB = false
                         this.executed = true;
                     }
                 }
                 return formattedDates
             },
-            getCompetitorsIDs() {
-                var competitorsArray = JSON.parse(JSON.stringify(
-                    this.$store.getters.competitorsArray))
-
-                // this.competitors.push(this.hotelid[0])
-
-                for (let i = 0; i < competitorsArray.length; i += 1) {
-                    this.competitors.push(competitorsArray['' + i + '']['hotel_id']);
-                }
-
-            },
-            getHotelDataWithDates(dateOne, dateTwo) {
-
-                apiRequests.getCompetitorPricesApex(this.selectedRoom, dateOne, dateTwo)
-                    .then(response => {
-
-                        this.myData = response.data.data
-
-                        if (this.myData.xAxis.length > 2) {
-                            this.triggerSecond = true
-                            this.trigger = true
-                        } else {
-                            this.triggerSecond = false
-                            this.trigger = false
-                        }
-
-
-                        // if (this.myData.xAxis.length > 2) {
-                        //     this.triggerSecond = true
-                        //     this.trigger = true
-                        // } else {
-                        //     this.triggerSecond = false
-                        //     this.trigger = false
-                        // }
-                        // this.$nextTick(() => {
-                        // Add the component back in
-                        // });
-                    })
-            },
+            // getCompetitorsIDs() {
+            //     var competitorsArray = JSON.parse(JSON.stringify(
+            //         this.$store.getters.competitorsArray))
+            //
+            //     // this.competitors.push(this.hotelid[0])
+            //
+            //     for (let i = 0; i < competitorsArray.length; i += 1) {
+            //         this.competitors.push(competitorsArray['' + i + '']['hotel_id']);
+            //     }
+            //
+            // },
+            // getHotelDataWithDates(dateOne, dateTwo) {
+            //
+            //     apiRequests.getCompetitorPricesApex(this.selectedRoom, dateOne, dateTwo)
+            //         .then(response => {
+            //
+            //             this.myData = response.data.data
+            //
+            //             if (this.myData.xAxis.length > 2) {
+            //                 this.triggerSecond = true
+            //                 this.trigger = true
+            //             } else {
+            //                 this.triggerSecond = false
+            //                 this.trigger = false
+            //             }
+            //
+            //
+            //             // if (this.myData.xAxis.length > 2) {
+            //             //     this.triggerSecond = true
+            //             //     this.trigger = true
+            //             // } else {
+            //             //     this.triggerSecond = false
+            //             //     this.trigger = false
+            //             // }
+            //             // this.$nextTick(() => {
+            //             // Add the component back in
+            //             // });
+            //         })
+            // },
 
             /*            testingData(){
                             apiRequests.getProcessedCSVs().then(response => {
