@@ -35,7 +35,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "material-design-icons-iconfont": "^5.0.1",
     "node-sass": "^4.9.0",
-    "sass": "^1.22.9",
+    "sass": "^1.22.10",
     "sass-loader": "^7.2.0",
     "vue-cli-plugin-vuetify": "^0.6.3",
     "vue-template-compiler": "^2.6.10",
