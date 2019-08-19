@@ -23,9 +23,9 @@
                         sortable: false,
                         value: 'date',
                     },
-                    {text: 'Emona Hotel Test', value: 'p1'},
-                    {text: 'Hotel Latinum Test', value: 'p2'},
-                    {text: 'Novecento Hotel Test', value: 'p3'},
+                    {text: 'Emona Hotel Price', value: 'p1'},
+                    {text: 'Hotel Latinum Price', value: 'p2'},
+                    {text: 'Novecento Hotel Price', value: 'p3'},
                 ],
                 tableData: [
                     {
