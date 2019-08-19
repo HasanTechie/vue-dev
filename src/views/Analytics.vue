@@ -58,19 +58,25 @@
                     Analytics and Monthly View section within <b>24hrs</b>.
                 </v-alert>
             </div>
+
+            <div>
+                <aDataTable/>
+            </div>
+
         </v-container>
     </div>
 </template>
 
 <script>
     import Chart from '@/components/Chart.vue'
+    import ADataTable from '@/components/AnalyticsDataTable.vue'
     import apiRequests from '@/services/apiRequests.js'
     import format from 'date-fns/format'
 
     export default {
         name: 'Analytics',
         components: {
-            Chart
+            Chart, ADataTable
         },
         data() {
             return {
