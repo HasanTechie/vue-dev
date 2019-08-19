@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container fluid grid-list-xl>
-            <div v-if="triggerSecond">
+            <div v-if="triggerSecond" class="mb-10">
                 <v-layout wrap align-center>
                     <v-flex class="lg2" d-flex>
                         <v-select
