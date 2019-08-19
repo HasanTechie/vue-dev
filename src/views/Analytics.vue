@@ -60,7 +60,9 @@
             </div>
 
             <div>
-                <aDataTable/>
+                <v-card class="text-xs-center">
+                    <aDataTable/>
+                </v-card>
             </div>
 
         </v-container>

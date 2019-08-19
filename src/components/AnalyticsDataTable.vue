@@ -1,18 +1,21 @@
 <template>
-    <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :sort-by="['calories', 'fat']"
-            :sort-desc="[false, true]"
-            multi-sort
-            class="elevation-1"
-    ></v-data-table>
+    <div class="pa-2">
+        <h1 class="pa-2 display-2 mb-3 font-weight-light">Data Table</h1>
+        <v-data-table
+                :headers="headers"
+                :items="tableData"
+                hide-default-footer
+                :sort-desc="[false, true]"
+                multi-sort
+                class="elevation-1"
+        ></v-data-table>
+    </div>
 </template>
 
 <script>
     export default {
         name: "AnalyticsDataTable",
-        data () {
+        data() {
             return {
                 headers: [
                     {
@@ -21,38 +24,38 @@
                         sortable: false,
                         value: 'name',
                     },
-                    { text: 'date ', value: 'date' },
-                    { text: 'date2 ', value: 'date2' },
-                    { text: 'date3 ', value: 'date3' },
-                    { text: 'date4 ', value: 'date4' },
-                    { text: 'date5 ', value: 'date5' },
-                    { text: 'date6 ', value: 'date6' },
-                    { text: 'date7 ', value: 'date7' },
-                    { text: 'date8 ', value: 'date8' },
-                    { text: 'date9 ', value: 'date9' },
-                    { text: 'date10 ', value: 'date10' },
-                    { text: 'date11 ', value: 'date11' },
-                    { text: 'date12 ', value: 'date12' },
-                    { text: 'date13 ', value: 'date13' },
-                    { text: 'date14 ', value: 'date14' },
-                    { text: 'date15 ', value: 'date15' },
-                    { text: 'date16 ', value: 'date16' },
-                    { text: 'date17 ', value: 'date17' },
-                    { text: 'date18 ', value: 'date18' },
-                    { text: 'date19 ', value: 'date19' },
-                    { text: 'date20 ', value: 'date20' },
-                    { text: 'date21 ', value: 'date21' },
-                    { text: 'date22 ', value: 'date22' },
-                    { text: 'date23 ', value: 'date23' },
-                    { text: 'date24 ', value: 'date24' },
-                    { text: 'date25 ', value: 'date25' },
-                    { text: 'date26 ', value: 'date26' },
-                    { text: 'date27 ', value: 'date27' },
-                    { text: 'date28 ', value: 'date28' },
-                    { text: 'date29 ', value: 'date29' },
-                    { text: 'date30 ', value: 'date30' },
+                    {text: 'date ', value: 'date'},
+                    {text: 'date2 ', value: 'date2'},
+                    {text: 'date3 ', value: 'date3'},
+                    {text: 'date4 ', value: 'date4'},
+                    {text: 'date5 ', value: 'date5'},
+                    {text: 'date6 ', value: 'date6'},
+                    {text: 'date7 ', value: 'date7'},
+                    {text: 'date8 ', value: 'date8'},
+                    {text: 'date9 ', value: 'date9'},
+                    {text: 'date10 ', value: 'date10'},
+                    {text: 'date11 ', value: 'date11'},
+                    {text: 'date12 ', value: 'date12'},
+                    {text: 'date13 ', value: 'date13'},
+                    {text: 'date14 ', value: 'date14'},
+                    {text: 'date15 ', value: 'date15'},
+                    {text: 'date16 ', value: 'date16'},
+                    {text: 'date17 ', value: 'date17'},
+                    {text: 'date18 ', value: 'date18'},
+                    {text: 'date19 ', value: 'date19'},
+                    {text: 'date20 ', value: 'date20'},
+                    {text: 'date21 ', value: 'date21'},
+                    {text: 'date22 ', value: 'date22'},
+                    {text: 'date23 ', value: 'date23'},
+                    {text: 'date24 ', value: 'date24'},
+                    {text: 'date25 ', value: 'date25'},
+                    {text: 'date26 ', value: 'date26'},
+                    {text: 'date27 ', value: 'date27'},
+                    {text: 'date28 ', value: 'date28'},
+                    {text: 'date29 ', value: 'date29'},
+                    {text: 'date30 ', value: 'date30'},
                 ],
-                desserts: [
+                tableData: [
                     {
                         name: 'Sample Hotel 1',
                         date: '11',
