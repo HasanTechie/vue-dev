@@ -103,6 +103,9 @@
         },
         methods: {
             getHotelsPrices() {
+                /*var today = new Date();
+                var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                console.log(date);*/
                 if (!this.executedB) {
                     apiRequests.getCompetitorPricesApex(this.selectedRoom, this.dateOne, this.dateTwo)
                         .then(response => {

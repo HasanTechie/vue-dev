@@ -22,6 +22,9 @@
                 </v-btn>
             </div>
             <div v-if="loggedIn">
+                <v-btn text>
+                    <span class="indigo--text">{{hotel_name}}</span>
+                </v-btn>
                 <v-btn text @click="logout">
                     <span class="indigo--text">Logout</span>
                     <v-icon right class="indigo--text">exit_to_app</v-icon>
@@ -54,6 +57,7 @@
             return {
                 drawer: true,
                 dialog: false,
+                hotel_name:'',
                 links: [
                     {icon: 'home', text: 'Home', routename: 'home'},
                     {icon: 'list', text: 'Select Competitor Hotels', routename: 'selectcompetitor'},
@@ -64,6 +68,9 @@
                 ],
             }
         },
+        created(){
+          this.getName()
+        },
         computed: {
             ...authComputed
         },
@@ -72,6 +79,11 @@
                 this.$store.dispatch('logout')
                 location.reload()
             },
+            getName(){
+                if (this.loggedIn) {
+                    this.hotel_name= JSON.parse(localStorage.getItem('user')).hotel_name;
+                }
+            }
         }
     }
 </script>

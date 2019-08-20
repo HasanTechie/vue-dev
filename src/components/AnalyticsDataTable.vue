@@ -4,6 +4,7 @@
         <v-data-table
                 :headers="headers"
                 :items="tableData"
+                :items-per-page="7"
                 :sort-desc="[false, true]"
                 multi-sort
                 class="elevation-1"
