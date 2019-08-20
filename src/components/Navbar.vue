@@ -62,9 +62,9 @@
                     {icon: 'home', text: 'Home', routename: 'home'},
                     {icon: 'list', text: 'Select Competitor Hotels', routename: 'selectcompetitor'},
                     {icon: 'bar_chart', text: 'Analytics', routename: 'analytics'},
-                    {icon: 'calendar_today', text: 'Monthly View', routename: 'monthly'},
-                    {icon: 'attachment', text: 'Upload CSVs', routename: 'UploadCSV'},
-                    {icon: 'cloud_upload', text: 'Upload Images', routename: 'UploadImage'},
+                    // {icon: 'calendar_today', text: 'Monthly View', routename: 'monthly'},
+                    // {icon: 'attachment', text: 'Upload CSVs', routename: 'UploadCSV'},
+                    // {icon: 'cloud_upload', text: 'Upload Images', routename: 'UploadImage'},
                 ],
             }
         },
