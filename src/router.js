@@ -8,6 +8,7 @@ import Analytics from './views/Analytics.vue'
 import Monthly from './views/Monthly.vue'
 import UploadCSV from './views/UploadCSV.vue'
 import UploadImage from './views/UploadImage.vue'
+import ComingSoon from './views/ComingSoon.vue'
 
 Vue.use(Router)
 
@@ -55,6 +56,11 @@ const router = new Router({
             name: 'UploadImage',
             component: UploadImage,
             meta: {requiresAuth: true}
+        },
+        {
+            path: '/comingsoon',
+            name: 'comingsoon',
+            component: ComingSoon,
         },
         {
             path: '/monthly',
