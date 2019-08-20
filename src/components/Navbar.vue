@@ -36,10 +36,18 @@
                 <v-list>
                     <v-list-item v-for="link in links" :key="link.text" router :to="{name: link.routename}">
                         <v-list-item-action>
-                            <v-icon class="white--text">{{link.icon}}</v-icon>
+                            <v-icon class="white--text" >{{link.icon}}</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
                             <v-list-item-title class="white--text subtitle-2">{{link.text}}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item v-for="link in links2" :key="link.text" router :to="{name: link.routename}">
+                        <v-list-item-action>
+                            <v-icon class="white--text" >{{link.icon}}</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title class="white--text subtitle-2"><small>{{link.text}}</small></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -62,9 +70,11 @@
                     {icon: 'home', text: 'Home', routename: 'home'},
                     {icon: 'list', text: 'Select Competitor Hotels', routename: 'selectcompetitor'},
                     {icon: 'bar_chart', text: 'Analytics', routename: 'analytics'},
-                    // {icon: 'calendar_today', text: 'Monthly View', routename: 'monthly'},
-                    // {icon: 'attachment', text: 'Upload CSVs', routename: 'UploadCSV'},
-                    // {icon: 'cloud_upload', text: 'Upload Images', routename: 'UploadImage'},
+                ],
+                links2: [
+                    {icon: 'calendar_today', text: 'Monthly View (coming soon)', routename: 'home'},
+                    {icon: 'attachment', text: 'Upload CSVs (coming soon)', routename: 'home'},
+                    {icon: 'cloud_upload', text: 'Upload Images (coming soon)', routename: 'home'},
                 ],
             }
         },
