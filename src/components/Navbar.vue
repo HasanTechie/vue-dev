@@ -47,7 +47,7 @@
                             <v-icon class="white--text" >{{link.icon}}</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="white--text subtitle-2"><small>{{link.text}}</small></v-list-item-title>
+                            <v-list-item-title class="white--text subtitle-2"><small>{{link.text}} <v-icon x-small class="white--text" >build</v-icon></small></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
