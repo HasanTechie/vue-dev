@@ -60,6 +60,9 @@
             </div>
 
             <div>
+                <v-sheet class="pa-5">
+                    <v-switch v-model="switch1" flat :label="`View : ${getLabelName()}`"></v-switch>
+                </v-sheet>
                 <v-card class="text-xs-center">
                     <aDataTable/>
                 </v-card>
@@ -86,6 +89,7 @@
                 triggerSecond: true,
                 executed: false,
                 executedB: false,
+                switch1: true,
                 myData: {},
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
@@ -102,6 +106,13 @@
             // this.testingData()
         },
         methods: {
+            getLabelName() {
+                if (this.switch1) {
+                    return 'Monthly Average';
+                }else{
+                    return 'All Prices';
+                }
+            },
             getHotelsPrices() {
                 /*var today = new Date();
                 var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
