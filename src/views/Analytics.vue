@@ -64,7 +64,8 @@
                     <v-switch v-model="switch1" flat :label="`View : ${getLabelName()}`"></v-switch>
                 </v-sheet>
                 <v-card class="text-xs-center">
-                    <aDataTable/>
+                    <aDataTable v-if="!switch1"/>
+                    <aDataTable2 v-if="switch1"/>
                 </v-card>
             </div>
 
@@ -75,13 +76,14 @@
 <script>
     import Chart from '@/components/Chart.vue'
     import ADataTable from '@/components/AnalyticsDataTable.vue'
+    import ADataTable2 from '@/components/AnalyticsDataTable2.vue'
     import apiRequests from '@/services/apiRequests.js'
     import format from 'date-fns/format'
 
     export default {
         name: 'Analytics',
         components: {
-            Chart, ADataTable
+            Chart, ADataTable, ADataTable2
         },
         data() {
             return {
