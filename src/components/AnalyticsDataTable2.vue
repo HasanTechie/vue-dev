@@ -1,6 +1,5 @@
 <template>
     <div class="pa-2">
-        <h1 class="pa-2 display-2 mb-3 font-weight-light">Data Table <small>(under testing)</small></h1>
         <v-data-table
                 :headers="headers"
                 :items="tableData"
