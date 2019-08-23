@@ -73,7 +73,7 @@
                 ],
                 links2: [
                     {icon: 'calendar_today', text: 'Monthly View (coming soon)', routename: 'comingsoon'},
-                    {icon: 'attachment', text: 'Upload CSVs (coming soon)', routename: 'comingsoon'},
+                    {icon: 'attachment', text: 'Connect PMS (coming soon)', routename: 'comingsoon'},
                     {icon: 'cloud_upload', text: 'Upload Images (coming soon)', routename: 'comingsoon'},
                 ],
             }
