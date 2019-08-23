@@ -1,18 +1,27 @@
 <template>
 
     <div>
-        <h2 class="display-3 my-4">Instructions or Home page contents goes here</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad enim, eum hic ipsa nemo, nesciunt officiis
-            provident quas quidem repellat reprehenderit voluptatem voluptates! Deserunt eius libero necessitatibus quod
-            sed?</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam blanditiis cumque dolores earum, ex, illum,
-            nesciunt numquam provident quos rerum saepe sapiente suscipit tempore totam unde. Ad delectus omnis quo.
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur dolore ea excepturi fuga hic, impedit
-            incidunt iste labore magnam, molestias nihil odio officiis quam quas quisquam, repellendus unde velit vero.
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid asperiores, cupiditate ex
-            excepturi facilis harum, nam qui saepe, tempora tempore tenetur! Asperiores enim esse, exercitationem fugit
-            iure recusandae voluptate. </p>
-
+        <h2 class="display-3 my-4">Instructions:</h2>
+        <ol>
+            <li>
+                Start by clicking the ‘Select Competitor Hotels’ tab.
+            </li>
+            <li>
+                Choose which competitors you would like to compare yourself with.
+            </li>
+            <li>
+                Type the name of your competitors or click the drop down list  and choose from there. We advise you choose at least  2, but no more than 10.
+            </li>
+            <li>
+                When you have chosen your competitors click  the ‘Analytics’ tab.
+            </li>
+            <li>
+                From there you can choose the room type and time period you would like to view. The time period can be adjusted using the tools available on the graph.
+            </li>
+            <li>
+                By navigating over the graph  you can now easily compare  your prices together with your competitors.
+            </li>
+        </ol>
     </div>
 
 </template>

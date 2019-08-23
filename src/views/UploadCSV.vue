@@ -7,7 +7,7 @@
             type="info"
             elevation="2"
     >
-        Upload your Hotel's occupancy data in CSV format.
+        Uploading your csv file will allow our AI to use the historical data of your hotel enable a more accurate price prediction for your rooms. (Can be changed if you can explain it better).
     </v-alert>
     <v-layout row wrap >
             <v-flex d-flex
