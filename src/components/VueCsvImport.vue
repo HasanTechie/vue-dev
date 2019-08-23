@@ -4,7 +4,8 @@
             <div class="vue-csv-uploader-part-one">
                 <div class="form-check form-group csv-import-checkbox" v-if="headers === null">
                     <slot name="hasHeaders" :headers="hasHeaders" :toggle="toggleHasHeaders">
-                        <input :class="checkboxClass" type="checkbox" id="hasHeaders" :value="hasHeaders" @change="toggleHasHeaders">
+                        <input :class="checkboxClass" type="checkbox" id="hasHeaders" :value="hasHeaders"
+                               @change="toggleHasHeaders">
                         <label class="form-check-label" for="hasHeaders">
                             File Has Headers
                         </label>
@@ -35,7 +36,8 @@
                             <td>{{ field.label }}</td>
                             <td>
                                 <select class="form-control" v-model="map[field.key]">
-                                    <option v-for="(column, key) in firstRow" :key="key" :value="key">{{ column }}</option>
+                                    <option v-for="(column, key) in firstRow" :key="key" :value="key">{{ column }}
+                                    </option>
                                 </select>
                             </td>
                         </tr>
@@ -56,6 +58,7 @@
     import _ from 'lodash';
     import axios from 'axios';
     import Papa from 'papaparse';
+
     export default {
         props: {
             value: Array,
@@ -113,7 +116,7 @@
                 type: String,
                 default: "form-control-file"
             },
-            
+
         },
         data: () => ({
             form: {
@@ -125,7 +128,7 @@
             csv: null,
             sample: null,
             userid: JSON.parse(localStorage.getItem('user')).user.id,
- 
+
         }),
         created() {
             this.load();
@@ -177,8 +180,8 @@
             load() {
                 const _this = this;
                 this.readFile((output) => {
-                    _this.sample = _.get(Papa.parse(output, { preview: 2, skipEmptyLines: true }), "data");
-                    _this.csv = _.get(Papa.parse(output, { skipEmptyLines: true }), "data");
+                    _this.sample = _.get(Papa.parse(output, {preview: 2, skipEmptyLines: true}), "data");
+                    _this.csv = _.get(Papa.parse(output, {skipEmptyLines: true}), "data");
                 });
             },
             readFile(callback) {

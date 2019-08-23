@@ -64,7 +64,8 @@
                     <v-switch v-model="switch1" flat :label="`View : ${getLabelName()}`"></v-switch>
                 </v-sheet>
                 <v-card class="text-xs-center">
-                    <h1 class="pa-2 display-2 mb-3 font-weight-light">{{getLabelName()}} <small>(under testing)</small></h1>
+                    <h1 class="pa-2 display-2 mb-3 font-weight-light">{{getLabelName()}} <small>(under testing)</small>
+                    </h1>
                     <aDataTable v-if="!switch1"/>
                     <aDataTable2 v-if="switch1"/>
                 </v-card>
@@ -112,7 +113,7 @@
             getLabelName() {
                 if (this.switch1) {
                     return 'Monthly Average';
-                }else{
+                } else {
                     return 'All Prices';
                 }
             },

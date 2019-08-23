@@ -123,23 +123,28 @@
         border: 3px dashed #fff;
         font-size: 20px;
         position: relative;
+
         &.dragging {
             background: #fff;
             color: #2196F3;
             border: 3px dashed #2196F3;
+
             .file-input label {
                 background: #2196F3;
                 color: #fff;
             }
         }
+
         i {
             font-size: 85px;
         }
+
         .file-input {
             width: 200px;
             margin: auto;
             height: 68px;
             position: relative;
+
             label,
             input {
                 background: #fff;
@@ -153,15 +158,18 @@
                 margin-top: 7px;
                 cursor: pointer;
             }
+
             input {
                 opacity: 0;
                 z-index: -2;
             }
         }
+
         .images-preview {
             display: flex;
             flex-wrap: wrap;
             margin-top: 20px;
+
             .img-wrapper {
                 width: 160px;
                 display: flex;
@@ -171,10 +179,12 @@
                 justify-content: space-between;
                 background: #fff;
                 box-shadow: 5px 5px 20px #3e3737;
+
                 img {
                     max-height: 105px;
                 }
             }
+
             .details {
                 font-size: 12px;
                 background: #fff;
@@ -183,12 +193,14 @@
                 flex-direction: column;
                 align-items: self-start;
                 padding: 3px 6px;
+
                 .name {
                     overflow: hidden;
                     height: 18px;
                 }
             }
         }
+
         .upload-control {
             position: absolute;
             width: 100%;
@@ -200,6 +212,7 @@
             padding: 10px;
             padding-bottom: 4px;
             text-align: right;
+
             button, label {
                 background: #2196F3;
                 border: 2px solid #03A9F4;
@@ -208,6 +221,7 @@
                 font-size: 15px;
                 cursor: pointer;
             }
+
             label {
                 padding: 2px 5px;
                 margin-right: 10px;

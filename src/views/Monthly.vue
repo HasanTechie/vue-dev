@@ -1,4 +1,3 @@
-
 <template>
     <div>
         <v-container fulid>
@@ -7,8 +6,6 @@
         </v-container>
     </div>
 </template>
-
-
 
 
 <script>

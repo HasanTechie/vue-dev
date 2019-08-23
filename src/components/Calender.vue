@@ -127,11 +127,11 @@
                 >
                     <template v-slot:activator="{ on }">
                         <v-text-field
-                            v-model="today"
-                            label="Today"
-                            prepend-icon="event"
-                            readonly
-                            v-on="on"
+                                v-model="today"
+                                label="Today"
+                                prepend-icon="event"
+                                readonly
+                                v-on="on"
                         ></v-text-field>
                     </template>
                     <v-date-picker
@@ -163,16 +163,16 @@
                         type="number"
                 ></v-text-field>
                 <v-select
-                    v-if="hasIntervals"
-                    v-model="intervals"
-                    :items="intervalsOptions"
-                    label="Intervals"
+                        v-if="hasIntervals"
+                        v-model="intervals"
+                        :items="intervalsOptions"
+                        label="Intervals"
                 ></v-select>
                 <v-select
-                    :items="roomtypes"
-                    v-model="roomtype"
-                    label="Room Type"
-                    v-on:close="updateRoomType"
+                        :items="roomtypes"
+                        v-model="roomtype"
+                        label="Room Type"
+                        v-on:close="updateRoomType"
                 ></v-select>
             </v-flex>
             <v-flex
@@ -180,7 +180,7 @@
                     lg12
                     class="pa-3 mb-3 feature-pane"
             >
-            
+
                 <v-sheet height="1000">
                     <v-calendar
                             ref="calendar"
@@ -203,55 +203,55 @@
                     >
                         <template v-slot:day="{ date }">
                             <template v-for="event in eventsMap[date]">
-                            <v-menu
-                                :key="event.name"
-                                v-model="event.open"
-                                full-width
-                                offset-x
-                            >
-                                <template v-slot:activator="{ on }">
-                                <div
-                                    v-if="!event.time"
-                                    v-ripple
-                                    class="my-event"
-                                    v-on="on"
-                                    v-html="event.name"
-                                ></div>
-                                </template>
-                                <v-card
-                                color="grey lighten-4"
-                                min-width="350px"
-                                text
+                                <v-menu
+                                        :key="event.name"
+                                        v-model="event.open"
+                                        full-width
+                                        offset-x
                                 >
-                                <v-toolbar
-                                    color="primary"
-                                    dark
-                                >
-                                    <v-btn icon>
-                                    <v-icon>edit</v-icon>
-                                    </v-btn>
-                                    <v-toolbar-title v-html="event.name"></v-toolbar-title>
-                                    <v-spacer></v-spacer>
-                                    <v-btn icon>
-                                    <v-icon>favorite</v-icon>
-                                    </v-btn>
-                                    <v-btn icon>
-                                    <v-icon>more_vert</v-icon>
-                                    </v-btn>
-                                </v-toolbar>
-                                <v-card-title primary-title>
-                                    <span v-html="event.url"></span>
-                                </v-card-title>
-                                <v-card-actions>
-                                    <v-btn
-                                    text
-                                    color="secondary"
+                                    <template v-slot:activator="{ on }">
+                                        <div
+                                                v-if="!event.time"
+                                                v-ripple
+                                                class="my-event"
+                                                v-on="on"
+                                                v-html="event.name"
+                                        ></div>
+                                    </template>
+                                    <v-card
+                                            color="grey lighten-4"
+                                            min-width="350px"
+                                            text
                                     >
-                                    Cancel
-                                    </v-btn>
-                                </v-card-actions>
-                                </v-card>
-                            </v-menu>
+                                        <v-toolbar
+                                                color="primary"
+                                                dark
+                                        >
+                                            <v-btn icon>
+                                                <v-icon>edit</v-icon>
+                                            </v-btn>
+                                            <v-toolbar-title v-html="event.name"></v-toolbar-title>
+                                            <v-spacer></v-spacer>
+                                            <v-btn icon>
+                                                <v-icon>favorite</v-icon>
+                                            </v-btn>
+                                            <v-btn icon>
+                                                <v-icon>more_vert</v-icon>
+                                            </v-btn>
+                                        </v-toolbar>
+                                        <v-card-title primary-title>
+                                            <span v-html="event.url"></span>
+                                        </v-card-title>
+                                        <v-card-actions>
+                                            <v-btn
+                                                    text
+                                                    color="secondary"
+                                            >
+                                                Cancel
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-menu>
                             </template>
                         </template>
                         <template v-slot:header="day">
@@ -290,7 +290,7 @@
         height: 40
     }
 
-    
+
     export default {
         name: "Calender",
         components: {
@@ -307,9 +307,9 @@
             minWeeks: 1,
             now: null,
             type: 'month',
-            roomtypes : [],
-            roomtype : 'All',
-            events : [],
+            roomtypes: [],
+            roomtype: 'All',
+            events: [],
             hotelid: JSON.parse(localStorage.getItem('user')).user.hotel_id,
             typeOptions: [
                 {text: 'Day', value: 'day'},
@@ -334,14 +334,14 @@
             maxDays: 7,
 
             color: 'primary',
-            
+
         }),
 
-        watch:{
-            today(newValue){
+        watch: {
+            today(newValue) {
                 this.$store.dispatch('setToday', newValue)
             },
-            roomtype(newValue){
+            roomtype(newValue) {
                 this.$store.dispatch('setRoomType', newValue)
             }
         },
@@ -353,19 +353,19 @@
             this.updateRoomType()
         },
         methods: {
-            updateRoomType(){
+            updateRoomType() {
                 this.$store.dispatch('setRoomType', this.roomtype)
             },
-            getEvents(){
+            getEvents() {
                 console.log("=> download events...")
                 apiRequests.getEvents()
-                .then(response => {
-                    this.events = response.data.data
-                    //console.log(response.data)
-                })
-                .catch(error => {
-                    console.log('There was an error:' + error.response)
-                })
+                    .then(response => {
+                        this.events = response.data.data
+                        //console.log(response.data)
+                    })
+                    .catch(error => {
+                        console.log('There was an error:' + error.response)
+                    })
             },
             todayDate() {
                 var today = new Date()
@@ -399,14 +399,14 @@
             },
             getRoomTypes() {
                 apiRequests.getCompetitorPricesApex(this.hotelid, this.competitors, this.roomtype)
-                .then(response => {
-                    this.myData = response.data.data
-                    this.roomtypes = this.myData.rooms
-                })
+                    .then(response => {
+                        this.myData = response.data.data
+                        this.roomtypes = this.myData.rooms
+                    })
             }
         },
         computed: {
-            
+
             hasIntervals() {
                 return this.type in {
                     'week': 1, 'day': 1, '4day': 1, 'custom-daily': 1
@@ -418,13 +418,13 @@
                 }
             },
             // convert the list of events into a map of lists keyed by date
-            eventsMap () {
+            eventsMap() {
                 const map = {}
                 this.events.forEach(e => (map[e.event_date] = map[e.event_date] || []).push(e))
                 return map
             }
         },
-        
+
     }
 </script>
 
@@ -443,11 +443,12 @@
         cursor: pointer;
         margin-bottom: 1px;
     }
+
     .feature-pane {
         position: relative;
         padding-top: 10px;
         box-shadow: 0 10px 10px rgba(63, 81, 181, 0.3);
-        border-radius:20px;
+        border-radius: 20px;
 
     }
 

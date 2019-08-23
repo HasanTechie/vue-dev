@@ -7,7 +7,8 @@
                 type="info"
                 elevation="2"
         >
-            Uploading your images will allow our AI to recognise how ‘marketable’ or ‘sellable’ the room is and will provide you with suggestions about how to improve.
+            Uploading your images will allow our AI to recognise how ‘marketable’ or ‘sellable’ the room is and will
+            provide you with suggestions about how to improve.
         </v-alert>
         <v-layout wrap align-center>
             <v-flex xs12 sm3 d-flex>

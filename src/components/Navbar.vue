@@ -36,7 +36,7 @@
                 <v-list>
                     <v-list-item v-for="link in links" :key="link.text" router :to="{name: link.routename}">
                         <v-list-item-action>
-                            <v-icon class="white--text" >{{link.icon}}</v-icon>
+                            <v-icon class="white--text">{{link.icon}}</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
                             <v-list-item-title class="white--text subtitle-2">{{link.text}}</v-list-item-title>
@@ -44,10 +44,12 @@
                     </v-list-item>
                     <v-list-item v-for="link in links2" :key="link.text" router :to="{name: link.routename}">
                         <v-list-item-action>
-                            <v-icon class="white--text" >{{link.icon}}</v-icon>
+                            <v-icon class="white--text">{{link.icon}}</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title class="white--text subtitle-2"><small>{{link.text}} <v-icon x-small class="white--text" >build</v-icon></small></v-list-item-title>
+                            <v-list-item-title class="white--text subtitle-2"><small>{{link.text}}
+                                <v-icon x-small class="white--text">build</v-icon>
+                            </small></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -65,7 +67,7 @@
             return {
                 drawer: true,
                 dialog: false,
-                hotel_name:'',
+                hotel_name: '',
                 links: [
                     {icon: 'home', text: 'Home', routename: 'home'},
                     {icon: 'list', text: 'Select Competitor Hotels', routename: 'selectcompetitor'},
@@ -78,8 +80,8 @@
                 ],
             }
         },
-        created(){
-          this.getName()
+        created() {
+            this.getName()
         },
         computed: {
             ...authComputed
@@ -89,9 +91,9 @@
                 this.$store.dispatch('logout')
                 location.reload()
             },
-            getName(){
+            getName() {
                 if (this.loggedIn) {
-                    this.hotel_name= JSON.parse(localStorage.getItem('user')).hotel_name;
+                    this.hotel_name = JSON.parse(localStorage.getItem('user')).hotel_name;
                 }
             }
         }
