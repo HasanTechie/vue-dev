@@ -4,7 +4,7 @@
         <h2 class="display-3 my-4">Instructions:</h2>
         <ol>
             <li>
-                Start by clicking the ‘Select Competitor Hotels’ tab.
+                After logging in, Start by clicking the ‘Select Competitor Hotels’ tab.
             </li>
             <li>
                 Choose which competitors you would like to compare yourself with.
