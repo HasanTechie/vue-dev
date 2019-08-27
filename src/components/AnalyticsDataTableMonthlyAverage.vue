@@ -3,7 +3,7 @@
         <v-data-table
                 :headers="headers"
                 :items="tableData"
-                :items-per-page="7"
+                :items-per-page="12"
                 :sort-desc="[false, true]"
                 multi-sort
                 class="elevation-1"
@@ -13,20 +13,16 @@
 
 <script>
     export default {
-        name: "AnalyticsDataTable",
+        name: "AnalyticsDataTableMonthlyAverage",
+        props: {
+            myDataTableMonthlyAverage: {
+                type: Object,
+                required: true
+            }
+        },
         data() {
             return {
-                headers: [
-                    {
-                        text: 'Months',
-                        align: 'left',
-                        sortable: false,
-                        value: 'date',
-                    },
-                    {text: 'Emona Hotel Price', value: 'p1'},
-                    {text: 'Hotel Latinum Price', value: 'p2'},
-                    {text: 'Novecento Hotel Price', value: 'p3'},
-                ],
+                headers: this.myDataTableMonthlyAverage.headers,
                 tableData: [
                     {
                         date: 'September 2019',

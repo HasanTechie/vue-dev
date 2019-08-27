@@ -67,7 +67,7 @@
                     <h1 class="pa-2 display-2 mb-3 font-weight-light">{{getLabelName()}} <small v-if="switch1">(under testing)</small>
                     </h1>
                     <aDataTable v-if="!switch1" v-bind:myDataTableAllDates="myDataTableAllDates"/>
-                    <aDataTable2 v-if="switch1" v-bind:myDataTableAllDates="myDataTableAllDates"/>
+                    <AnalyticsDataTableMonthlyAverage v-if="switch1" v-bind:myDataTableMonthlyAverage="myDataTableMonthlyAverage"/>
                 </v-card>
             </div>
 
@@ -78,14 +78,14 @@
 <script>
     import Chart from '@/components/Chart.vue'
     import ADataTable from '@/components/AnalyticsDataTable.vue'
-    import ADataTable2 from '@/components/AnalyticsDataTable2.vue'
+    import AnalyticsDataTableMonthlyAverage from '@/components/AnalyticsDataTableMonthlyAverage.vue'
     import apiRequests from '@/services/apiRequests.js'
     import format from 'date-fns/format'
 
     export default {
         name: 'Analytics',
         components: {
-            Chart, ADataTable, ADataTable2
+            Chart, ADataTable, AnalyticsDataTableMonthlyAverage
         },
         data() {
             return {
@@ -96,6 +96,7 @@
                 switch1: false,
                 myData: {},
                 myDataTableAllDates: {},
+                myDataTableMonthlyAverage: {},
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
@@ -113,9 +114,9 @@
         methods: {
             getLabelName() {
                 if (this.switch1) {
-                    return 'Monthly Average';
+                    return 'Competitor Monthly Average Table';
                 } else {
-                    return 'All Prices';
+                    return 'Competitor Prices Table';
                 }
             },
             getHotelsPrices() {
@@ -129,6 +130,7 @@
 
                             this.items = this.myData.rooms
                             this.myDataTableAllDates = this.myData.dataTableAllData
+                            this.myDataTableMonthlyAverage = this.myData.dataTableMonthlyAverage
 
                             if (this.myData.xAxis.length > 1) {
                                 this.triggerSecond = true
