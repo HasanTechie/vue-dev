@@ -59,15 +59,15 @@
                 </v-alert>
             </div>
 
-            <div>
+            <div v-if="trigger">
                 <v-sheet class="pa-5">
                     <v-switch v-model="switch1" flat :label="`View : ${getLabelName()}`"></v-switch>
                 </v-sheet>
                 <v-card class="text-xs-center">
-                    <h1 class="pa-2 display-2 mb-3 font-weight-light">{{getLabelName()}} <small>(under testing)</small>
+                    <h1 class="pa-2 display-2 mb-3 font-weight-light">{{getLabelName()}} <small v-if="switch1">(under testing)</small>
                     </h1>
-                    <aDataTable v-if="!switch1"/>
-                    <aDataTable2 v-if="switch1"/>
+                    <aDataTable v-if="!switch1" v-bind:myDataTableAllDates="myDataTableAllDates"/>
+                    <aDataTable2 v-if="switch1" v-bind:myDataTableAllDates="myDataTableAllDates"/>
                 </v-card>
             </div>
 
@@ -93,8 +93,9 @@
                 triggerSecond: true,
                 executed: false,
                 executedB: false,
-                switch1: true,
+                switch1: false,
                 myData: {},
+                myDataTableAllDates: {},
                 dateFormat: 'D MMM YYYY',
                 dateOne: '',
                 dateTwo: '',
@@ -127,6 +128,7 @@
                             this.myData = response.data.data;
 
                             this.items = this.myData.rooms
+                            this.myDataTableAllDates = this.myData.dataTableAllData
 
                             if (this.myData.xAxis.length > 1) {
                                 this.triggerSecond = true
@@ -135,8 +137,6 @@
                                 this.triggerSecond = false
                                 this.trigger = false
                             }
-
-
                         })
                     this.executedB = true //imp thing
                 }

@@ -174,9 +174,14 @@
             }
         },
         created() {
+            this.testingMethod()
         },
 
-        methods: {}
+        methods: {
+            testingMethod(){
+                // console.log(this.myData)
+            }
+        }
     }
 </script>
 
