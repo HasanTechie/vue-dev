@@ -64,8 +64,7 @@
                     <v-switch v-model="switch1" flat :label="`View : ${getLabelName()}`"></v-switch>
                 </v-sheet>
                 <v-card class="text-xs-center">
-                    <h1 class="pa-2 display-2 mb-3 font-weight-light">{{getLabelName()}} <small v-if="switch1">(under testing)</small>
-                    </h1>
+                    <h1 class="pa-2 display-2 mb-3 font-weight-light">{{getLabelName()}}</h1>
                     <aDataTable v-if="!switch1" v-bind:myDataTableAllDates="myDataTableAllDates"/>
                     <AnalyticsDataTableMonthlyAverage v-if="switch1" v-bind:myDataTableMonthlyAverage="myDataTableMonthlyAverage"/>
                 </v-card>
